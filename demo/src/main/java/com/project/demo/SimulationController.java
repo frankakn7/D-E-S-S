@@ -2,13 +2,7 @@ package com.project.demo;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 @RestController
 public class SimulationController {
 
@@ -21,13 +15,13 @@ public class SimulationController {
 	}
 
 	@PostMapping("/plan/start/{planID}")
-	public long startSimulationUsingPlan(@pathVariable("planID") long planID) {
+	public long startSimulationUsingPlan(@PathVariable("planID") long planID) {
 		Simulation sim = new Simulation(planID);
 		return sim.getId(); 
 	}
 
 	@GetMapping("/sim/status/{simID}")
-	public String simulationStatusCheck(@pathVariable("simID") long simID) {
+	public String simulationStatusCheck(@PathVariable("simID") long simID) {
 		String str = "ok";
 		return str;
 	}
@@ -38,18 +32,18 @@ public class SimulationController {
 	}
 
 	@GetMapping("/sim/results")
-	public long[] getResults(@RequestParam(value = "limit", defaultValue = "1") int limit,@RequestParam(String[] simID) String[] simID) { 
+	public long[] getResults(@RequestParam(value = "limit", defaultValue = "1") int limit,@RequestParam(value = "id") String[] simID) {
 		return new long[1];
 	}
 
 	@DeleteMapping("/sim")
-	public String deleteSimulations(@RequestParam(String[] simID) String[] simID) {
+	public String deleteSimulations(@RequestParam(value = "id") String[] simID) {
 		String str = "ok";
 		return str;
 	}
 
 	@GetMapping("/sim/abort/{simID}")
-	public String abortSimulation(@pathVariable("simID") long simID) {
+	public String abortSimulation(@PathVariable("simID") long simID) {
 		String str = "ok";
 		return str;
 	}
@@ -62,18 +56,18 @@ public class SimulationController {
 
 	@PutMapping("/params")
 	public String changeMetaParameters() {
-		public String str = "ok";
+		String str = "ok";
 		return str;
 	}
 
 	@GetMapping("/params/reset")
 	public String resetMetaParameters() {
-		public String str = "ok";
+		String str = "ok";
 		return str;
 	}
 
 	@GetMapping("/sim/{simID}")
-	public String getSimulation(@pathVariable("simID") long simID) {
+	public String getSimulation(@PathVariable("simID") long simID) {
 		String json = "jsonData";
 		return json;
 	}
