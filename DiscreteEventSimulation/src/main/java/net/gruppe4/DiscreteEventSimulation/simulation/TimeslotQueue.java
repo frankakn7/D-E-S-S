@@ -21,7 +21,14 @@ public class TimeslotQueue {
         return this.timeslots.isEmpty();
     }
 
-    public Event getNextEvent(){
-        return this.timeslots.firstEntry().getValue().get(0);
+    public Event pollNextEvent(){
+        return this.timeslots.firstEntry().getValue().remove(0);
+    }
+
+    public void postponeEvent(Event event) {
+        ArrayList<Event> eventList = this.timeslots.firstEntry().getValue();
+        eventList.add(event);
+        this.timeslots.firstEntry().setValue(eventList);
+        // Eventuell ein Denkfehler
     }
 }

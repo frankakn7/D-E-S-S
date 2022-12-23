@@ -25,7 +25,15 @@ public class Operation {
         this.machine = machine;
         this.duration = duration;
         this.predecessor = predecessor;
+        this.predecessor.setSuccessor(this);
+    }
 
+    public void setSuccessor(Operation successor) {
+        this.successor = successor;
+    }
+
+    public Operation getSuccessor() {
+        return successor;
     }
 
     public Machine getMachine() {
@@ -49,9 +57,17 @@ public class Operation {
         return this.job.getId() + "/" + this.machine.getId();
     }
 
+    public Integer getDuration() {
+        return duration;
+    }
 
     public boolean hasPredecessor() {
         if (this.predecessor != null) return true;
+        return false;
+    }
+
+    public boolean hasSuccessor(){
+        if(this.successor != null) return true;
         return false;
     }
 
