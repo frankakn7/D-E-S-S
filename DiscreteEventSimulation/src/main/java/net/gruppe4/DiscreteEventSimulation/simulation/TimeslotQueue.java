@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import net.gruppe4.DiscreteEventSimulation.simulation.events.Event;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -21,8 +22,8 @@ public class TimeslotQueue {
         return this.timeslots.isEmpty();
     }
 
-    public Event pollNextEvent(){
-        return this.timeslots.firstEntry().getValue().remove(0);
+    public Pair<Integer, Event> pollNextEvent(){
+        return new Pair<Integer, Event>(this.timeslots.firstKey(),this.timeslots.firstEntry().getValue().remove(0));
     }
 
     public void postponeEvent(Event event) {
@@ -30,5 +31,11 @@ public class TimeslotQueue {
         eventList.add(event);
         this.timeslots.firstEntry().setValue(eventList);
         // Eventuell ein Denkfehler
+    }
+
+    public void logEvent(int time, Event event){
+        if (!this.eventLog.containsKey(time)) this.eventLog.put(time, new ArrayList<Event>());
+
+        this.eventLog.get(time).add(event);
     }
 }

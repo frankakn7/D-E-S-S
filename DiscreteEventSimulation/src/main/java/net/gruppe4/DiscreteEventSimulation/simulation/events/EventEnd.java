@@ -15,4 +15,14 @@ public class EventEnd extends Event{
         }
         return new Pair<Integer, Event>(0,new EventFinished(this.operation));
     }
+
+    @Override
+    public boolean isDoable() {
+        return !(this.operation.machineIsBroken());
+    }
+
+    @Override
+    public void executeSimulationStateUpdates() {
+        this.operation.setMachineFree(true);
+    }
 }

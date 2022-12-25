@@ -2,7 +2,10 @@ package net.gruppe4.DiscreteEventSimulation.simulation.events;
 
 import org.javatuples.Pair;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Operation;
+import org.javatuples.Triplet;
+
 import java.util.ArrayList;
+import java.util.function.Function;
 
 public abstract class Event {
     protected String id;
@@ -12,8 +15,7 @@ public abstract class Event {
         this.operation = operation;
     }
 
-    public void getSimulationStateUpdates() {
-        return;
+    public void executeSimulationStateUpdates() {
     }
 
     public boolean isDoable() {

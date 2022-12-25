@@ -6,4 +6,9 @@ public class EventMachineFixed extends Event{
     public EventMachineFixed(Operation operation) {
         super(operation);
     }
+
+    @Override
+    public void executeSimulationStateUpdates() {
+        this.operation.setMachineBroken(false);
+    }
 }

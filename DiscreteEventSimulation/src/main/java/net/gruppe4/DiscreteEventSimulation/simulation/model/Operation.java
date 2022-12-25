@@ -74,4 +74,20 @@ public class Operation {
     public Integer getReleaseTime() {
         return this.job.getReleaseTime();
     }
+
+    public boolean machineIsFree() {
+        return this.machine.isFree();
+    }
+
+    public void setMachineFree(boolean free) {
+        this.machine.setFree(free);
+    }
+
+    public boolean machineIsBroken(){
+        return this.machine.isBroken();
+    }
+
+    public void setMachineBroken(boolean broken){
+        this.machine.setBroken(broken);
+    }
 }

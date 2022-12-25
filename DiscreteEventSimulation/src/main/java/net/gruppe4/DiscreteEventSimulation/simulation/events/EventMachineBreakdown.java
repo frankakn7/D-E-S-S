@@ -13,4 +13,9 @@ public class EventMachineBreakdown extends Event {
         //TODO: Change time to breakdown duration
         return new Pair<Integer, Event>(0, new EventMachineFixed(operation));
     }
+
+    @Override
+    public void executeSimulationStateUpdates() {
+        this.operation.setMachineBroken(true);
+    }
 }

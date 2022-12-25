@@ -3,6 +3,7 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 import net.gruppe4.DiscreteEventSimulation.simulation.events.Event;
 import net.gruppe4.DiscreteEventSimulation.simulation.events.EventRelease;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Operation;
+import org.javatuples.Pair;
 
 import java.util.ArrayList;
 
@@ -26,22 +27,20 @@ public class Simulation {
     }
 
     private void simulationLoop() {
+        this.setUpFirstEvents();
         while(!this.timeslotQueue.isEmpty()) {
-            Event event = this.timeslotQueue.pollNextEvent();
-            if (!event.isDoable()) {
-                this.timeslotQueue.postponeEvent(event);
+            Pair<Integer, Event> eventAndTime = this.timeslotQueue.pollNextEvent();
+            if (!eventAndTime.getValue1().isDoable()) {
+                this.timeslotQueue.postponeEvent(eventAndTime.getValue1());
                 continue;
             }
-
-            //Event nextEvent = event.getFollowingEvent();
-            // TODO: Continue here
-
-            /**
-             * 1.Update simulation state
-             * 2.Get following events from current event
-             * 3.Insert following events in EventQueue
-             * 4.Move Event from EvetnQueue to EventLog
-             */
+            //tried using generic values and lists to find what to update but much too complex
+            eventAndTime.getValue1().executeSimulationStateUpdates();
+            Pair<Integer, Event> nextEventAndTime = eventAndTime.getValue1().getFollowingEvent();
+            this.timeslotQueue.insertEvent(nextEventAndTime.getValue0(), nextEventAndTime.getValue1());
+            //add event-time and event itself to eventLog
+            this.timeslotQueue.logEvent(eventAndTime.getValue0(),eventAndTime.getValue1());
+            // TODO: Check if this is correct and run test
         }
     }
 }
