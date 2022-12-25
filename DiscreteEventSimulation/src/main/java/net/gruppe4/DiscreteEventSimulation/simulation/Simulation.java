@@ -11,6 +11,7 @@ public class Simulation {
     private ArrayList<Operation> operations;
 
     private TimeslotQueue timeslotQueue;
+    private EventLog eventLog;
 
     public Simulation(ArrayList<Operation> operations) {
         this.operations = operations;
@@ -39,7 +40,7 @@ public class Simulation {
             Pair<Integer, Event> nextEventAndTime = eventAndTime.getValue1().getFollowingEvent();
             this.timeslotQueue.insertEvent(nextEventAndTime.getValue0(), nextEventAndTime.getValue1());
             //add event-time and event itself to eventLog
-            this.timeslotQueue.logEvent(eventAndTime.getValue0(),eventAndTime.getValue1());
+            this.eventLog.logEvent(eventAndTime.getValue0(),eventAndTime.getValue1());
             // TODO: Check if this is correct and run test
         }
     }

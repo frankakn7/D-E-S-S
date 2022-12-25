@@ -8,7 +8,6 @@ import java.util.TreeMap;
 
 public class TimeslotQueue {
     private TreeMap<Integer, ArrayList<Event>> timeslots = new TreeMap<Integer, ArrayList<Event>>();
-    private TreeMap<Integer, ArrayList<Event>> eventLog = new TreeMap<Integer, ArrayList<Event>>();
 
     public TimeslotQueue() {    }
 
@@ -31,11 +30,5 @@ public class TimeslotQueue {
         eventList.add(event);
         this.timeslots.firstEntry().setValue(eventList);
         // Eventuell ein Denkfehler
-    }
-
-    public void logEvent(int time, Event event){
-        if (!this.eventLog.containsKey(time)) this.eventLog.put(time, new ArrayList<Event>());
-
-        this.eventLog.get(time).add(event);
     }
 }
