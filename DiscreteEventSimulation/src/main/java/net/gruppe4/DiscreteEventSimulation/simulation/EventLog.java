@@ -18,4 +18,23 @@ public class EventLog {
 
         this.log.get(time).add(event);
     }
+
+    public String printTimestampList(ArrayList<Event> eventList){
+        String res = "";
+        for (Event e : eventList){
+            res += e + ",";
+        }
+        return res;
+    }
+
+    @Override
+    public String toString() {
+        String res = "";
+
+        for (Integer key : this.log.keySet()) {
+            res += key + ": " + printTimestampList(this.log.get(key)) + "\n";
+        }
+
+        return res;
+    }
 }

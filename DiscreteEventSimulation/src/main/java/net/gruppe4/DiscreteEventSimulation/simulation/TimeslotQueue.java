@@ -21,14 +21,42 @@ public class TimeslotQueue {
         return this.timeslots.isEmpty();
     }
 
-    public Pair<Integer, Event> pollNextEvent(){
-        return new Pair<Integer, Event>(this.timeslots.firstKey(),this.timeslots.firstEntry().getValue().remove(0));
+    public Event pollNextEvent(){
+        while(this.timeslots.firstEntry() != null) {
+            Event nextEvent = this.timeslots.firstEntry().getValue().remove(0);
+            if (this.timeslots.firstEntry().getValue().isEmpty()) {
+                this.timeslots.pollFirstEntry();
+            }
+            return nextEvent;
+        }
+        return null;
     }
 
     public void postponeEvent(Event event) {
         ArrayList<Event> eventList = this.timeslots.firstEntry().getValue();
+        event.setTime(this.timeslots.firstKey());
         eventList.add(event);
-        this.timeslots.firstEntry().setValue(eventList);
+        this.timeslots.replace(this.timeslots.firstKey(),eventList);
         // Eventuell ein Denkfehler
+    }
+
+    public String printTimestampList(ArrayList<Event> eventList){
+        String res = "";
+        for (Event e : eventList){
+            res += e + ",";
+        }
+        res += "\n";
+        return res;
+    }
+
+    @Override
+    public String toString() {
+        String res = "";
+
+        for (Integer key : this.timeslots.keySet()) {
+            res += key + ": " + printTimestampList(this.timeslots.get(key));
+        }
+
+        return res;
     }
 }

@@ -25,7 +25,9 @@ public class Operation {
         this.machine = machine;
         this.duration = duration;
         this.predecessor = predecessor;
-        this.predecessor.setSuccessor(this);
+        if(this.predecessor != null) {
+            this.predecessor.setSuccessor(this);
+        }
     }
 
     public void setSuccessor(Operation successor) {
@@ -40,6 +42,8 @@ public class Operation {
         return machine;
     }
 
+    public String getMachineId(){return this.machine.getId();}
+
     public void setMachine(Machine machine) {
         this.machine = machine;
     }
@@ -47,6 +51,10 @@ public class Operation {
     public Job getJob() {
         return job;
     }
+
+    public String getJobId() {return this.job.getId();}
+
+    public String getJobMachineCombinationId() {return this.getJobId() + this.getMachineId();}
 
     public void setJob(Job job) {
         this.job = job;
@@ -62,8 +70,8 @@ public class Operation {
     }
 
     public boolean hasPredecessor() {
-        if (this.predecessor != null) return true;
-        return false;
+        if (this.predecessor == null) return false;
+        return true;
     }
 
     public boolean hasSuccessor(){

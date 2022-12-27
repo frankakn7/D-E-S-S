@@ -4,18 +4,20 @@ import net.gruppe4.DiscreteEventSimulation.simulation.model.Operation;
 import org.javatuples.Pair;
 
 public class EventMachineBreakdown extends Event {
-    public EventMachineBreakdown(Operation operation) {
-        super(operation);
+    public EventMachineBreakdown(Operation operation, Integer time) {
+        super(operation, time);
+        this.name = "MB";
     }
 
     @Override
-    public Pair<Integer, Event> getFollowingEvent() {
+    public Event getFollowingEvent() {
         //TODO: Change time to breakdown duration
-        return new Pair<Integer, Event>(0, new EventMachineFixed(operation));
+        return new EventMachineFixed(this.operation, this.time);
     }
 
     @Override
     public void executeSimulationStateUpdates() {
         this.operation.setMachineBroken(true);
     }
+
 }

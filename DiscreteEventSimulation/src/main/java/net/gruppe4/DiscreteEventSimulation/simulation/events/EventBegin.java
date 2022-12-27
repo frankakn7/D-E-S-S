@@ -2,19 +2,17 @@ package net.gruppe4.DiscreteEventSimulation.simulation.events;
 
 import org.javatuples.Pair;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Operation;
-import org.javatuples.Triplet;
-
-import java.util.ArrayList;
 
 public class EventBegin extends Event{
 
-    public EventBegin(Operation operation) {
-        super(operation);
+    public EventBegin(Operation operation, Integer time) {
+        super(operation, time);
+        this.name = "B";
     }
 
     @Override
-    public Pair<Integer, Event> getFollowingEvent() {
-        return new Pair<Integer, Event>(operation.getDuration(), new EventEnd(this.operation));
+    public Event getFollowingEvent() {
+        return new EventEnd(this.operation,this.time+operation.getDuration());
     }
 
     @Override
@@ -26,4 +24,5 @@ public class EventBegin extends Event{
     public void executeSimulationStateUpdates() {
         this.operation.setMachineFree(false);
     }
+
 }

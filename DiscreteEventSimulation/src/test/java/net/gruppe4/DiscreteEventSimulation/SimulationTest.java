@@ -38,6 +38,8 @@ class SimulationTest {
 
         Simulation sim = new Simulation(ops);
 
+        System.out.println(sim.simulationLoop());
+
         assertTrue(true);
     }
 
