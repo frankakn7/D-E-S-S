@@ -1,5 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation;
 
+import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Machine;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
     @Test
-    void testSimulaton() {
+    void testSimulation() {
         Machine machineA = new Machine("A");
         Machine machineB = new Machine("B");
         Machine machineC = new Machine("C");
@@ -38,9 +39,17 @@ class SimulationTest {
 
         Simulation sim = new Simulation(ops);
 
-        System.out.println(sim.simulationLoop());
+        EventLog result = sim.simulationLoop();
+        System.out.println(result);
 
-        assertTrue(true);
+        assertEquals("0: R1A,B1A,\n" +
+                "2: R2A,\n" +
+                "20: E1A,B2A,B1B,\n" +
+                "23: E1B,B1C,\n" +
+                "50: E2A,B2B,\n" +
+                "53: E2B,\n" +
+                "83: E1C,B2C,F1C,\n" +
+                "143: E2C,F2C,\n", result.toString());
     }
 
 }
