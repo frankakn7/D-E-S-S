@@ -9,19 +9,19 @@ public class SimulationController {
 
 	//private final AtomicLong counter = new AtomicLong();
 
-	@PostMapping("/plan/upload")
+	@PostMapping("/plan/")
 	public boolean upload(@RequestBody String json) {
 		Plan plan = new Plan(json);
 		return true;
 	}
 
-	@PostMapping("/plan/start/{planID}")
+	@PostMapping("/plan/{planId}/start")
 	public long startSimulationUsingPlan(@PathVariable("planID") long planID) {
 		Simulation sim = new Simulation(planID);
 		return sim.getId(); 
 	}
 
-	@GetMapping("/sim/status/{simID}")
+	@GetMapping("/sim/{simId}/status")
 	public String simulationStatusCheck(@PathVariable("simID") long simID) {
 		String str = "ok";
 		return str;
@@ -43,7 +43,7 @@ public class SimulationController {
 		return str;
 	}
 
-	@GetMapping("/sim/abort/{simID}")
+	@GetMapping("/sim/{simId}/abort ")
 	public String abortSimulation(@PathVariable("simID") long simID) {
 		String str = "ok";
 		return str;
