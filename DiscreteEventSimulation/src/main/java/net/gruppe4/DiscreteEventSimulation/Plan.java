@@ -38,7 +38,7 @@ public class Plan {
 
 			machineId = machinesArr.getJSONObject(i).getString("id");
 			breakdown_probability = Double.parseDouble(machinesArr.getJSONObject(i).getString("breakdown_probability"));
-			breakdown_duration = Integer.parseInt(machinesArr.getJSONObject(i).getString("breakdown_duration"););
+			breakdown_duration = Integer.parseInt(machinesArr.getJSONObject(i).getString("breakdown_duration"));
 
 		}
 

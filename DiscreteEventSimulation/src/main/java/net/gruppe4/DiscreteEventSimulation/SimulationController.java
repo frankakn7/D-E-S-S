@@ -1,9 +1,9 @@
 package net.gruppe4.DiscreteEventSimulation;
 
 import java.util.concurrent.atomic.AtomicLong;
-import org.json.simple.JSONObject;
-
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 public class SimulationController {
 
@@ -22,7 +22,7 @@ public class SimulationController {
 	}
 
 	@GetMapping("/sim/{simId}/status")
-	public String simulationStatusCheck(@PathVariable("simID") long simID) {
+	public String simulationStatusCheck(@PathVariable("simId") long simID) {
 		String str = "ok";
 		return str;
 	}
