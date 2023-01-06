@@ -1,18 +1,20 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import {BrowserRouter,Routes,Route, Outlet } from "react-router-dom";
+import Upload from "./Upload";
 
 function App() {
-  const { register, handleSubmit } = useForm() 
-
-  const onSubmit = (data) => {
-    console.log(data)
-  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input ref={register} type="file" name="picture" />
-      <button>Submit</button>
-    </form>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<div>This is the basic layout component <Outlet/></div>}>
+          <Route index element={<div>Welcome to the Homepage</div>} />
+          <Route path="upload" element={<Upload/>} />
+          <Route path="*" element={<div>That page does not exist</div>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  
   );
 }
 
