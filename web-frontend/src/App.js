@@ -1,10 +1,18 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
 function App() {
+  const { register, handleSubmit } = useForm() 
+
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+
   return (
-    <div className="App">
-      <h1>This is Version 0.1</h1>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input ref={register} type="file" name="picture" />
+      <button>Submit</button>
+    </form>
   );
 }
 
