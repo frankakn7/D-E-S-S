@@ -6,8 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
 
 @SpringBootApplication
+@EnableAsync
 public class DiscreteEventSimulationApplication {
 
 	//private static final Logger log = LoggerFactory.getLogger(DiscreteEventSimulationApplication.class);
@@ -15,32 +20,15 @@ public class DiscreteEventSimulationApplication {
 		SpringApplication.run(DiscreteEventSimulationApplication.class, args);
 	}
 
-	/*@Bean
-	public CommandLineRunner demo(PlanRepository repository) {
-		return (args) -> {
-			// save a few customers
-			repository.save(new Plan("Plan1"));
-			repository.save(new Plan("Plan2"));
-			repository.save(new Plan("Plan3"));
-			repository.save(new Plan("Plan4"));
-
-			// fetch all customers
-			String savedUuid = "";
-			log.info("Plans found with findAll():");
-			log.info("-------------------------------");
-			for (Plan plan : repository.findAll()) {
-				log.info(plan.toString());
-				savedUuid = plan.getUuid();
-			}
-			log.info("");
-
-			// fetch an individual customer by ID
-			Plan plan = repository.findByUuid(savedUuid);
-			log.info("Customer found with findById("+savedUuid+"):");
-			log.info("--------------------------------");
-			log.info(plan.toString());
-			log.info("");
-		};
-	}*/
+	@Bean
+	public Executor taskExecutor(){
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(2);
+		executor.setQueueCapacity(500);
+		executor.setThreadNamePrefix("Async-Sim-Executor-");
+		executor.initialize();
+		return executor;
+	}
 
 }
