@@ -17,6 +17,9 @@ public class Operation {
         this.machine = machine;
         this.duration = duration;
         this.predecessor = predecessor;
+        if(this.predecessor != null) {
+            this.predecessor.setSuccessor(this);
+        }
     }
 
     public Operation(Job job, Machine machine, Integer duration, Operation predecessor) {
@@ -97,5 +100,9 @@ public class Operation {
 
     public void setMachineBroken(boolean broken){
         this.machine.setBroken(broken);
+    }
+
+    public void setPredecessor(Operation predecessor) {
+        this.predecessor = predecessor;
     }
 }

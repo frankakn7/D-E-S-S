@@ -17,7 +17,7 @@ public class SimulationController {
 	@PostMapping("/plan/")
 	public String upload(@RequestBody String json) {
 		JSONObject obj = new JSONObject(json);
-		Plan plan = new Plan(obj.getString("name"), json);
+		Plan plan = new Plan(obj.getString("name"), obj.getJSONObject("plan").toString());
 		planRepository.save(plan);
 		return "created: "+plan.getUuid();
 	}
@@ -33,9 +33,15 @@ public class SimulationController {
 		return sim.getId(); */
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.set("content-type", "application/json");
-		Plan plan = planRepository.findByUuid(planId);
+		/*Plan plan = planRepository.findByUuid(planId);
 		JSONObject obj = new JSONObject(plan.getPlanJson());
-		return ResponseEntity.ok().headers(responseHeaders).body(obj.getJSONObject("plan").toString());
+		return ResponseEntity.ok().headers(responseHeaders).body(obj.getJSONObject("plan").toString());*/
+
+		JSONObject resultObj = new JSONObject();
+		SimulationCase newCase = new SimulationCase(planRepository.findByUuid(planId));
+		String results = newCase.runSimulation();
+		resultObj.put("results",results);
+		return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
 	}
 
 	@GetMapping("/sim/{simId}/status")
