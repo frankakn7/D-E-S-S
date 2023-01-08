@@ -1,11 +1,22 @@
 package net.gruppe4.DiscreteEventSimulation;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+@Entity
 public class Plan {
 
-	String jobId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String uuid;
+
+	@Type(JsonType.class)
+	@Column(columnDefinition = "JSON")
+	private String planJson;
+	/*String jobId;
 	int release_date;
 	int due_date;
 	int priority;
@@ -16,12 +27,16 @@ public class Plan {
 	String machine_id;
 	String job_id;
 	String predecessor;
-	int duration;
+	int duration;*/
 
+	private String name;
 
-	public Plan(String json) {
+	protected Plan(){}
 
-		JSONObject obj = new JSONObject(json);
+	public Plan(String name, String json) {
+		this.name = name;
+		this.planJson = json;
+		/*JSONObject obj = new JSONObject(json);
 		
 		JSONArray jobArr = obj.getJSONArray("jobs");
 		for (int i = 0; i < jobArr.length(); i++) {
@@ -51,11 +66,27 @@ public class Plan {
 			predecessor = operationsArr.getJSONObject(i).getString("predecessor");
 			duration = Integer.parseInt(operationsArr.getJSONObject(i).getString("duration"));
 
-		}
-
-
-
-		
+		}*/
 	}
 
+	@Override
+	public String toString() {
+		return "Plan{" +
+				"uuid='" + uuid + '\'' +
+				", planJson='" + planJson + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
+
+	public String getUuid() {
+		return this.uuid;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getPlanJson() {
+		return planJson;
+	}
 }

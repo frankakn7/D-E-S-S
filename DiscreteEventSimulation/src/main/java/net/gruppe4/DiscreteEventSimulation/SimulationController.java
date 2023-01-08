@@ -2,23 +2,40 @@ package net.gruppe4.DiscreteEventSimulation;
 
 import java.util.concurrent.atomic.AtomicLong;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SimulationController {
 
+	@Autowired
+	private PlanRepository planRepository;
 	//private final AtomicLong counter = new AtomicLong();
 
 	@PostMapping("/plan/")
-	public boolean upload(@RequestBody String json) {
-		Plan plan = new Plan(json);
-		return true;
+	public String upload(@RequestBody String json) {
+		JSONObject obj = new JSONObject(json);
+		Plan plan = new Plan(obj.getString("name"), json);
+		planRepository.save(plan);
+		return "created: "+plan.getUuid();
 	}
 
-	@PostMapping("/plan/{planId}/start")
-	public long startSimulationUsingPlan(@PathVariable("planID") long planID) {
-		Simulation sim = new Simulation(planID);
-		return sim.getId(); 
+	@GetMapping("/plan/all")
+	public @ResponseBody Iterable<Plan> getAllPlans(){
+		return planRepository.findAll();
+	}
+
+	@GetMapping("/plan/{planId}/start")
+	public ResponseEntity<String> startSimulationUsingPlan(@PathVariable("planId") String planId) {
+		/*Simulation sim = new Simulation(planID);
+		return sim.getId(); */
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.set("content-type", "application/json");
+		Plan plan = planRepository.findByUuid(planId);
+		JSONObject obj = new JSONObject(plan.getPlanJson());
+		return ResponseEntity.ok().headers(responseHeaders).body(obj.getJSONObject("plan").toString());
 	}
 
 	@GetMapping("/sim/{simId}/status")
