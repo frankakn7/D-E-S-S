@@ -1,5 +1,8 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.services;
 
+import net.gruppe4.DiscreteEventSimulation.objects.Plan;
+import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
+import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
 import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;

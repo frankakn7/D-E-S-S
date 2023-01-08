@@ -1,4 +1,6 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.services;
+
+import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 
 public interface PlanService {
     public abstract void savePlan(Plan plan);

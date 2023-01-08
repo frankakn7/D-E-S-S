@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -13,6 +14,7 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAsync
+@ComponentScan(basePackages = {"net.gruppe4.DiscreteEventSimulation.controllers","net.gruppe4.DiscreteEventSimulation.objects","net.gruppe4.DiscreteEventSimulation.repositories","net.gruppe4.DiscreteEventSimulation.services"})
 public class DiscreteEventSimulationApplication {
 
 	//private static final Logger log = LoggerFactory.getLogger(DiscreteEventSimulationApplication.class);

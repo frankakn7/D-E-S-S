@@ -1,5 +1,7 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.controllers;
 
+import net.gruppe4.DiscreteEventSimulation.objects.Plan;
+import net.gruppe4.DiscreteEventSimulation.services.PlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,7 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.services;
+
+import net.gruppe4.DiscreteEventSimulation.objects.Plan;
+import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 
 public interface SimulationCaseService {
     public abstract SimulationCase createSimCase(Plan plan);

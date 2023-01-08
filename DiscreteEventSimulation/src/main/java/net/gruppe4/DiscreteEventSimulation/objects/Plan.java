@@ -1,4 +1,4 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.objects;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;

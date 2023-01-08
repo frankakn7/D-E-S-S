@@ -1,5 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation;
 
+import net.gruppe4.DiscreteEventSimulation.repositories.PlanRepository;
+import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

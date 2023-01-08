@@ -1,5 +1,8 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.services;
 
+import net.gruppe4.DiscreteEventSimulation.objects.Plan;
+import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
+import net.gruppe4.DiscreteEventSimulation.repositories.PlanRepository;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
