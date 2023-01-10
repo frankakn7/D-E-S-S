@@ -1,0 +1,18 @@
+.json {
+    font-size: 1rem;
+}
+
+.json p {
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    margin-top: 2rem;
+}

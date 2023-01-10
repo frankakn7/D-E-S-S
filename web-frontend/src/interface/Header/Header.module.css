@@ -1,0 +1,11 @@
+.main {
+    width: 100%;
+    overflow: auto;
+    margin: 0;
+    background-color: var(--carolina-blue);
+    color: #ffffff;
+}
+
+.main h1 {
+    margin-left: 2rem;
+}

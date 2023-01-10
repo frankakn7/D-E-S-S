@@ -1,0 +1,23 @@
+.content {
+    width: 80%;
+}
+
+.planTitle {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleInput {
+    font-size: 2rem;
+}
+
+.jsonString {
+    padding-left: 2rem;
+}
+
+.tableBox {
+    padding: 1.5rem;
+}

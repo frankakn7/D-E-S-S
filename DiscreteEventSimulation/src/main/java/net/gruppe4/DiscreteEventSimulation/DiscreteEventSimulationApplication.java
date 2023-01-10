@@ -14,7 +14,6 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAsync
-@ComponentScan(basePackages = {"net.gruppe4.DiscreteEventSimulation.controllers","net.gruppe4.DiscreteEventSimulation.objects","net.gruppe4.DiscreteEventSimulation.repositories","net.gruppe4.DiscreteEventSimulation.services"})
 public class DiscreteEventSimulationApplication {
 
 	//private static final Logger log = LoggerFactory.getLogger(DiscreteEventSimulationApplication.class);

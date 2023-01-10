@@ -1,3 +1,7 @@
+:root {
+  --carolina-blue: #439cdcff;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +14,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.btn-default-style {
+  text-decoration: none;
+  padding: 0.7rem;
+  background-color: var(--carolina-blue);
+  color: white;
+  margin: 0.5rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.btn-default-style:hover {
+  cursor: pointer;
 }

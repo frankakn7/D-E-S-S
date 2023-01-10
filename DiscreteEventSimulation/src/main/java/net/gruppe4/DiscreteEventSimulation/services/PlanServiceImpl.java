@@ -40,6 +40,7 @@ public class PlanServiceImpl implements PlanService{
     public String createSimCase(Plan plan) {
         SimulationCase simCase = simCaseService.createSimCase(plan);
         simCaseService.saveSimCase(simCase);
+        simCaseService.setAndSaveStatus(simCase.getUuid(), 1000);
         return simCase.getUuid();
     }
 

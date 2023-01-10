@@ -32,8 +32,22 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     @Override
-    public SimulationCase getSimCase(String uuid) {
+    public SimulationCase getSimCaseById(String uuid) {
         return simCaseRepo.findByUuid(uuid);
+    }
+
+    @Override
+    public JSONArray getSimCasesJson() {
+        Iterable<SimulationCase> simCases = simCaseRepo.findAll();
+        JSONArray simCaseArrJson = new JSONArray();
+        for(SimulationCase simCase : simCases){
+            JSONObject simCaseJson = new JSONObject();
+            simCaseJson.put("id",simCase.getUuid());
+            simCaseJson.put("results",new JSONObject(simCase.getResultJson()).getString("results"));
+            simCaseJson.put("plan_id",simCase.getPlan().getUuid());
+            simCaseArrJson.put(simCaseJson);
+        }
+        return simCaseArrJson;
     }
 
     @Override
@@ -62,11 +76,16 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     @Override
-    public void runSimulation(String simCaseUuid){
-        SimulationCase simCase = simCaseRepo.findByUuid(simCaseUuid);
-        Integer numOfSimulations = 1000;
+    public void setAndSaveStatus(String simCaseUuid, int numOfSimulations) {
         Status simStatus = new Status("creating", numOfSimulations);
         runningSimCaseStatus.put(simCaseUuid, simStatus);
+    }
+
+    @Override
+    public void runSimulation(String simCaseUuid){
+        SimulationCase simCase = simCaseRepo.findByUuid(simCaseUuid);
+        Status simStatus = runningSimCaseStatus.get(simCaseUuid);
+        int numOfSimulations = simStatus.getTotal();
         ArrayList<Operation> operations = initOperations(new JSONObject(simCase.getPlan().getPlanJson()));
         simStatus.setState("running");
         long startingTime = System.currentTimeMillis();

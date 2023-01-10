@@ -1,5 +1,8 @@
 package net.gruppe4.DiscreteEventSimulation.objects;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
@@ -20,6 +23,15 @@ public class SimulationCase {
     private String resultJson;
 
     protected SimulationCase() {
+    }
+
+    @Override
+    public String toString() {
+        return "SimulationCase{" +
+                "uuid='" + uuid + '\'' +
+                ", plan=" + plan +
+                ", resultJson='" + resultJson + '\'' +
+                '}';
     }
 
     public SimulationCase(Plan plan) {
