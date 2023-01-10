@@ -2,6 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.services;
 
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
+import net.gruppe4.DiscreteEventSimulation.objects.Status;
 
 public interface SimulationCaseService {
     public abstract SimulationCase createSimCase(Plan plan);
@@ -10,4 +11,5 @@ public interface SimulationCaseService {
     public abstract void runSimulation(String uuid);
     public abstract String getResults(String uuid);
     public abstract void setResultsAndSave(String uuid, String results);
+    public abstract Status getStatus(String uuid);
 }

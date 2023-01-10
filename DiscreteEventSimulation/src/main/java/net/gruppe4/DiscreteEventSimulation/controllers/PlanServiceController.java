@@ -39,6 +39,7 @@ public class PlanServiceController {
         //String results = newCase.runSimulation();
         //resultObj.put("results",results);
         //return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
-        return "started Simulation: "+simCaseId;
+        //return "started Simulation: "+simCaseId;
+        return simCaseId;
     }
 }

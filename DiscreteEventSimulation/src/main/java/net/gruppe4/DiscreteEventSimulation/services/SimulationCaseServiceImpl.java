@@ -2,6 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.services;
 
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
+import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
 import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class SimulationCaseServiceImpl implements SimulationCaseService{
     @Autowired
     SimulationCaseRepository simCaseRepo;
+
+    HashMap<String, Status> runningSimCaseStatus = new HashMap<>();
 
     @Override
     public SimulationCase createSimCase(Plan plan) {
@@ -53,13 +57,35 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     @Override
+    public Status getStatus(String uuid) {
+        return runningSimCaseStatus.get(uuid);
+    }
+
+    @Override
     public void runSimulation(String simCaseUuid){
         SimulationCase simCase = simCaseRepo.findByUuid(simCaseUuid);
+        Integer numOfSimulations = 1000;
+        Status simStatus = new Status("creating", numOfSimulations);
+        runningSimCaseStatus.put(simCaseUuid, simStatus);
         ArrayList<Operation> operations = initOperations(new JSONObject(simCase.getPlan().getPlanJson()));
-        Simulation sim = new Simulation(operations);
-
-        EventLog result = sim.simulationLoop();
-        System.out.println(result);
+        simStatus.setState("running");
+        long startingTime = System.currentTimeMillis();
+        EventLog result = null;
+        for(int i = 1; i < numOfSimulations; i++){
+            Simulation sim = new Simulation(operations);
+            result = sim.simulationLoop();
+            simStatus.setProgress(i);
+            /*try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }*/
+            long estimatedTime = ((System.currentTimeMillis() - startingTime) / i) * (numOfSimulations - i);
+            simStatus.setEstimatedMillisRemaining(estimatedTime);
+            //System.out.println(result);
+        }
+        simStatus.setState("done");
+        simStatus.setEstimatedMillisRemaining(0);
 
         setResultsAndSave(simCaseUuid, result.toString());
     }

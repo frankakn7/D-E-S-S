@@ -46,11 +46,11 @@ public class PlanServiceImpl implements PlanService{
     @Override
     @Async
     public void startSimCase(String simCaseUuid){
-        try {
+        /*try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         simCaseService.runSimulation(simCaseUuid);
     }
 }
