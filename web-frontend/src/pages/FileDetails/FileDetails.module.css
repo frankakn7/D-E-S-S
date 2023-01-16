@@ -1,5 +1,5 @@
 .content {
-    width: 80%;
+    width: 100%;
 }
 
 .planTitle {
@@ -16,8 +16,21 @@
 
 .jsonString {
     padding-left: 2rem;
+    max-height: 20rem;
+    overflow: scroll;
 }
 
 .tableBox {
     padding: 1.5rem;
 }
+
+.infoContainers {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.half {
+    width: 48%;
+}
+

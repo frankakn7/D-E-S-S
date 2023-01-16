@@ -24,6 +24,7 @@ code {
   margin: 0.5rem;
   text-align: center;
   font-size: 1rem;
+  border: none;
 }
 
 .btn-default-style:hover {

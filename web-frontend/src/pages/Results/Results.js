@@ -7,11 +7,7 @@ const Results = (props) => {
   const [result, setResult] = useState();
 
   useEffect(() => {
-    console.log(props.results);
-    console.log(id);
     const foundResult = props.results.find((result) => {
-      console.log(result.id);
-      console.log(id);
       return id === result.id;
     });
 
@@ -31,7 +27,7 @@ const Results = (props) => {
         <Link to="/plans" className="btn-default-style">
           View all Uploaded Plans
         </Link>
-        <Link to="/upload" className="btn-default-style">
+        <Link to="/" className="btn-default-style">
             Upload new Plan
         </Link>
       </div>

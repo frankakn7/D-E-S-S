@@ -12,13 +12,11 @@ const Plans = (props) => {
       .getSimCaseStatusHandler(simId)
       .then((result) => {
         if (result.state === "done") {
-          console.log("done");
           props
             .getSimCaseResultHandler(simId)
             .then((response) => navigate(`/results/${simId}`))
             .catch((error) => console.log(error));
         } else {
-          console.log("not done");
           const timer = setTimeout(() => {
             checkIfDone(simId);
             clearTimeout(timer);
@@ -48,7 +46,7 @@ const Plans = (props) => {
           />
         ))}
       </div>
-      <Link to="/upload" className="btn-default-style">
+      <Link to="/" className="btn-default-style">
         Upload new Plan
       </Link>
     </div>
