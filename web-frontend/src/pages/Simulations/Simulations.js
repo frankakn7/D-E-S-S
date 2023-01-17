@@ -2,6 +2,8 @@ import React from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import SimulationsButton from './SimulationsButton'
 
+import classes from "./Simulations.module.css"
+
 const Simulations = (props) => {
 
     const navigate = useNavigate();
@@ -35,7 +37,8 @@ const Simulations = (props) => {
       };
 
   return (
-    <div>
+    <div className={classes.content}>
+        <h2>All Simulations</h2>
         {props.plans.map((plan) => (
           <SimulationsButton
             key={plan.uuid}
