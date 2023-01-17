@@ -31,7 +31,7 @@ const Upload = (props) => {
           console.log("done");
           props
             .getSimCaseResultHandler(simId)
-            .then((response) => navigate(`/results/${simId}`))
+            .then((response) => navigate(`/simulations`))
             .catch((error) => console.log(error));
         } else {
           console.log("not done");

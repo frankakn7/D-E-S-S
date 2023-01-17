@@ -8,6 +8,7 @@ import Layout from "./pages/Layout/Layout";
 import Plans from "./pages/Plans/Plans";
 import Results from "./pages/Results/Results";
 import Upload from "./pages/Upload/Upload";
+import Simulations from "./pages/Simulations/Simulations";
 
 function App() {
   const baseUrl = "http://localhost:8080";
@@ -80,6 +81,17 @@ function App() {
             path="plans"
             element={
               <Plans
+                plans={plans}
+                planSimulateHandler={handlePlanSimulate}
+                getSimCaseStatusHandler={handleGetSimStatus}
+                getSimCaseResultHandler={handleGetSimResult}
+              />
+            }
+          />
+          <Route
+            path="simulations"
+            element={
+              <Simulations
                 plans={plans}
                 planSimulateHandler={handlePlanSimulate}
                 getSimCaseStatusHandler={handleGetSimStatus}

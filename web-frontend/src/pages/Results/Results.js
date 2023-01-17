@@ -34,6 +34,9 @@ const Results = (props) => {
         <Link to="/upload" className="btn-default-style">
             Upload new Plan
         </Link>
+        <Link to="/simulations" className="btn-default-style">
+            View all Simulations
+        </Link>
       </div>
     </div>
   );
