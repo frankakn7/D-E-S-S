@@ -39,14 +39,16 @@ const Simulations = (props) => {
   return (
     <div className={classes.content}>
         <h2>All Simulations</h2>
-        {props.plans.map((plan) => (
-          <SimulationsButton
+        <div className={classes.plans}>
+          {props.plans.map((plan) => (
+            <SimulationsButton
             key={plan.uuid}
             planId={plan.uuid}
             handleSimulate={handleSimulate}
             planName={plan.name}
-          />
-        ))}
+            />
+            ))}
+        </div>
     </div>
   )
 }
