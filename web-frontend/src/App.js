@@ -16,7 +16,7 @@ function App() {
   const { sendRequest: sendHttpRequest } = useHttp();
 
   const [plans, setPlans] = useState([]);
-  const [results, setResults] = useState([]);
+  const [simCases, setSimCases] = useState([]);
 
   const { handlePlanUpload, handlePlanSimulate } = useApiPlanHandler(
     baseUrl,
@@ -24,7 +24,7 @@ function App() {
   );
   const { handleGetSimResult, handleGetSimStatus } = useApiSimCaseHandler(
     baseUrl,
-    setResults
+    setSimCases
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function App() {
           const [planData, resultData] = values;
 
           setPlans(planData.plans);
-          setResults(resultData.sim_cases);
+          setSimCases(resultData.sim_cases);
         })
         .catch((error) => console.log(error));
     };
@@ -76,7 +76,7 @@ function App() {
               />
             }
           />
-          <Route path="results/:id" element={<Results results={results} />} />
+          <Route path="results/:id" element={<Results simCases={simCases} />} />
           <Route
             path="plans"
             element={

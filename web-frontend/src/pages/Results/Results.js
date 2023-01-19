@@ -4,27 +4,27 @@ import classes from "./Results.module.css";
 
 const Results = (props) => {
   const { id } = useParams();
-  const [result, setResult] = useState();
+  const [simCase, setSimCase] = useState();
 
   useEffect(() => {
-    console.log(props.results);
+    console.log(props.simCases);
     console.log(id);
-    const foundResult = props.results.find((result) => {
-      console.log(result.id);
+    const foundResult = props.simCases.find((simCase) => {
+      console.log(simCase.id);
       console.log(id);
-      return id === result.id;
+      return id === simCase.id;
     });
 
-    setResult(foundResult);
-  }, [props.results, id]);
+    setSimCase(foundResult);
+  }, [props.simCases, id]);
 
   return (
     <div className={classes.content}>
-      {result && <h2>Results of Simulation: {result.id}</h2>}
-      {result && (
+      {simCase && <h2>Results of Simulation: {simCase.id}</h2>}
+      {simCase && (
         <div className={classes.json}>
           <p>Event-Log of last simulation run:</p>
-          <pre>{result.results}</pre>
+          <pre>{simCase.results}</pre>
         </div>
       )}
       <div className={classes.buttons}>
