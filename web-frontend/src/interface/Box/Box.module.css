@@ -1,0 +1,23 @@
+.box {
+    width: 100%;
+    border: 2px solid var(--carolina-blue);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.title {
+    margin: 0;
+    padding: 0.3rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    background-color: var(--carolina-blue);
+    color: white;
+}
+
+.content {
+    padding: 0.2rem;
+}

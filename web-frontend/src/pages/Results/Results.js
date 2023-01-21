@@ -7,15 +7,11 @@ const Results = (props) => {
   const [simCase, setSimCase] = useState();
 
   useEffect(() => {
-    console.log(props.simCases);
-    console.log(id);
-    const foundResult = props.simCases.find((simCase) => {
-      console.log(simCase.id);
-      console.log(id);
+    const foundSimCase = props.simCases.find((simCase) => {
       return id === simCase.id;
     });
 
-    setSimCase(foundResult);
+    setSimCase(foundSimCase);
   }, [props.simCases, id]);
 
   return (
@@ -31,7 +27,7 @@ const Results = (props) => {
         <Link to="/plans" className="btn-default-style">
           View all Uploaded Plans
         </Link>
-        <Link to="/upload" className="btn-default-style">
+        <Link to="/" className="btn-default-style">
             Upload new Plan
         </Link>
         <Link to="/simulations" className="btn-default-style">
