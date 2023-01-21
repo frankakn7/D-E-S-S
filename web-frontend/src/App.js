@@ -92,7 +92,7 @@ function App() {
             path="simulations"
             element={
               <Simulations
-                plans={plans}
+                simCases={simCases}
                 planSimulateHandler={handlePlanSimulate}
                 getSimCaseStatusHandler={handleGetSimStatus}
                 getSimCaseResultHandler={handleGetSimResult}
