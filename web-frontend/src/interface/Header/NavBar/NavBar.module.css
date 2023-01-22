@@ -1,0 +1,27 @@
+.nav {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.nav a {
+    margin: 1rem;
+    color: inherit;
+    background: none;
+    border: none;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.nav a:hover {
+    transform: translateY(-3px) translateX(-3px);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.nav a:active{
+    transform: none;
+    transition: all 0.1s;
+    cursor: pointer;
+}
