@@ -21,7 +21,7 @@ code {
   padding: 0.7rem;
   background-color: var(--carolina-blue);
   color: white;
-  margin: 0.5rem;
+  /* margin: 0.5rem; */
   text-align: center;
   font-size: 1rem;
   border: none;

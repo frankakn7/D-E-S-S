@@ -26,6 +26,9 @@ const FileDetails = (props) => {
                             <pre>{props.file.data}</pre>
                         </div>
                     </Box>
+                    <div className={classes.buttons}>
+                        {props.buttons}
+                    </div>
                 </div>
                 <div className={classes.half}>
                     <CollapsableBox titleText="Jobs">

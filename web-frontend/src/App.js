@@ -6,6 +6,7 @@ import useHttp from "./hooks/use-http";
 import FourOFour from "./pages/404/FourOFour";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Layout from "./pages/Layout/Layout";
+import PlanDetails from "./pages/PlanDetails/PlanDetails";
 import Plans from "./pages/Plans/Plans";
 import Results from "./pages/Results/Results";
 import Simulations from "./pages/Simulations/Simulations";
@@ -40,7 +41,8 @@ function App() {
             Promise.all([planPromise, resultPromise])
                 .then((values) => {
                     const [planData, resultData] = values;
-
+                    console.log(planData.plans);
+                    console.log(resultData.sim_cases);
                     setPlans(planData.plans);
                     setSimCases(resultData.sim_cases);
                 })
@@ -58,6 +60,8 @@ function App() {
                         index
                         element={
                             <Dashboard
+                                plans={plans}
+                                simCases={simCases}
                                 planUploadHandler={handlePlanUpload}
                                 planSimulateHandler={handlePlanSimulate}
                                 getSimCaseStatusHandler={handleGetSimStatus}
@@ -81,10 +85,21 @@ function App() {
                         }
                     />
                     <Route
+                        path="plans/:id"
+                        element={
+                            <PlanDetails
+                                plans={plans}
+                                simCases={simCases}
+                                planSimulateHandler={handlePlanSimulate}
+                            />
+                        }
+                    />
+                    <Route
                         path="simulations"
                         element={
                             <Simulations
                                 simCases={simCases}
+                                plans={plans}
                                 planSimulateHandler={handlePlanSimulate}
                                 getSimCaseStatusHandler={handleGetSimStatus}
                                 getSimCaseResultHandler={handleGetSimResult}

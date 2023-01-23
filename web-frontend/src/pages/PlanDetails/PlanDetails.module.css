@@ -1,5 +1,5 @@
 .content {
-    width: 100%;
+    padding: 2rem;
 }
 
 .planTitle {
@@ -12,7 +12,6 @@
 
 .titleInput {
     font-size: 2rem;
-    border: 1px solid black;
 }
 
 .jsonString {
@@ -42,3 +41,11 @@
     align-items: center;
 }
 
+.simulations {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    max-height: 10rem;
+}

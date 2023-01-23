@@ -1,8 +1,12 @@
-import React, { useRef, useState } from "react";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Fragment, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
 import FileDetails from "../FileDetails/FileDetails";
+import PlanButton from "../Plans/PlanButton";
+import SimulationsButton from "../Simulations/SimulationsButton";
 
 import classes from "./Dashboard.module.css";
 
@@ -33,7 +37,7 @@ const Dashboard = (props) => {
         };
         props
             .planUploadHandler(newPlan)
-            .then((newPlanId) => setSelectedFile(null))
+            .then((newPlanId) => navigate(`/plans`))
             .catch((error) => console.log(error));
     };
 
@@ -93,14 +97,35 @@ const Dashboard = (props) => {
         <div className={classes.content}>
             {!selectedFile && (
                 <div className={classes.boxes}>
-                    <Box titleText={<p>Hochgeladene Pläne</p>} className={classes.box}>
-                        <p>All plans</p>
-                    </Box>
                     <Box
-                        titleText={<p>Letzte Simulationen</p>}
+                        titleText={<p>Last 4 uploaded plans</p>}
                         className={classes.box}
                     >
-                        <p>All simulations</p>
+                        {props.plans.length > 0 && props.plans.slice(0, 4).map((plan) => (
+                            <PlanButton
+                                key={plan.uuid}
+                                planId={plan.uuid}
+                                planName={plan.name}
+                            />
+                        ))}
+                        {!props.plans.length && <p>No plans uploaded yet</p>}
+                    </Box>
+                    <Box
+                        titleText={<p>Last 4 simulations</p>}
+                        className={classes.box}
+                    >
+                        {props.simCases.length > 0 && props.simCases.slice(0, 4).map((simCase) => (
+                            <SimulationsButton
+                                key={simCase.id}
+                                simCasesID={simCase.id}
+                                planName={
+                                    props.plans.find(
+                                        (plan) => simCase.plan_id === plan.uuid
+                                    ).name
+                                }
+                            />
+                        ))}
+                        {!props.simCases.length && <p>No simulations run yet</p>}
                     </Box>
                 </div>
             )}
@@ -133,36 +158,41 @@ const Dashboard = (props) => {
             )}
             {selectedFile && (
                 <Button onClick={() => setSelectedFile(null)}>
-                    Go Back
+                    <FontAwesomeIcon icon={faArrowLeft} /> Go Back
                 </Button>
             )}
             {selectedFile && (
-                <FileDetails file={selectedFile} nameRef={nameRef} />
-            )}
-            {selectedFile && (
-                <div className={classes.selectedFilebuttons}>
-                    <Button onClick={handleSavePlan}>Save Plan</Button>
-                    <Button onClick={handleUploadAndSimulate}>
-                        Save and Simulate
-                    </Button>
-                    <div>
-                        <input
-                            type="file"
-                            id="jsonFileInput"
-                            onChange={onFileChange}
-                            accept=".json"
-                            style={{ display: "none" }}
-                            ref={fileInputRef}
-                        />
-                        <label htmlFor="jsonFileInput">
-                            <Button
-                                onClick={() => fileInputRef.current.click()}
-                            >
-                                Select different JSON file
+                <FileDetails
+                    file={selectedFile}
+                    nameRef={nameRef}
+                    buttons={
+                        <Fragment>
+                            <Button onClick={handleSavePlan}>Save Plan</Button>
+                            <Button onClick={handleUploadAndSimulate}>
+                                Save and Simulate
                             </Button>
-                        </label>
-                    </div>
-                </div>
+                            <div>
+                                <input
+                                    type="file"
+                                    id="jsonFileInput"
+                                    onChange={onFileChange}
+                                    accept=".json"
+                                    style={{ display: "none" }}
+                                    ref={fileInputRef}
+                                />
+                                <label htmlFor="jsonFileInput">
+                                    <Button
+                                        onClick={() =>
+                                            fileInputRef.current.click()
+                                        }
+                                    >
+                                        Select different JSON file
+                                    </Button>
+                                </label>
+                            </div>
+                        </Fragment>
+                    }
+                />
             )}
         </div>
     );

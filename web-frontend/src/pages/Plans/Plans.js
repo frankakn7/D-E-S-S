@@ -26,13 +26,6 @@ const Plans = (props) => {
       .catch((error) => console.log(error));
   };
 
-  const handleSimulate = (planId) => {
-    props
-      .planSimulateHandler(planId)
-      .then((simCaseId) => checkIfDone(simCaseId))
-      .catch((error) => console.log(error));
-  };
-
   return (
     <div className={classes.content}>
       <h2>All uploaded Plans</h2>
@@ -40,7 +33,6 @@ const Plans = (props) => {
         {props.plans.map((plan) => (
           <PlanButton
             key={plan.uuid}
-            handleSimulate={handleSimulate}
             planId={plan.uuid}
             planName={plan.name}
           />

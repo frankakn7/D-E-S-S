@@ -16,7 +16,7 @@ const SimulationsButton = (props) => {
             onClick={() => {navigate(`/results/${props.simCasesID}`)}}
         >
             <div>
-                Simulation: ({props.simCasesID})
+                Simulation ({props.simCasesID}) of "{props.planName}"
             </div>
             <FontAwesomeIcon icon={faAngleRight} />
         </Button>

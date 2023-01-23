@@ -6,9 +6,9 @@ const NavBar = () => {
     return (
         <nav className={classes.nav}>
             <Link to="/">Dashboard</Link>
-            <Link to="/plans">Alle Pläne</Link>
-            <Link to="/simulations">Alle Simulationen</Link>
-            <Link to="/vergleich">Vergleichen</Link>
+            <Link to="/plans">All Plans</Link>
+            <Link to="/simulations">All Simulations</Link>
+            <Link to="/vergleich">Compare Simulations</Link>
         </nav>
     );
 };
