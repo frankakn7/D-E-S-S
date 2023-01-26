@@ -1,6 +1,6 @@
 import useHttp from "./use-http"
 
-const useApiSimCaseHandler = (baseUrl, setResults) => {
+const useApiSimCaseHandler = (baseUrl, setSimCases) => {
     const { sendRequest: sendHttpRequest } = useHttp();
 
     const handleGetSimResult = (simCaseId) => {
@@ -9,9 +9,9 @@ const useApiSimCaseHandler = (baseUrl, setResults) => {
                 url: baseUrl + "/api/sim/" + simCaseId + "/results",
                 method: "GET",
             }).then((response) => {
-                const result = {id: simCaseId, results: response.results}
-                console.log(result)
-                setResults((prevState) => [...prevState, result])
+                const simCase = {id: simCaseId, results: response.results}
+                console.log(simCase)
+                setSimCases((prevState) => [...prevState, simCase])
                 resolve(response.results)
             }).catch((error) => {
                 reject(error)

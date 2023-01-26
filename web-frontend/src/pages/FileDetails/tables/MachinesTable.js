@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from '../../../../interface/Table/Table'
+import Table from '../../../interface/Table/Table'
 
 const MachinesTable = (props) => {
   return (

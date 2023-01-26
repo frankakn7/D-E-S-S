@@ -1,0 +1,49 @@
+.content {
+    padding: 2rem;
+}
+
+.boxes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.box {
+    width: 48%;
+    max-height: 30rem;
+}
+
+
+.upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+
+.dragAndDrop {
+    width: 100%;
+    border-width: 2px;
+    border-style: dashed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.fileInput {
+    width: 100%;
+}
+
+.selectedFilebuttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.selectedFilebuttons button {
+    margin: 0;
+}

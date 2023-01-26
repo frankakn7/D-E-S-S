@@ -1,0 +1,44 @@
+.content {
+    width: 100%;
+}
+
+.planTitle {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleInput {
+    font-size: 2rem;
+    border: 1px solid black;
+}
+
+.jsonString {
+    padding-left: 2rem;
+    max-height: 20rem;
+    overflow: scroll;
+}
+
+.tableBox {
+    padding: 1.5rem;
+}
+
+.infoContainers {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.half {
+    width: 48%;
+}
+
+.buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

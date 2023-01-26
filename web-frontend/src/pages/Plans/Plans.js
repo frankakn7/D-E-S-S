@@ -12,26 +12,17 @@ const Plans = (props) => {
       .getSimCaseStatusHandler(simId)
       .then((result) => {
         if (result.state === "done") {
-          console.log("done");
           props
             .getSimCaseResultHandler(simId)
             .then((response) => navigate(`/results/${simId}`))
             .catch((error) => console.log(error));
         } else {
-          console.log("not done");
           const timer = setTimeout(() => {
             checkIfDone(simId);
             clearTimeout(timer);
           }, 1000);
         }
       })
-      .catch((error) => console.log(error));
-  };
-
-  const handleSimulate = (planId) => {
-    props
-      .planSimulateHandler(planId)
-      .then((simCaseId) => checkIfDone(simCaseId))
       .catch((error) => console.log(error));
   };
 
@@ -42,13 +33,12 @@ const Plans = (props) => {
         {props.plans.map((plan) => (
           <PlanButton
             key={plan.uuid}
-            handleSimulate={handleSimulate}
             planId={plan.uuid}
             planName={plan.name}
           />
         ))}
       </div>
-      <Link to="/upload" className="btn-default-style">
+      <Link to="/" className="btn-default-style">
         Upload new Plan
       </Link>
     </div>

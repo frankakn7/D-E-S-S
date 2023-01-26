@@ -1,0 +1,51 @@
+.content {
+    padding: 2rem;
+}
+
+.planTitle {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleInput {
+    font-size: 2rem;
+}
+
+.jsonString {
+    padding-left: 2rem;
+    max-height: 20rem;
+    overflow: scroll;
+}
+
+.tableBox {
+    padding: 1.5rem;
+}
+
+.infoContainers {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.half {
+    width: 48%;
+}
+
+.buttons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.simulations {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    max-height: 10rem;
+}
