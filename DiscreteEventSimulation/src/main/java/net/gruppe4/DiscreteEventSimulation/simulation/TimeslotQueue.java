@@ -50,7 +50,7 @@ public class TimeslotQueue {
     }
 
     public Boolean isEmpty() {
-        if (this.timeslots.size() == 1) return this.timeslots.get(1).isEmpty();
+        if (this.timeslots.size() == 1) return this.timeslots.get(this.timeslots.firstKey()).isEmpty();
 
         return this.timeslots.isEmpty();
     }
@@ -82,7 +82,7 @@ public class TimeslotQueue {
 
     public Event pollNextEvent() {
         if (this.timeslots.isEmpty()) return null;
-        if (this.timeslots.get(0).isEmpty()) return null;
+        if (this.timeslots.get(this.timeslots.firstKey()).isEmpty()) return null;
 
         Event event = this.timeslots.get(this.getFirstDate()).get(0);
         this.timeslots.get(this.getFirstDate()).remove(0);

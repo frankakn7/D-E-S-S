@@ -1,5 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
+import com.google.common.base.Strings;
+
 public class Event {
     private EventType eventType;
     private Machine machine;
@@ -25,5 +27,15 @@ public class Event {
 
     public void setDate(Integer date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        String res = "";
+        if (this.date != null) res += " " + Strings.padEnd(this.date.toString(), 5, ' ');
+        res += Strings.padEnd(this.eventType.name(), 20, ' ');
+        if (this.machine != null) res += " " + Strings.padEnd(this.machine.toString(), 5, ' ');
+        if (this.operation != null) res += " " + Strings.padEnd(this.operation.toString(), 5, ' ');
+        return res;
     }
 }

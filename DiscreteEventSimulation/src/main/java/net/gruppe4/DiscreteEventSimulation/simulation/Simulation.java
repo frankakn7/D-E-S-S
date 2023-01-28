@@ -16,6 +16,7 @@ public class Simulation {
 
     public Simulation(Map<String, Machine> machines, ArrayList<Operation> operations) {
         this.machines = machines;
+        this.eventLog = new EventLog();
 
 
         // TODO [#A] Move the sorting of elements to SimulationCaseServiceImpl so to not have to compute it 1000 times
@@ -47,9 +48,12 @@ public class Simulation {
         ArrayList<Operation> ops = new ArrayList<>(operations);
 
         ArrayList<Operation> sortedOperations = new ArrayList<Operation>();
-        for (Operation operation : ops) {
+        Iterator<Operation> i = ops.iterator();
+        while (i.hasNext()) {
+            Operation operation = i.next();
             if (operation.hasNoMachineQueuePredecessor()) {
                 sortedOperations.add(operation);
+                i.remove();
                 break;
             }
         }
@@ -57,10 +61,10 @@ public class Simulation {
         // Traverse the remaining List checking if the last entry in the sorted
         // one corresponds to the current elements machine queue predecessor
         while (!ops.isEmpty()) {
-            Iterator<Operation> i = ops.iterator();
+            i = ops.iterator();
             while (i.hasNext()) {
                 Operation op = i.next();
-                if (op.getMachineQueuePredecessor() == sortedOperations.get(sortedOperations.size())) {
+                if (op.getMachineQueuePredecessor() == sortedOperations.get(sortedOperations.size() - 1)) {
                     sortedOperations.add(op);
                     break;
                 }

@@ -7,8 +7,9 @@ import java.util.ArrayList;
  */
 public class Operation {
     private String id;
+    // TODO Rename to something including the word dependency
     private ArrayList<Operation> conditionalPredecessors;   // List of necessary predecessors in an AND relation
-    private Operation machineQueuePredecessor;              // The Operation in the machine queue that this one follows
+    private Operation machineQueuePredecessor = null;       // The Operation in the machine queue that this one follows
                                                             // (null when first in queue)
     private Integer releaseDate;                            // Earliest possible date at which this operation can begin
     private Integer duration;

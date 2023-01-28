@@ -23,6 +23,7 @@ public class Machine {
      *                   and inserted
      */
     public void takeIn(Operation operation) {
+        // TODO Implement releasedate stuff
         Event begin = new Event(EventType.OPERATION_BEGIN, this, operation);
         Event end = new Event(EventType.OPERATION_END, this, operation);
 
@@ -53,5 +54,10 @@ public class Machine {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return this.id;
     }
 }
