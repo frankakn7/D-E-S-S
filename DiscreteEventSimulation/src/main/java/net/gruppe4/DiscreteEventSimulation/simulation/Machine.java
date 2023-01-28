@@ -30,8 +30,9 @@ public class Machine {
         // TODO Recheck this logic
         //      Should it really just check for != 0?
         Integer begin_date = operation.getReleaseDate();
-        if (operation.getReleaseDate() != 0) {
-            this.timeslotQueue.insert(operation.getReleaseDate(), begin);
+        Integer releasedate = operation.getReleaseDate();
+        if (releasedate != 0) {
+            this.timeslotQueue.insert(releasedate, begin);
         }
         else {
             begin_date = this.timeslotQueue.append(begin);

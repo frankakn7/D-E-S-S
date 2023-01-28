@@ -1,6 +1,8 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -23,6 +25,7 @@ public class TimeslotQueue {
             timeslots.put(date, new ArrayList<Event>());
         }
 
+        event.setDate(date);
         timeslots.get(date).add(event);
     }
 
@@ -107,6 +110,10 @@ public class TimeslotQueue {
         if (this.timeslots.get(this.timeslots.firstKey()).isEmpty()) return null;
 
         Event event = this.timeslots.get(this.getFirstDate()).get(0);
+        // TODO It should be checked out where the actual date variable of
+        // events gets set and if its really necessary for it to be set
+        // so often
+        event.setDate(this.getFirstDate());
         this.timeslots.get(this.getFirstDate()).remove(0);
 
         if (this.timeslots.get(this.getFirstDate()).isEmpty())
@@ -119,25 +126,39 @@ public class TimeslotQueue {
     /**
      * Poll an {@link Event} object from the {@link TimeslotQueue}, if there is
      * one scheduled at the passed `date`. Returns null if no {@link Event}
-     * object is scheduled for that `date`. If event gets pulled its `date`
-     * gets set to the passed `date`.
+     * object is scheduled for that `date`.
      *
      * @param date  `date` to check for {@link Event} objects in the machines
      *              queue.
-     * @return      Next scheduled {@link Event} object at `date` with its
-     *              `date` variable set to the passed `date`. null if none is
-     *              scheduled for that `date`.
+     * @return      Next scheduled {@link Event} object at `date` with. its
+     *              null if none is scheduled for that `date`.
      */
     public Event pollNextEventIfDate(Integer date) {
         Event event = null;
 
         if (this.getFirstDate() == date) {
             event = this.pollNextEvent();
-
-            // TODO Mention that this state change of event is happening in this method
-            event.setDate(date);
         }
 
         return event;
+    }
+
+    /**
+     * Pushes the entire Queue back by `time`. So if the Queue starts with 0
+     * and you push it back by 10 time it will be starting at 10 with every
+     * event having been pushed back by the same amount of time.
+     *
+     * @param time   The amount of `time` to push the queue back by
+     */
+    public void pushQueueByTime(Integer time) {
+        TreeMap<Integer, ArrayList<Event>> newTimeslots = new TreeMap<Integer, ArrayList<Event>>();
+
+        Iterator<Map.Entry<Integer, ArrayList<Event>>> i = this.timeslots.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry<Integer, ArrayList<Event>> entry = i.next();
+            newTimeslots.put(entry.getKey() + time, entry.getValue());
+        }
+
+        this.timeslots = newTimeslots;
     }
 }
