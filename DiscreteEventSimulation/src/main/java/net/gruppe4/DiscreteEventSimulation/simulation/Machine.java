@@ -1,6 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
-// TODO Comment MachineClass
+
 public class Machine {
     private String id;
     private TimeslotQueue timeslotQueue;
@@ -40,6 +40,12 @@ public class Machine {
         this.timeslotQueue.insert(begin_date + operation.getDuration(), end);
     }
 
+    /**
+     * Returns the `date` of the first event in Queue/next event that is bound
+     * to be processed without doing any processing.
+     *
+     * @return   `date` of the next {@link Event} object in Queue.
+     */
     public Integer getNextEventDate() {
         if (!this.timeslotQueue.isEmpty()) {
             return this.timeslotQueue.getFirstDate();
@@ -48,6 +54,16 @@ public class Machine {
         return null;
     }
 
+    /**
+     * Poll an {@link Event} object from the {@link TimeslotQueue}, if there is
+     * one scheduled at the passed `date`. Returns null if no {@link Event}
+     * object is scheduled for that `date`.
+     *
+     * @param date  `date` to check for {@link Event} objects in the machines
+     *              queue.
+     * @return      Next scheduled {@link Event} object at `date`. null if none
+     *              is scheduled for that `date`.
+     */
     public Event pollEventIfDate(Integer date) {
         return this.timeslotQueue.pollNextEventIfDate(date);
     }

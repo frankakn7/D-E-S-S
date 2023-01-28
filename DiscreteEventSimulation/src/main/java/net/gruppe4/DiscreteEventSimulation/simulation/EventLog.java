@@ -13,6 +13,11 @@ public class EventLog {
         this.log = new ArrayList<Event>();
     }
 
+    /**
+     * Appends a passed {@link Event} object to the log.
+     *
+     * @param event  {@link Event} object to append.
+     */
     public void append(Event event) {
         this.timeslots.insert(event.getDate(), event);
         this.log.add(event);

@@ -75,6 +75,14 @@ public class Simulation {
         return sortedOperations;
     }
 
+    /**
+     * Actual simulation loop where all the simulation logic happens. Looks
+     * through the {@link Machine} map for the next `date` an event is
+     * scheduled, polls that event and puts it into the {@link EventLog}
+     * object.
+     *
+     * @return  True if successful
+     */
     private Boolean simulationLoop() {
         while (this.findNextEventDate() != null) {
             for (Map.Entry<String, Machine> entry : this.machines.entrySet()) {
@@ -88,6 +96,12 @@ public class Simulation {
         return true;
     }
 
+    /**
+     * Function call to run the actual Simulation. Returns an {@link EventLog}
+     * object if successful.
+     *
+     * @return  Log of all the events that happened during simulation.
+     */
     public EventLog runSim() {
         Boolean wasSuccessful = this.simulationLoop();
         if (!wasSuccessful) {
@@ -96,6 +110,14 @@ public class Simulation {
         return this.eventLog;
     }
 
+    /**
+     * Loops through the map of {@link Machine} objects to find the next `date`
+     * an event is scheduled. Returns that `date` or null if the
+     * {@link Machine} objects queues are empty.
+     *
+     * @return   Next scheduled event's `date` or null if all {@link Machine}
+     *           objects have finished.
+     */
     private Integer findNextEventDate() {
         ArrayList<Integer> dates = new ArrayList<Integer>();
 

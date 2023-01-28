@@ -51,6 +51,12 @@ public class Operation {
         return conditionalPredecessors;
     }
 
+    /**
+     * Checks if {@link Operation} has another {@link Operation} object in the
+     * same {@link Machine} scheduled in front of it.
+     *
+     * @return  False if no other {@link Operation} is scheduled in front of it
+     */
     public Boolean hasNoMachineQueuePredecessor() {
         if (this.machineQueuePredecessor == null) return true;
         return false;

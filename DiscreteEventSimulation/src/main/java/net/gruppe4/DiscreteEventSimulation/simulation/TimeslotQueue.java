@@ -44,11 +44,26 @@ public class TimeslotQueue {
         return this.timeslots.lastKey();
     }
 
+    /**
+     * Returns last {@link Event} object in queue without modifying the
+     * timeslot queue.
+     *
+     * @return   Returns last {@link Event} object in queue or null if empty.
+     */
     public Event getLastEvent() {
+        if (this.timeslots.isEmpty()) return null;
+        if (this.timeslots.get(this.timeslots.lastKey()).isEmpty()) return null;
         ArrayList<Event> timeslot = this.timeslots.get(this.timeslots.lastKey());
-        return timeslot.get(timeslot.size());
+        return timeslot.get(timeslot.size() - 1);
     }
 
+    /**
+     * Returns true if this {@link TimeslotQueue} contains no {@link Event}
+     * objects.
+     *
+     * @return   true if this {@link TimeslotQueue} contains no {@link Event}
+     *           objects
+     */
     public Boolean isEmpty() {
         if (this.timeslots.size() == 1) return this.timeslots.get(this.timeslots.firstKey()).isEmpty();
 
@@ -80,6 +95,13 @@ public class TimeslotQueue {
         return this.timeslots.firstKey();
     }
 
+    /**
+     * Polls first {@link Event} object in {@link TimeslotQueue}. This means it
+     * returns it and removes it from the queue. If timeslot is empty removes
+     * it as well.
+     *
+     * @return  First {@link Event} object in queue
+     */
     public Event pollNextEvent() {
         if (this.timeslots.isEmpty()) return null;
         if (this.timeslots.get(this.timeslots.firstKey()).isEmpty()) return null;
@@ -93,6 +115,19 @@ public class TimeslotQueue {
         return event;
     }
 
+
+    /**
+     * Poll an {@link Event} object from the {@link TimeslotQueue}, if there is
+     * one scheduled at the passed `date`. Returns null if no {@link Event}
+     * object is scheduled for that `date`. If event gets pulled its `date`
+     * gets set to the passed `date`.
+     *
+     * @param date  `date` to check for {@link Event} objects in the machines
+     *              queue.
+     * @return      Next scheduled {@link Event} object at `date` with its
+     *              `date` variable set to the passed `date`. null if none is
+     *              scheduled for that `date`.
+     */
     public Event pollNextEventIfDate(Integer date) {
         Event event = null;
 

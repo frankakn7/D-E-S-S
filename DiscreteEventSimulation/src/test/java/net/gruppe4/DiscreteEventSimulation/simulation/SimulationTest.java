@@ -31,8 +31,8 @@ class SimulationTest {
         Operation op6 = new Operation("op6", op5, null, 0, 4, mB);
 
         Operation op7 = new Operation("op7", null, null, 0, 6, mC);
-        Operation op8 = new Operation("op8", op7, null, 0, 7, mC);
-        Operation op9 = new Operation("op9", op8, null, 0, 2, mC);
+        Operation op8 = new Operation("op8", op7, null, 9, 5, mC);
+        Operation op9 = new Operation("op9", op8, null, 0, 3, mC);
 
         ArrayList<Operation> ops = new ArrayList<Operation>();
         ops.add(op1);
