@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * // TODO Comment OperationClass
  */
+//TODO add jobId and implement JOB object for tracking and simulaton evaluation
 public class Operation {
     private String id;
     // TODO Rename to something including the word dependency

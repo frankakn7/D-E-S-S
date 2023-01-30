@@ -102,11 +102,13 @@ public class Simulation {
      *
      * @return  Log of all the events that happened during simulation.
      */
+    //TODO make runSim take parameter of number of sim runs and loop many times -> prepare simulation once and run 1000 times
     public EventLog runSim() {
         Boolean wasSuccessful = this.simulationLoop();
         if (!wasSuccessful) {
             // TODO Throw error if simulation unsuccessful
         }
+        //TODO make simulationloop return eventLog
         return this.eventLog;
     }
 

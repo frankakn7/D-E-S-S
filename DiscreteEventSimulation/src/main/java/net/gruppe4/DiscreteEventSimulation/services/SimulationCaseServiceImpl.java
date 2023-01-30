@@ -5,10 +5,11 @@ import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
 import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
+import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
-import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
-import net.gruppe4.DiscreteEventSimulation.simulation.model.Machine;
-import net.gruppe4.DiscreteEventSimulation.simulation.model.Operation;
+/*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
+import net.gruppe4.DiscreteEventSimulation.simulation.model.Machine;*/
+import net.gruppe4.DiscreteEventSimulation.simulation.Operation;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,13 +87,15 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
         SimulationCase simCase = simCaseRepo.findByUuid(simCaseUuid);
         Status simStatus = runningSimCaseStatus.get(simCaseUuid);
         int numOfSimulations = simStatus.getTotal();
+        //TODO Get Machines in Hashmap from JSON
+        HashMap<String, Machine> machines = new HashMap<String, Machine>();
         ArrayList<Operation> operations = initOperations(new JSONObject(simCase.getPlan().getPlanJson()));
         simStatus.setState("running");
         long startingTime = System.currentTimeMillis();
         EventLog result = null;
         for(int i = 1; i < numOfSimulations; i++){
-            Simulation sim = new Simulation(operations);
-            result = sim.simulationLoop();
+            Simulation sim = new Simulation(machines, operations);
+            result = sim.runSim();
             simStatus.setProgress(i);
             /*try {
                 Thread.sleep(100);
@@ -110,16 +113,18 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     private ArrayList<Operation> initOperations(JSONObject planJsonObj) {
-        Map<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
+        //Map<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
         Map<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
-        Map<String, Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), jobs, machines);
+        //Map<String, Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), jobs, machines);
+        Map<String, Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines);
         /*System.out.println(jobs);
         System.out.println(machines);
         System.out.println(operations);*/
         return new ArrayList<Operation>(operations.values());
     }
 
-    private Map<String, Job> extractJobs(JSONArray jobsJson) {
+    //TODO implement Jobs for tracking of job status etc
+    /*private Map<String, Job> extractJobs(JSONArray jobsJson) {
         Map<String, Job> jobs = new HashMap<>();
         for (int i = 0; i < jobsJson.length(); i++) {
             JSONObject jobObj = jobsJson.getJSONObject(i);
@@ -127,7 +132,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
             jobs.put(jobObj.getString("id"), job);
         }
         return jobs;
-    }
+    }*/
 
     private Map<String, Machine> extractMachines(JSONArray machinesJson) {
         Map<String, Machine> machines = new HashMap<>();
@@ -139,16 +144,21 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
         return machines;
     }
 
-    private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Job> jobs, Map<String, Machine> machines) {
+    //private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Job> jobs, Map<String, Machine> machines) {
+    private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines) {
         Map<String, Operation> operations = new HashMap<>();
         for (int i = 0; i < operationsJson.length(); i++) {
             JSONObject operationObj = operationsJson.getJSONObject(i);
+            //TODO Fix this deserialization of operation objects
             Operation operation = new Operation(
-                    jobs.get(operationObj.getString("job_id")),
-                    machines.get(operationObj.getString("machine_id")),
-                    operationObj.getInt("duration"),
                     operationObj.getString("id"),
-                    operations.get(operationObj.get("predecessor"))
+                    operations.get(operationObj.get("machine_pred")),
+                    //new ArrayList<>(operations.get(operationObj.get("conditional_preds"))),
+                    null,
+                    operationObj.getInt("release_date"),
+                    //jobs.get(operationObj.getString("job_id")),
+                    operationObj.getInt("duration"),
+                    machines.get(operationObj.getString("machine_id"))
             );
             operations.put(operationObj.getString("id"), operation);
         }
