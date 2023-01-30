@@ -4,6 +4,7 @@ import React, { Fragment, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
+import Modal from "../../interface/Modal/Modal";
 import FileDetails from "../FileDetails/FileDetails";
 import PlanButton from "../Plans/PlanButton";
 import SimulationsButton from "../Simulations/SimulationsButton";
@@ -95,6 +96,7 @@ const Dashboard = (props) => {
 
     return (
         <div className={classes.content}>
+            <Modal />
             {!selectedFile && (
                 <div className={classes.boxes}>
                     <Box

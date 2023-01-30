@@ -1,29 +1,26 @@
-import React, { useState } from "react";
-import "./Modal.css";
+import React, { Fragment, useState } from "react";
+import classes from "./Modal.module.css";
+import ReactDOM from 'react-dom';
 
-function Modal() {
-  const [modal, setModel] = useState(false);
-
-  const toggleModal = () => {
-    setModel(!modal);
-  };
-
-  return (
-    <>
-      {/* if model is true then return model */}
-      {modal && (
-        <div className="modal">
-          <div className="overlay" onClick={toggleModal}></div>
-          <div className="modal-content">
-            <h2>Error: Invalid Json</h2>
-            <button className="close-modal" onClick={toggleModal}>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
+const Backdrop = (props) => {
+  return <div className={classes.backdrop} onClick={props.onClose}></div>
 }
 
-export default Modal;
+const ModalOverlay = props => {
+  return <div className={`${classes.modal} ${props.classes}`}>
+      <div className={classes.content}>{props.children}</div>
+  </div>
+}
+
+const portalElement = document.getElementById('overlays')
+
+const Modal = (props) => {
+return (
+  <Fragment>
+      {ReactDOM.createPortal(<Backdrop onClose={props.onClose} />, portalElement)}
+      {ReactDOM.createPortal(<ModalOverlay classes={props.classes}>{props.children}</ModalOverlay>, portalElement)}
+  </Fragment>
+)
+}
+
+export default Modal
