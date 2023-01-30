@@ -96,7 +96,6 @@ const Dashboard = (props) => {
 
     return (
         <div className={classes.content}>
-            <Modal />
             {!selectedFile && (
                 <div className={classes.boxes}>
                     <Box
