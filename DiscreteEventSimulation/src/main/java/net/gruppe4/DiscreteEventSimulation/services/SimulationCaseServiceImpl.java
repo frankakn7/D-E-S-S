@@ -112,6 +112,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
         setResultsAndSave(simCaseUuid, result.toString());
     }
 
+    //TODO improve logic for reading JSON and rename function to deserialize JSON plan or something
     private ArrayList<Operation> initOperations(JSONObject planJsonObj) {
         //Map<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
         Map<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));

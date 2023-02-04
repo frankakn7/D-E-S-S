@@ -29,6 +29,11 @@ public class Machine {
 
         // TODO Recheck this logic
         //      Should it really just check for != 0?
+        // TODO Check if last inserted timestamp is > than releasedate
+        //  => if so append begin event to end of queue
+        //  => else add begin event at releaseDate
+        //  (due to dependencies releaseDate not important if earliest possible moment is after releasedate)
+        //  => more of a integrity check
         Integer begin_date = operation.getReleaseDate();
         Integer releasedate = operation.getReleaseDate();
         if (releasedate != 0) {
