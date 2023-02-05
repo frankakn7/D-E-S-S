@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class SimulationCaseServiceImpl implements SimulationCaseService{
+public class SimulationCaseServiceImpl implements SimulationCaseService {
     @Autowired
     SimulationCaseRepository simCaseRepo;
 
@@ -41,11 +41,11 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     public JSONArray getSimCasesJson() {
         Iterable<SimulationCase> simCases = simCaseRepo.findAll();
         JSONArray simCaseArrJson = new JSONArray();
-        for(SimulationCase simCase : simCases){
+        for (SimulationCase simCase : simCases) {
             JSONObject simCaseJson = new JSONObject();
-            simCaseJson.put("id",simCase.getUuid());
-            simCaseJson.put("results",new JSONObject(simCase.getResultJson()).getString("results"));
-            simCaseJson.put("plan_id",simCase.getPlan().getUuid());
+            simCaseJson.put("id", simCase.getUuid());
+            simCaseJson.put("results", new JSONObject(simCase.getResultJson()).getString("results"));
+            simCaseJson.put("plan_id", simCase.getPlan().getUuid());
             simCaseArrJson.put(simCaseJson);
         }
         return simCaseArrJson;
@@ -63,10 +63,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     @Override
-    public void setResultsAndSave(String uuid, String results){
+    public void setResultsAndSave(String uuid, String results) {
         SimulationCase simCase = simCaseRepo.findByUuid(uuid);
         JSONObject resultObj = new JSONObject();
-        resultObj.put("results",results);
+        resultObj.put("results", results);
         simCase.setResultJson(resultObj.toString());
         simCaseRepo.save(simCase);
     }
@@ -83,17 +83,22 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     @Override
-    public void runSimulation(String simCaseUuid){
+    public void runSimulation(String simCaseUuid) {
         SimulationCase simCase = simCaseRepo.findByUuid(simCaseUuid);
         Status simStatus = runningSimCaseStatus.get(simCaseUuid);
+
         int numOfSimulations = simStatus.getTotal();
+
         //TODO Get Machines in Hashmap from JSON
-        HashMap<String, Machine> machines = new HashMap<String, Machine>();
-        ArrayList<Operation> operations = initOperations(new JSONObject(simCase.getPlan().getPlanJson()));
+        JSONObject planJsonObj = new JSONObject(simCase.getPlan().getPlanJson());
+        HashMap<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
+        ArrayList<Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines);
+
         simStatus.setState("running");
+
         long startingTime = System.currentTimeMillis();
         EventLog result = null;
-        for(int i = 1; i < numOfSimulations; i++){
+        for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
             result = sim.runSim();
             simStatus.setProgress(i);
@@ -112,18 +117,6 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
         setResultsAndSave(simCaseUuid, result.toString());
     }
 
-    //TODO improve logic for reading JSON and rename function to deserialize JSON plan or something
-    private ArrayList<Operation> initOperations(JSONObject planJsonObj) {
-        //Map<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
-        Map<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
-        //Map<String, Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), jobs, machines);
-        Map<String, Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines);
-        /*System.out.println(jobs);
-        System.out.println(machines);
-        System.out.println(operations);*/
-        return new ArrayList<Operation>(operations.values());
-    }
-
     //TODO implement Jobs for tracking of job status etc
     /*private Map<String, Job> extractJobs(JSONArray jobsJson) {
         Map<String, Job> jobs = new HashMap<>();
@@ -135,8 +128,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
         return jobs;
     }*/
 
-    private Map<String, Machine> extractMachines(JSONArray machinesJson) {
-        Map<String, Machine> machines = new HashMap<>();
+    private HashMap<String, Machine> extractMachines(JSONArray machinesJson) {
+        HashMap<String, Machine> machines = new HashMap<>();
         for (int i = 0; i < machinesJson.length(); i++) {
             JSONObject machineObj = machinesJson.getJSONObject(i);
             Machine machine = new Machine(machineObj.getString("id"));
@@ -146,23 +139,55 @@ public class SimulationCaseServiceImpl implements SimulationCaseService{
     }
 
     //private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Job> jobs, Map<String, Machine> machines) {
-    private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines) {
+    private ArrayList<Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines) {
+        //<Operation ID, Operation>
         Map<String, Operation> operations = new HashMap<>();
+        //<Operation ID, Machine Predecessor Operation ID>
+        Map<String, String> AllMachinePredIds = new HashMap<>();
+        //<Operation ID, [Conditional Operations Ids]>
+        Map<String, JSONArray> AllConditionalPredIds = new HashMap<>();
+
         for (int i = 0; i < operationsJson.length(); i++) {
             JSONObject operationObj = operationsJson.getJSONObject(i);
             //TODO Fix this deserialization of operation objects
             Operation operation = new Operation(
                     operationObj.getString("id"),
-                    operations.get(operationObj.get("machine_pred")),
-                    //new ArrayList<>(operations.get(operationObj.get("conditional_preds"))),
                     null,
-                    operationObj.getInt("release_date"),
+                    null,
+                    //operationObj.getInt("release_date"),
+                    0,
                     //jobs.get(operationObj.getString("job_id")),
                     operationObj.getInt("duration"),
                     machines.get(operationObj.getString("machine_id"))
             );
+            //Check if is null (error if not checked)
+            String machinePredId = operationObj.isNull("machine_pred") ? null : operationObj.getString("machine_pred");
+            AllMachinePredIds.put(operationObj.getString("id"), machinePredId);
+
+            //Check if is null (error if not checked)
+            JSONArray conditionalPredIds = operationObj.isNull("conditional_preds") ? new JSONArray() : operationObj.getJSONArray("conditional_preds");
+            AllConditionalPredIds.put(operationObj.getString("id"), conditionalPredIds);
             operations.put(operationObj.getString("id"), operation);
         }
-        return operations;
+
+        for (Operation op : operations.values()) {
+            Operation machinePred = operations.get(AllMachinePredIds.get(op.getId()));
+            ArrayList<Operation> conditionalPredsOperations = getConditionalPreds(op.getId(), AllConditionalPredIds, operations);
+            op.setMachineQueuePredecessor(machinePred);
+            op.setConditionalPredecessors(conditionalPredsOperations);
+        }
+
+        return new ArrayList<Operation>(operations.values());
+    }
+
+    private ArrayList<Operation> getConditionalPreds(String operationId, Map<String, JSONArray> conditionalPreds, Map<String, Operation> operations) {
+        JSONArray operationIds = conditionalPreds.get(operationId);
+        ArrayList<Operation> conditionalPredsOperations = new ArrayList<>();
+
+        for (int i = 0; i < operationIds.length(); i++) {
+            String opId = operationIds.getString(i);
+            conditionalPredsOperations.add(operations.get(opId));
+        }
+        return conditionalPredsOperations;
     }
 }

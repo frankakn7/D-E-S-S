@@ -16,7 +16,7 @@ class SimulationTest {
         Machine mB = new Machine("B");
         Machine mC = new Machine("C");
 
-        HashMap<String, Machine> machines = new HashMap<String, Machine>();
+            HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
         machines.put("B", mB);
         machines.put("C", mC);

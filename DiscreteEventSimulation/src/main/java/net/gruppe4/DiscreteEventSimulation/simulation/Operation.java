@@ -11,7 +11,7 @@ public class Operation {
     // TODO Rename to something including the word dependency
     private ArrayList<Operation> conditionalPredecessors;   // List of necessary predecessors in an AND relation
     private Operation machineQueuePredecessor = null;       // The Operation in the machine queue that this one follows
-                                                            // (null when first in queue)
+    // (null when first in queue)
     private Integer releaseDate;                            // Earliest possible date at which this operation can begin
     private Integer duration;
     private Machine machine;                                // Parent Machine
@@ -52,11 +52,19 @@ public class Operation {
         return conditionalPredecessors;
     }
 
+    public void setConditionalPredecessors(ArrayList<Operation> conditionalPredecessors) {
+        this.conditionalPredecessors = conditionalPredecessors;
+    }
+
+    public void setMachineQueuePredecessor(Operation machineQueuePredecessor) {
+        this.machineQueuePredecessor = machineQueuePredecessor;
+    }
+
     /**
      * Checks if {@link Operation} has another {@link Operation} object in the
      * same {@link Machine} scheduled in front of it.
      *
-     * @return  False if no other {@link Operation} is scheduled in front of it
+     * @return False if no other {@link Operation} is scheduled in front of it
      */
     public Boolean hasNoMachineQueuePredecessor() {
         if (this.machineQueuePredecessor == null) return true;
