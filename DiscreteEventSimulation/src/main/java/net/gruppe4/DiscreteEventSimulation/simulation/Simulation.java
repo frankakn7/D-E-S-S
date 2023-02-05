@@ -89,6 +89,12 @@ public class Simulation {
                 Integer nextDate = this.findNextEventDate();
                 Machine m = entry.getValue();
 
+                if (!this.eventLog.isMachineBreakdownOpen(m)) {
+                    if (m.rollDiceForBreakdown()) {
+                        m.insertBreakdownAtFront();
+                    }
+                }
+
                 Event e = m.pollEventIfDate(nextDate);
                 if (e != null) this.eventLog.append(e);
             }

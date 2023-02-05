@@ -1,13 +1,29 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 
+import java.util.Random;
+
+
 public class Machine {
     private String id;
     private TimeslotQueue timeslotQueue;
+    private Double brkdwnProb = 0.;
+    private Double brkdwnLengthMean;
+    private Double brkdwnLengthStandardDeviation;
 
-    public Machine(String id) {
+
+    private Random generator;
+
+
+    public Machine(String id, Double brkdwnProb, Double brkdwnLengthMean, Double brkdwnLengthStandardDeviation) {
         this.id = id;
         this.timeslotQueue = new TimeslotQueue();
+        this.brkdwnProb = brkdwnProb;
+        this.brkdwnLengthMean = brkdwnLengthMean;
+        this.brkdwnLengthStandardDeviation = brkdwnLengthStandardDeviation;
+
+        // TODO Set seed for randomgenerator
+        this.generator = new Random();
     }
 
     /**
@@ -23,27 +39,27 @@ public class Machine {
      *                   and inserted
      */
     public void takeIn(Operation operation) {
-        // TODO Implement releasedate stuff
+        // TODO Implement releaseDate stuff
         Event begin = new Event(EventType.OPERATION_BEGIN, this, operation);
         Event end = new Event(EventType.OPERATION_END, this, operation);
 
-        // TODO Recheck this logic
-        //      Should it really just check for != 0?
+
         // TODO Check if last inserted timestamp is > than releasedate
         //  => if so append begin event to end of queue
         //  => else add begin event at releaseDate
         //  (due to dependencies releaseDate not important if earliest possible moment is after releasedate)
         //  => more of a integrity check
-        Integer begin_date = operation.getReleaseDate();
-        Integer releasedate = operation.getReleaseDate();
-        if (releasedate != 0) {
-            this.timeslotQueue.insert(releasedate, begin);
+
+        Integer beginDate = operation.getReleaseDate();
+        Integer releaseDate = operation.getReleaseDate();
+        if (releaseDate != 0) {
+            this.timeslotQueue.insert(releaseDate, begin);
         }
         else {
-            begin_date = this.timeslotQueue.append(begin);
+            beginDate = this.timeslotQueue.append(begin);
         }
 
-        this.timeslotQueue.insert(begin_date + operation.getDuration(), end);
+        this.timeslotQueue.insert(beginDate + operation.getDuration(), end);
     }
 
     /**
@@ -81,5 +97,35 @@ public class Machine {
     @Override
     public String toString() {
         return this.id;
+    }
+
+    public Boolean rollDiceForBreakdown() {
+        if (this.brkdwnProb == 0.) return false;
+
+        if (this.brkdwnProb >= this.generator.nextDouble()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Integer rollDiceForBreakdownLength() {
+        Integer res = (int)Math.ceil(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
+        System.out.println(res);
+        return res;
+    }
+
+    public void insertBreakdownAtFront() {
+        Integer length = this.rollDiceForBreakdownLength();
+
+        // TODO Maybe make operations optional, also check again if operations are required by any chance and if we
+        //      can allow for operation to be null here
+        Event begin = new Event(EventType.MACHINE_BREAKDOWN_BEGIN, this, null);
+        Event end = new Event(EventType.MACHINE_BREAKDOWN_END, this, null);
+
+        Integer beginDate = this.timeslotQueue.getFirstDate();
+        this.timeslotQueue.pushQueueByTime(length);
+
+        this.timeslotQueue.insert(beginDate, begin);
+        this.timeslotQueue.insertAtFront(beginDate + length, end);
     }
 }

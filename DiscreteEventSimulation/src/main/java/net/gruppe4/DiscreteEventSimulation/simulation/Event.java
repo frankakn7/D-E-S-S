@@ -33,9 +33,17 @@ public class Event {
     public String toString() {
         String res = "";
         if (this.date != null) res += " " + Strings.padEnd(this.date.toString(), 5, ' ');
-        res += Strings.padEnd(this.eventType.name(), 20, ' ');
+        res += Strings.padEnd(this.eventType.name(), 25, ' ');
         if (this.machine != null) res += " " + Strings.padEnd(this.machine.toString(), 5, ' ');
         if (this.operation != null) res += " " + Strings.padEnd(this.operation.toString(), 5, ' ');
         return res;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public Machine getMachine() {
+        return machine;
     }
 }

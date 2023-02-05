@@ -5,5 +5,7 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
  */
 public enum EventType {
     OPERATION_BEGIN,
-    OPERATION_END
+    OPERATION_END,
+    MACHINE_BREAKDOWN_BEGIN,
+    MACHINE_BREAKDOWN_END
 }

@@ -25,8 +25,16 @@ public class TimeslotQueue {
             timeslots.put(date, new ArrayList<Event>());
         }
 
-        event.setDate(date);
         timeslots.get(date).add(event);
+    }
+
+    // Insert at at front of arraylist
+    public void insertAtFront(Integer date, Event event) {
+        if (!timeslots.containsKey(date)) {
+            timeslots.put(date, new ArrayList<Event>());
+        }
+
+        timeslots.get(date).add(0, event);
     }
 
     /**
