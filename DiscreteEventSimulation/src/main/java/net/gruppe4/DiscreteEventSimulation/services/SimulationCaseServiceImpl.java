@@ -132,7 +132,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         HashMap<String, Machine> machines = new HashMap<>();
         for (int i = 0; i < machinesJson.length(); i++) {
             JSONObject machineObj = machinesJson.getJSONObject(i);
-            Machine machine = new Machine(machineObj.getString("id"));
+            Machine machine = new Machine(machineObj.getString("id"), machineObj.getDouble("breakdown_probability"), machineObj.getDouble("mean"), machineObj.getDouble("standard_deviation"));
             machines.put(machineObj.getString("id"), machine);
         }
         return machines;
