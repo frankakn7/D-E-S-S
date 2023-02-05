@@ -26,6 +26,7 @@ public class SimulationCaseServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 
+    //TODO Change to full simId getting
     @GetMapping("/sim/{simId}/results")
     public ResponseEntity<String> getResults(@PathVariable("simId") String simId) {
         HttpHeaders responseHeaders = new HttpHeaders();

@@ -1,40 +1,57 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
-import net.gruppe4.DiscreteEventSimulation.simulation.events.Event;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class EventLog {
-
-    private TreeMap<Integer, ArrayList<Event>> log = new TreeMap<Integer, ArrayList<Event>>();
+    private TimeslotQueue timeslots;
+    private ArrayList<Event> log;
+    private HashMap<Machine, ArrayList<Event>> machineLogMap;
 
     public EventLog() {
-
+        // TODO consider using an ArrayList instead
+        this.timeslots = new TimeslotQueue();
+        this.log = new ArrayList<Event>();
+        this.machineLogMap = new HashMap<Machine, ArrayList<Event>>();
     }
 
-    public void logEvent(int time, Event event) {
-        if (!this.log.containsKey(time))
-            this.log.put(time, new ArrayList<Event>());
+    /**
+     * Appends a passed {@link Event} object to the log.
+     *
+     * @param event  {@link Event} object to append.
+     */
+    public void append(Event event) {
+        this.timeslots.insert(event.getDate(), event);
+        this.log.add(event);
 
-        this.log.get(time).add(event);
-    }
-
-    public String printTimestampList(ArrayList<Event> eventList){
-        String res = "";
-        for (Event e : eventList){
-            res += e + ",";
+        Machine m = event.getMachine();
+        if (m != null) {
+            if (!this.machineLogMap.containsKey(m)) this.machineLogMap.put(m, new ArrayList<Event>());
+            this.machineLogMap.get(m).add(event);
         }
-        return res;
     }
 
     @Override
     public String toString() {
         String res = "";
+        for (Event e : this.log) {
+            res += e.toString() + "\n";
+        }
+        return res;
+    }
 
-        for (Integer key : this.log.keySet()) {
-            res += key + ": " + printTimestampList(this.log.get(key)) + "\n";
+    // TODO Maybe write a unified interface for this
+    public Boolean isMachineBreakdownOpen(Machine machine) {
+        if (!this.machineLogMap.containsKey(machine)) return false;
+
+        ArrayList<Event> machineLog = this.machineLogMap.get(machine);
+        ListIterator<Event> i = machineLog.listIterator(machineLog.size());
+        if (i.hasPrevious()) {
+            Event e = i.previous();
+            if (e.getEventType() == EventType.MACHINE_BREAKDOWN_END) return false;
+            if (e.getEventType() == EventType.MACHINE_BREAKDOWN_BEGIN) return true;
         }
 
-        return res;
+        return false;
     }
 }
