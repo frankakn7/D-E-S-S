@@ -26,13 +26,12 @@ public class SimulationCaseServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 
-    //TODO Change to full simId getting
-    @GetMapping("/sim/{simId}/results")
+    @GetMapping("/sim/{simId}")
     public ResponseEntity<String> getResults(@PathVariable("simId") String simId) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("content-type", "application/json");
-
-        return ResponseEntity.ok().headers(responseHeaders).body(simCaseService.getResults(simId));
+        JSONObject simCaseJson = simCaseService.getSimCaseJsonById(simId);
+        return ResponseEntity.ok().headers(responseHeaders).body(simCaseJson.toString());
     }
 
     @GetMapping("/sim/{simId}/status")

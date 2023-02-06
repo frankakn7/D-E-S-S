@@ -110,7 +110,7 @@ public class Machine {
 
     public Integer rollDiceForBreakdownLength() {
         Integer res = (int)Math.ceil(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
-        System.out.println(res);
+        //System.out.println(res);
         return res;
     }
 
