@@ -89,7 +89,8 @@ public class Simulation {
                 Integer nextDate = this.findNextEventDate();
                 Machine m = entry.getValue();
 
-                if (!this.eventLog.isMachineBreakdownOpen(m)) {
+                //if timeslotqueue is empty then machine is done and breakdowns dont happen
+                if (!m.isTimeSlotQueueEmpty() && !this.eventLog.isMachineBreakdownOpen(m)) {
                     if (m.rollDiceForBreakdown()) {
                         m.insertBreakdownAtFront();
                     }

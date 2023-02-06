@@ -23,10 +23,11 @@ public class LogEvaluator {
     }
 
     public Double calculateMachineCapacityUtilization(Machine m, EventLog log) {
-        Double logLength = (double)log.getArrayList().get(log.getArrayList().size() - 1).getDate();
-
         ArrayList<Event> machineLog = log.getMachineLog(m);
-        return this.calculateAbsoluteMachineUsage(machineLog) / logLength;
+
+        Double machineLogLength = (double)machineLog.get(machineLog.size() - 1).getDate();
+
+        return this.calculateAbsoluteMachineUsage(machineLog) / machineLogLength;
     }
 
     // Calculates how much a Machine has been actually running

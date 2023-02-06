@@ -128,4 +128,8 @@ public class Machine {
         this.timeslotQueue.insert(beginDate, begin);
         this.timeslotQueue.insertAtFront(beginDate + length, end);
     }
+
+    public Boolean isTimeSlotQueueEmpty(){
+        return this.timeslotQueue.isEmpty();
+    }
 }
