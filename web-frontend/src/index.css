@@ -1,5 +1,7 @@
 :root {
-  --carolina-blue: #439cdcff;
+  /* --carolina-blue: #439cdcff; */
+  --carolina-blue: #3C7FD0;
+  --steel-blue: #3C7FD0;
 }
 
 body {
@@ -9,6 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FAF7EF;
 }
 
 code {

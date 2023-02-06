@@ -23,7 +23,7 @@ function App() {
         baseUrl,
         setPlans
     );
-    const { handleGetSimResult, handleGetSimStatus } = useApiSimCaseHandler(
+    const { handleGetSimCase, handleGetSimStatus } = useApiSimCaseHandler(
         baseUrl,
         setSimCases
     );
@@ -65,7 +65,7 @@ function App() {
                                 planUploadHandler={handlePlanUpload}
                                 planSimulateHandler={handlePlanSimulate}
                                 getSimCaseStatusHandler={handleGetSimStatus}
-                                getSimCaseResultHandler={handleGetSimResult}
+                                getSimCaseResultHandler={handleGetSimCase}
                             />
                         }
                     />
@@ -80,7 +80,7 @@ function App() {
                                 plans={plans}
                                 planSimulateHandler={handlePlanSimulate}
                                 getSimCaseStatusHandler={handleGetSimStatus}
-                                getSimCaseResultHandler={handleGetSimResult}
+                                getSimCaseResultHandler={handleGetSimCase}
                             />
                         }
                     />
@@ -102,7 +102,7 @@ function App() {
                                 plans={plans}
                                 planSimulateHandler={handlePlanSimulate}
                                 getSimCaseStatusHandler={handleGetSimStatus}
-                                getSimCaseResultHandler={handleGetSimResult}
+                                getSimCaseResultHandler={handleGetSimCase}
                             />
                         }
                     />
