@@ -2,7 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
-class GeneralStats {
+public class GeneralStats {
     private StatisticalValues completionTime;
     private StatisticalValues totalCost;
     private StatisticalValues totalRessourceUtilization;
@@ -43,8 +43,8 @@ class GeneralStats {
         JSONObject totalRessourceUtilizationJson = this.totalRessourceUtilization.toJsonObject();
 
         generalStatsJson.put("completion_time", completionTimeJson);
-        generalStatsJson.put("completion_time", totalCostJson);
-        generalStatsJson.put("completion_time", totalRessourceUtilizationJson);
+        generalStatsJson.put("total_cost", totalCostJson);
+        generalStatsJson.put("total_ressource_utilization", totalRessourceUtilizationJson);
 
         return generalStatsJson;
     }

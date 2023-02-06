@@ -2,7 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
-class StatisticalValues {
+public class StatisticalValues {
     private double mean;
     private double min;
     private double max;

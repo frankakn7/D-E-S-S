@@ -1,6 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation.services;
 
-import net.gruppe4.DiscreteEventSimulation.evaluation.Result;
+import net.gruppe4.DiscreteEventSimulation.evaluation.*;
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
@@ -110,7 +110,32 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         long startingTime = System.currentTimeMillis();
 
         //TODO Implement test Results
-        Result result = new Result(null,null,null,null);
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        ArrayList<JobStats> jobStats = new ArrayList<>();
+        ArrayList<OperationStats> operationStats = new ArrayList<>();
+
+        StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
+        StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
+
+        machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues));
+        machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues));
+        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues));
+
+        jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));
+
+        operationStats.add(new OperationStats("op1",exampleFullValues));
+        operationStats.add(new OperationStats("op2",exampleFullValues));
+        operationStats.add(new OperationStats("op3",exampleFullValues));
+        operationStats.add(new OperationStats("op4",exampleFullValues));
+        operationStats.add(new OperationStats("op5",exampleFullValues));
+        operationStats.add(new OperationStats("op6",exampleFullValues));
+
+        GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
+
+
+        Result result = new Result(machineStats,jobStats,operationStats,generalStats);
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
             //result = sim.runSim();
@@ -126,7 +151,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         }
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
-
+        System.out.println(result.toString());
         setResultsAndSave(simCaseUuid, result.toString());
     }
 

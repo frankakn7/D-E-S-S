@@ -25,7 +25,7 @@ const Results = (props) => {
                 {simCase && (
                     <div className={classes.json}>
                         <p>Event-Log of last simulation run:</p>
-                        <pre>{simCase.results}</pre>
+                        <pre>{JSON.stringify(JSON.parse(simCase.results),null,4)}</pre>
                     </div>
                 )}
                 <div className={classes.buttons}>

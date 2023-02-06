@@ -27,7 +27,7 @@ public class SimulationCaseServiceController {
     }
 
     @GetMapping("/sim/{simId}")
-    public ResponseEntity<String> getResults(@PathVariable("simId") String simId) {
+    public ResponseEntity<String> getSimCase(@PathVariable("simId") String simId) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("content-type", "application/json");
         JSONObject simCaseJson = simCaseService.getSimCaseJsonById(simId);

@@ -2,7 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
-class JobStats {
+public class JobStats {
     private String id;
     private StatisticalValues lateness;
     private StatisticalValues latenessCost;

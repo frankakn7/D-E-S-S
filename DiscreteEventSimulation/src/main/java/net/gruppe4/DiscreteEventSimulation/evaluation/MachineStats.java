@@ -2,7 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
-class MachineStats {
+public class MachineStats {
     private String id;
     private StatisticalValues utilisationPercent;
     private StatisticalValues utilisationTime;

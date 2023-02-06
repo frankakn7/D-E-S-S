@@ -2,7 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
-class OperationStats {
+public class OperationStats {
     private String id;
     private StatisticalValues length;
 
