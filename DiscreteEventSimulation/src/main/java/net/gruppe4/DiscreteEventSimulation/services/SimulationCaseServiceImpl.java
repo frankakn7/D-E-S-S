@@ -42,14 +42,26 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         Iterable<SimulationCase> simCases = simCaseRepo.findAll();
         JSONArray simCaseArrJson = new JSONArray();
         for (SimulationCase simCase : simCases) {
-            JSONObject simCaseJson = new JSONObject();
-            simCaseJson.put("id", simCase.getUuid());
-            simCaseJson.put("results", new JSONObject(simCase.getResultJson()).getString("results"));
-            simCaseJson.put("plan_id", simCase.getPlan().getUuid());
-            simCaseArrJson.put(simCaseJson);
+            simCaseArrJson.put(generateSimCaseJsonObject(simCase));
         }
         return simCaseArrJson;
     }
+
+    @Override
+    public JSONObject getSimCaseJsonById(String uuid) {
+        SimulationCase simCase = simCaseRepo.findByUuid(uuid);
+        return generateSimCaseJsonObject(simCase);
+    }
+
+    private JSONObject generateSimCaseJsonObject(SimulationCase simCase){
+        JSONObject simCaseJson = new JSONObject();
+        simCaseJson.put("id", simCase.getUuid());
+        simCaseJson.put("results", new JSONObject(simCase.getResultJson()).getString("results"));
+        simCaseJson.put("plan_id", simCase.getPlan().getUuid());
+        return simCaseJson;
+    }
+
+
 
     @Override
     public void saveSimCase(SimulationCase simCase) {
