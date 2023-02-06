@@ -57,7 +57,7 @@ class SimulationTest {
     @Test
     void testLogEvaluator() {
         Machine mA = new Machine("A", 0.0, 4., 2.);
-        Machine mB = new Machine("B", 0.0, 5., 2.);
+        Machine mB = new Machine("B", 0.2, 5., 2.);
         Machine mC = new Machine("C", 0.0, 5., 2.);
 
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
