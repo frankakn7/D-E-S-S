@@ -1,4 +1,4 @@
-package net.gruppe4.DiscreteEventSimulation;
+package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import net.gruppe4.DiscreteEventSimulation.simulation.*;
 import org.javatuples.Pair;

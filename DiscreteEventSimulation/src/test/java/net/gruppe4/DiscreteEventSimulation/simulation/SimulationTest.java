@@ -1,11 +1,10 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
-import net.gruppe4.DiscreteEventSimulation.LogEvaluator;
+import net.gruppe4.DiscreteEventSimulation.evaluation.LogEvaluator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

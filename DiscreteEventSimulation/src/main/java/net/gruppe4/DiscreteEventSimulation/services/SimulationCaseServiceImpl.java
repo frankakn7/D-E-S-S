@@ -1,10 +1,10 @@
 package net.gruppe4.DiscreteEventSimulation.services;
 
+import net.gruppe4.DiscreteEventSimulation.evaluation.Result;
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
-import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
 import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
 /*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -109,10 +108,12 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         simStatus.setState("running");
 
         long startingTime = System.currentTimeMillis();
-        EventLog result = null;
+
+        //TODO Implement test Results
+        Result result = new Result(null,null,null,null);
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
-            result = sim.runSim();
+            //result = sim.runSim();
             simStatus.setProgress(i);
             /*try {
                 Thread.sleep(100);
