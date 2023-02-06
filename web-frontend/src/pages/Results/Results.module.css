@@ -24,3 +24,19 @@
 .main {
     padding: 2rem;
 }
+
+.tabs button {
+    margin-right: 0.5rem;
+}
+
+.top {
+    display: flex;
+}
+
+.top h2 {
+    flex: 2;
+}
+
+.top .tabs {
+    flex: 1;
+}

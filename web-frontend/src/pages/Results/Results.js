@@ -20,26 +20,34 @@ const Results = (props) => {
     return (
         <div className={classes.main}>
             <GoBack />
-            <div className={classes.content}>
-                {simCase && <h2>Results of Simulation: {simCase.id}</h2>}
-                {simCase && (
+            <div className={classes.top}>
+                <div className={classes.tabs}>
+                    <Button>General Results</Button>
+                    <Button>Machines</Button>
+                    <Button>Jobs</Button>
+                    <Button>Operations</Button>
+                </div>
+                <h2>Results of Simulation: {simCase.id}</h2>
+            </div>
+            {simCase && (
+                <div className={classes.content}>
                     <div className={classes.json}>
                         <p>Event-Log of last simulation run:</p>
-                        <pre>{simCase.results}</pre>
+                        <pre>{JSON.stringify(JSON.parse(simCase.results),null,4)}</pre>
                     </div>
-                )}
-                <div className={classes.buttons}>
-                    <Link to="/plans" className="btn-default-style">
-                        View all Uploaded Plans
-                    </Link>
-                    <Link to="/" className="btn-default-style">
-                        Upload new Plan
-                    </Link>
-                    <Link to="/simulations" className="btn-default-style">
-                        View all Simulations
-                    </Link>
+                    <div className={classes.buttons}>
+                        <Link to="/plans" className="btn-default-style">
+                            View all Uploaded Plans
+                        </Link>
+                        <Link to="/" className="btn-default-style">
+                            Upload new Plan
+                        </Link>
+                        <Link to="/simulations" className="btn-default-style">
+                            View all Simulations
+                        </Link>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
