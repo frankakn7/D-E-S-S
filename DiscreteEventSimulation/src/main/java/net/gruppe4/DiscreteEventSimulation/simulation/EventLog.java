@@ -40,13 +40,25 @@ public class EventLog {
         return res;
     }
 
+    public ArrayList<Event> getArrayList() {
+        return this.log;
+    }
+
+    public HashMap<Machine, ArrayList<Event>> getMachineLogMap() {
+        return machineLogMap;
+    }
+
+    public ArrayList<Event> getMachineLog(Machine m) {
+        return this.machineLogMap.get(m);
+    }
+
     // TODO Maybe write a unified interface for this
     public Boolean isMachineBreakdownOpen(Machine machine) {
         if (!this.machineLogMap.containsKey(machine)) return false;
 
         ArrayList<Event> machineLog = this.machineLogMap.get(machine);
         ListIterator<Event> i = machineLog.listIterator(machineLog.size());
-        if (i.hasPrevious()) {
+        while (i.hasPrevious()) {
             Event e = i.previous();
             if (e.getEventType() == EventType.MACHINE_BREAKDOWN_END) return false;
             if (e.getEventType() == EventType.MACHINE_BREAKDOWN_BEGIN) return true;

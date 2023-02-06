@@ -46,4 +46,8 @@ public class Event {
     public Machine getMachine() {
         return machine;
     }
+
+    public Operation getOperation() {
+        return operation;
+    }
 }
