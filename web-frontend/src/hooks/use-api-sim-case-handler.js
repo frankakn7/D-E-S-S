@@ -3,13 +3,13 @@ import useHttp from "./use-http"
 const useApiSimCaseHandler = (baseUrl, setSimCases) => {
     const { sendRequest: sendHttpRequest } = useHttp();
 
-    const handleGetSimResult = (simCaseId) => {
+    const handleGetSimCase = (simCaseId) => {
         return new Promise((resolve, reject) => {
             sendHttpRequest({
-                url: baseUrl + "/api/sim/" + simCaseId + "/results",
+                url: baseUrl + "/api/sim/" + simCaseId,
                 method: "GET",
             }).then((response) => {
-                const simCase = {id: simCaseId, results: response.results}
+                const simCase = {id: simCaseId, results: response.results, plan_id: response.plan_id}
                 console.log(simCase)
                 setSimCases((prevState) => [...prevState, simCase])
                 resolve(response.results)
@@ -32,7 +32,7 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
         })
     }
 
-    return { handleGetSimResult, handleGetSimStatus }
+    return { handleGetSimCase, handleGetSimStatus }
 }
 
 export default useApiSimCaseHandler;
