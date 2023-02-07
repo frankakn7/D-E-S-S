@@ -8,8 +8,6 @@ import classes from './ListButton.module.css'
 const ListButton = (props) => {
     const navigate = useNavigate();
 
-    console.log(props.createdOn);
-
     return (
         <Button
             className={classes.button}

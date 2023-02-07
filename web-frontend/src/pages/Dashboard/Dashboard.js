@@ -26,7 +26,7 @@ const Dashboard = (props) => {
             setSelectedFile(file);
         };
         reader.onerror = () => {
-            console.log("file could not be read");
+            throw Error("file could not be read");
         };
     };
 
@@ -102,7 +102,7 @@ const Dashboard = (props) => {
                         className={classes.box}
                     >
                         {props.plans.length > 0 &&
-                            props.plans.slice(0, 4).map((plan) => (
+                            props.plans.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 4).map((plan) => (
                                 <ListButton
                                     key={plan.uuid}
                                     onClick={() => {
@@ -120,12 +120,10 @@ const Dashboard = (props) => {
                         className={classes.box}
                     >
                         {props.simCases.length > 0 && props.plans.length > 0 &&
-                            props.simCases.slice(0, 4).map((simCase) => {
+                            props.simCases.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 4).map((simCase) => {
                                 const plan = props.plans.find(
                                     (plan) => simCase.planId === plan.uuid
                                 );
-                                console.log(simCase)
-                                console.log(props.plans)
                                 return (
                                     <ListButton
                                         key={simCase.id}

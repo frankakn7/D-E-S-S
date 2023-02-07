@@ -26,8 +26,6 @@ const Plans = (props) => {
             .catch((error) => console.log(error));
     };
 
-    console.log(props.plans);
-
     return (
         <div className={classes.content}>
             <h2>All uploaded Plans</h2>

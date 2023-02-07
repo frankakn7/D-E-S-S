@@ -20,7 +20,6 @@ const PlanDetails = (props) => {
 
     useEffect(() => {
         const foundPlan = props.plans.find((plan) => {
-            console.log(plan);
             return id === plan.uuid;
         });
 

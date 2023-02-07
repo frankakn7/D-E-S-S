@@ -15,13 +15,12 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        console.log(error);
+        //console.log(error);
     }
 
     render() {
         if (this.state.error) {
             // You can render any custom fallback UI
-            console.log(this.state.error);
             return (
                 <Fragment>
                     <ErrorModal onClose={() => this.setState({ error: false })}>

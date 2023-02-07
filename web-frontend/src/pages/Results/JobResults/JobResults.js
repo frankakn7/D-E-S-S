@@ -4,7 +4,6 @@ import DetailsTable from '../DetailsTable/DetailsTable'
 import DetailsTableRow from '../DetailsTable/DetailsTableRow'
 
 const JobResults = (props) => {
-    console.log(props.jobs)
   return (
     <div>
         {props.jobs.map((job) => (
