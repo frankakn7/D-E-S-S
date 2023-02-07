@@ -4,11 +4,11 @@ import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
 import CollapsableBox from "../../interface/CollapsableBox/CollapsableBox";
 import GoBack from "../../interface/GoBack/GoBack";
+import ListButton from "../../interface/ListButton/ListButton";
 import FileDetails from "../FileDetails/FileDetails";
 import JobsTable from "../FileDetails/tables/JobsTable";
 import MachinesTable from "../FileDetails/tables/MachinesTable";
 import OperationsTable from "../FileDetails/tables/OperationsTable";
-import SimulationsButton from "../Simulations/SimulationsButton";
 import classes from "./PlanDetails.module.css";
 
 const PlanDetails = (props) => {
@@ -25,7 +25,7 @@ const PlanDetails = (props) => {
         });
 
         const foundSimCases = props.simCases.filter((simCase) => {
-            return id === simCase.plan_id;
+            return id === simCase.planId;
         });
         if (foundPlan) setPlan(foundPlan);
         if (foundSimCases) setSimCases(foundSimCases);
@@ -77,10 +77,12 @@ const PlanDetails = (props) => {
                     <CollapsableBox titleText="Simulations">
                         <div className={classes.simulations}>
                             {simCases.length > 0 &&
-                                simCases.map((simCases) => (
-                                    <SimulationsButton
-                                        key={simCases.id}
-                                        simCasesID={simCases.id}
+                                simCases.map((simCase) => (
+                                    <ListButton
+                                        key={simCase.id}
+                                        id={simCase.id}
+                                        name="Simulation"
+                                        createdOn={simCase.createdOn}
                                     />
                                 ))}
                             {!simCases.length && <p>No Simulations yet</p>}

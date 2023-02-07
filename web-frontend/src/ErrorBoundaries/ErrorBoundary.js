@@ -15,7 +15,7 @@ class ErrorBoundary extends React.Component {
 
     componentDidCatch(error, errorInfo) {
         // You can also log the error to an error reporting service
-        //console.log(error);
+        console.log(error);
     }
 
     render() {
@@ -25,9 +25,10 @@ class ErrorBoundary extends React.Component {
             return (
                 <Fragment>
                     <ErrorModal onClose={() => this.setState({ error: false })}>
+                        <pre style={{whiteSpace: 'pre-wrap', textAlign: 'center'}}>{this.state.error.name}</pre>
                         <pre style={{whiteSpace: 'pre-wrap'}}>{this.state.error.message}</pre>
                     </ErrorModal>
-                    {this.props.children}
+                    {this.props.allowChildren && this.props.children}
                 </Fragment>
             );
         }
