@@ -10,3 +10,8 @@
     width: 49%;
     min-width: 30rem;
 }
+
+.PieChart {
+    float: right;
+    margin-top: -250px;
+}
