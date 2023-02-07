@@ -1,5 +1,7 @@
 import React from 'react'
 import Box from '../../../interface/Box/Box'
+import DetailsTable from '../DetailsTable/DetailsTable'
+import DetailsTableRow from '../DetailsTable/DetailsTableRow'
 
 const JobResults = (props) => {
     console.log(props.jobs)
@@ -7,9 +9,11 @@ const JobResults = (props) => {
     <div>
         {props.jobs.map((job) => (
             <Box key={job.id} titleText={<p>{`Job "${job.id}`}</p>}>
-                <p>Completion time: {job.completion_time.mean}</p>
-                <p>lateness: {job.lateness.mean}</p>
-                <p>lateness cost: {job.lateness_cost.mean}</p>
+                <DetailsTable>
+                    <DetailsTableRow stat={{name:"completion time", ...job.completion_time}}/>
+                    <DetailsTableRow stat={{name:"lateness", ...job.lateness}}/>
+                    <DetailsTableRow stat={{name:"lateness cost", ...job.lateness_cost}}/>
+                </DetailsTable>
             </Box>
         ))}
     </div>
