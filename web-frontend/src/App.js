@@ -11,6 +11,7 @@ import Plans from "./pages/Plans/Plans";
 import Results from "./pages/Results/Results";
 import Simulations from "./pages/Simulations/Simulations";
 import ErrorBoundary from "./ErrorBoundaries/ErrorBoundary";
+import Compare from "./pages/Compare/Compare";
 
 function App() {
     const baseUrl = "http://localhost:8080";
@@ -118,6 +119,10 @@ function App() {
                                         }
                                     />
                                 }
+                            />
+                            <Route
+                                path="compare"
+                                element={<Compare simCases={simCases} />}
                             />
                             <Route path="*" element={<FourOFour />} />
                         </Route>
