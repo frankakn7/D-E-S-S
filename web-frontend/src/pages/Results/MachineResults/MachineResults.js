@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "../../../interface/Box/Box";
+import Button from "../../../interface/Button/Button";
 import classes from "./MachineResults.module.css";
 
 const MachineResults = (props) => {
@@ -11,9 +12,9 @@ const MachineResults = (props) => {
                     titleText={<p>{`Machine "${machine.id}"`}</p>}
                     className={classes.machineBox}
                 >
-                    <p>
+                    <button>
                         utilization percent: {machine.utilisation.percent.mean}
-                    </p>
+                    </button>
                     <p>utilization time: {machine.utilisation.time.mean}</p>
                     <p>repair cost: {machine.repair_cost.mean}</p>
                     <p>operational cost: {machine.operational_cost.mean}</p>
