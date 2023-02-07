@@ -15,12 +15,25 @@ public class LogEvaluator {
 
     public Double calculateMachineCapacityUtilizationMean(Machine m) {
         Double sum = 0.;
+
         for (EventLog log : this.logs) {
             sum += this.calculateMachineCapacityUtilization(m, log);
         }
 
         return sum / (double)this.logs.size();
     }
+
+    // TODO Reduce mean and variance methods to using one calucalteMachineCapacityUtitlization call
+    public Double calculateMachineCapacityUtilizationVariance(Machine m, Double mean) {
+        Double sum = 0.;
+
+        for (EventLog log : this.logs) {
+            sum += (double)Math.pow(this.calculateMachineCapacityUtilization(m, log) - mean, 2.);
+        }
+
+        return sum;
+    }
+
 
     public Double calculateMachineCapacityUtilization(Machine m, EventLog log) {
         ArrayList<Event> machineLog = log.getMachineLog(m);
@@ -31,7 +44,9 @@ public class LogEvaluator {
     }
 
     // Calculates how much a Machine has been actually running
-    // TODO Check if its still buggy when breakdowns are happening or if that was only due too breakdowns being buggy
+    // DONE Check if its still buggy when breakdowns are happening or if that was only due too breakdowns being buggy
+    // i checked and it is still buggy
+    // TODO Fix that bug
     public Double calculateAbsoluteMachineUsage(ArrayList<Event> machineLog) {
         HashMap<Operation, Event[]> map = new HashMap<Operation, Event[]>();
         ArrayList<Integer> lengths = new ArrayList<Integer>();

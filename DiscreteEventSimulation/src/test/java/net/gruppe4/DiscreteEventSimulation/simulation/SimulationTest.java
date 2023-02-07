@@ -55,9 +55,9 @@ class SimulationTest {
 
     @Test
     void testLogEvaluator() {
-        Machine mA = new Machine("A", 0.0, 4., 2.);
+        Machine mA = new Machine("A", 0.1, 4., 2.);
         Machine mB = new Machine("B", 0.2, 5., 2.);
-        Machine mC = new Machine("C", 0.2, 5., 2.);
+        Machine mC = new Machine("C", 0.0, 5., 2.);
 
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
@@ -90,13 +90,21 @@ class SimulationTest {
 
         Simulation sim = new Simulation(machines, ops);
         EventLog log = sim.runSim();
+
+        Simulation sim2 = new Simulation(machines, ops);
+        EventLog log2 = sim2.runSim();
+
         System.out.println(log);
+
 
         ArrayList<EventLog> logs = new ArrayList<EventLog>();
         logs.add(log);
+        logs.add(log2);
         LogEvaluator evaluator = new LogEvaluator(logs);
-        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mC)));
-        System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mC));
+        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mB)));
+        Double mean = evaluator.calculateMachineCapacityUtilizationMean(mB);
+        System.out.println(mean);
+        System.out.println(evaluator.calculateMachineCapacityUtilizationVariance(mB, mean));
 
         // Versuche den Test auszuführen und schau dir die entstehenden Fehler an
         assertEquals(3, 3);
