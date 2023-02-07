@@ -41,8 +41,6 @@ function App() {
             Promise.all([planPromise, resultPromise])
                 .then((values) => {
                     const [planData, resultData] = values;
-                    console.log(planData.plans);
-                    console.log(resultData.sim_cases);
                     setPlans(planData.plans);
                     setSimCases(resultData.sim_cases);
                 })

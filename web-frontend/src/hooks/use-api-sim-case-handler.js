@@ -10,7 +10,6 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
                 method: "GET",
             }).then((response) => {
                 const simCase = {id: simCaseId, results: response.results, plan_id: response.plan_id}
-                console.log(simCase)
                 setSimCases((prevState) => [...prevState, simCase])
                 resolve(response.results)
             }).catch((error) => {

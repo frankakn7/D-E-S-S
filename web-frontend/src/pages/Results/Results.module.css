@@ -25,18 +25,29 @@
     padding: 2rem;
 }
 
-.tabs button {
-    margin-right: 0.5rem;
-}
-
 .top {
     display: flex;
+    align-items: center;
 }
 
 .top h2 {
     flex: 2;
+    text-align: right;
 }
 
-.top .tabs {
-    flex: 1;
+.tabs button {
+    margin-right: 0.5rem;
+    min-width: 6rem;
+}
+
+.contentBox {
+    margin-top: 0;
+}
+
+.boxTitle {
+    min-height: 2rem;
+}
+
+.unselectedTab {
+    background-color: rgb(130, 163, 194);
 }
