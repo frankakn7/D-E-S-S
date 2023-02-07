@@ -1,4 +1,6 @@
 import React from 'react'
+import DetailsTable from '../DetailsTable/DetailsTable'
+import DetailsTableRow from '../DetailsTable/DetailsTableRow'
 import classes from './GeneralResults.module.css'
 
 
@@ -12,7 +14,6 @@ const GeneralResults = (props) => {
                 <DetailsTableRow stat={{name:"completion time", ...props.generalStats.total_ressource_utilization}}/>
             </DetailsTable>
         </div>
-        {renderLineChart}
     </div>
   )
 }
