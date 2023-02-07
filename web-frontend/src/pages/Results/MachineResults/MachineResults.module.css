@@ -14,3 +14,7 @@
 .detailsTable {
     width: 50%;
 }
+.PieChart {
+    float: right;
+    margin-top: -250px;
+}
