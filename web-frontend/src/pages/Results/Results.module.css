@@ -49,5 +49,5 @@
 }
 
 .unselectedTab {
-    background-color: rgb(130, 163, 194);
+    background-color: rgb(var(--blue-gray));
 }
