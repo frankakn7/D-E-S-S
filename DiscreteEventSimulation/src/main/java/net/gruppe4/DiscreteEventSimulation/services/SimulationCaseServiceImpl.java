@@ -56,7 +56,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         JSONObject simCaseJson = new JSONObject();
         simCaseJson.put("id", simCase.getUuid());
         simCaseJson.put("results", new JSONObject(simCase.getResultJson()).getString("results"));
-        simCaseJson.put("plan_id", simCase.getPlan().getUuid());
+        simCaseJson.put("planId", simCase.getPlan().getUuid());
+        simCaseJson.put("createdOn", simCase.getCreatedOn());
         return simCaseJson;
     }
 

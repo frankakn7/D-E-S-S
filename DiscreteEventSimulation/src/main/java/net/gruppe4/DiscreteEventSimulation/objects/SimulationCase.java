@@ -7,6 +7,8 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
+import java.sql.Timestamp;
+
 @Entity
 public class SimulationCase {
 
@@ -22,7 +24,15 @@ public class SimulationCase {
     @Column(columnDefinition = "JSON")
     private String resultJson;
 
+    private Timestamp createdOn;
+
+
     protected SimulationCase() {
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdOn = new Timestamp(System.currentTimeMillis());
     }
 
     @Override
@@ -52,5 +62,9 @@ public class SimulationCase {
 
     public void setResultJson(String resultJson) {
         this.resultJson = resultJson;
+    }
+
+    public Timestamp getCreatedOn() {
+        return createdOn;
     }
 }
