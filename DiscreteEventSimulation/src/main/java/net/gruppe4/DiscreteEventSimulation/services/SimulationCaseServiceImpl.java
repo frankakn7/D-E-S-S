@@ -1,10 +1,10 @@
 package net.gruppe4.DiscreteEventSimulation.services;
 
+import net.gruppe4.DiscreteEventSimulation.evaluation.*;
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
-import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
 import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
 /*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,9 +76,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
     @Override
     public void setResultsAndSave(String uuid, String results) {
         SimulationCase simCase = simCaseRepo.findByUuid(uuid);
-        JSONObject resultsJson = new JSONObject(results);
         JSONObject resultObj = new JSONObject();
-        resultObj.put("results", resultsJson.toString());
+        resultObj.put("results", results);
         simCase.setResultJson(resultObj.toString());
         simCaseRepo.save(simCase);
     }
@@ -110,256 +108,34 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         simStatus.setState("running");
 
         long startingTime = System.currentTimeMillis();
-        //EventLog result = null;
 
-        String result = "{\n" +
-                "    \"machines\": [\n" +
-                "        {\n" +
-                "            \"id\": \"A\",\n" +
-                "            \"utilisation\": {\n" +
-                "                \"percent\": {\n" +
-                "                    \"mean\": 0.4,\n" +
-                "                    \"min\": 0.3,\n" +
-                "                    \"max\": 0.4,\n" +
-                "                    \"variance\": 0.2\n" +
-                "                },\n" +
-                "                \"time\": {\n" +
-                "                    \"mean\": 4,\n" +
-                "                    \"min\": 3,\n" +
-                "                    \"max\": 4,\n" +
-                "                    \"variance\": 5\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"operational_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"repair_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"breakdowns\": {\n" +
-                "                \"average_downtime\": 3,\n" +
-                "                \"average_rate\": 10,\n" +
-                "                \"average_percent_of_runtime\": 0.2\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"B\",\n" +
-                "            \"utilisation\": {\n" +
-                "                \"percent\": {\n" +
-                "                    \"mean\": 0.4,\n" +
-                "                    \"min\": 0.3,\n" +
-                "                    \"max\": 0.4,\n" +
-                "                    \"variance\": 0.2\n" +
-                "                },\n" +
-                "                \"time\": {\n" +
-                "                    \"mean\": 4,\n" +
-                "                    \"min\": 3,\n" +
-                "                    \"max\": 4,\n" +
-                "                    \"variance\": 5\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"operational_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"repair_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"breakdowns\": {\n" +
-                "                \"average_downtime\": 3,\n" +
-                "                \"average_rate\": 10,\n" +
-                "                \"average_percent_of_runtime\": 0.2\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"C\",\n" +
-                "            \"utilisation\": {\n" +
-                "                \"percent\": {\n" +
-                "                    \"mean\": 0.4,\n" +
-                "                    \"min\": 0.3,\n" +
-                "                    \"max\": 0.4,\n" +
-                "                    \"variance\": 0.2\n" +
-                "                },\n" +
-                "                \"time\": {\n" +
-                "                    \"mean\": 4,\n" +
-                "                    \"min\": 3,\n" +
-                "                    \"max\": 4,\n" +
-                "                    \"variance\": 5\n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"operational_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"repair_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"breakdowns\": {\n" +
-                "                \"average_downtime\": 3,\n" +
-                "                \"average_rate\": 10,\n" +
-                "                \"average_percent_of_runtime\": 0.2\n" +
-                "            }\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"jobs\": [\n" +
-                "        {\n" +
-                "            \"id\": \"1\",\n" +
-                "            \"lateness\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"lateness_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"completion_time\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"2\",\n" +
-                "            \"lateness\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"lateness_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"completion_time\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"3\",\n" +
-                "            \"lateness\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"lateness_cost\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            },\n" +
-                "            \"completion_time\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"operations\": [\n" +
-                "        {\n" +
-                "            \"id\": \"op1\",\n" +
-                "            \"length\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"op2\",\n" +
-                "            \"length\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"op3\",\n" +
-                "            \"length\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"op4\",\n" +
-                "            \"length\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"op5\",\n" +
-                "            \"length\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": \"op6\",\n" +
-                "            \"length\": {\n" +
-                "                \"mean\": 4,\n" +
-                "                \"min\": 3,\n" +
-                "                \"max\": 4,\n" +
-                "                \"variance\": 5\n" +
-                "            }\n" +
-                "        }\n" +
-                "    ],\n" +
-                "    \"general_stats\": {\n" +
-                "        \"completion_time\": {\n" +
-                "            \"mean\": 4,\n" +
-                "            \"min\": 3,\n" +
-                "            \"max\": 4,\n" +
-                "            \"variance\": 5\n" +
-                "        },\n" +
-                "        \"total_cost\": {\n" +
-                "            \"mean\": 4,\n" +
-                "            \"min\": 3,\n" +
-                "            \"max\": 4,\n" +
-                "            \"variance\": 5\n" +
-                "        },\n" +
-                "        \"total_ressource_utilization\": {\n" +
-                "            \"mean\": 4,\n" +
-                "            \"min\": 3,\n" +
-                "            \"max\": 4,\n" +
-                "            \"variance\": 5\n" +
-                "        }\n" +
-                "    }\n" +
-                "}\n";
+        //TODO Implement test Results
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        ArrayList<JobStats> jobStats = new ArrayList<>();
+        ArrayList<OperationStats> operationStats = new ArrayList<>();
 
+        StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
+        StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
+
+        machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues));
+        machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues));
+        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues));
+
+        jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));
+
+        operationStats.add(new OperationStats("op1",exampleFullValues));
+        operationStats.add(new OperationStats("op2",exampleFullValues));
+        operationStats.add(new OperationStats("op3",exampleFullValues));
+        operationStats.add(new OperationStats("op4",exampleFullValues));
+        operationStats.add(new OperationStats("op5",exampleFullValues));
+        operationStats.add(new OperationStats("op6",exampleFullValues));
+
+        GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
+
+
+        Result result = new Result(machineStats,jobStats,operationStats,generalStats);
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
             //result = sim.runSim();
@@ -376,8 +152,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
 
-        //setResultsAndSave(simCaseUuid, result.toString());
-        setResultsAndSave(simCaseUuid, result);
+        setResultsAndSave(simCaseUuid, result.toString());
     }
 
     //TODO implement Jobs for tracking of job status etc
