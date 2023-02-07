@@ -3,6 +3,8 @@
   --carolina-blue: #3C7FD0;
   --steel-blue: #3C7FD0;
   --blue-gray: 130, 163, 194;
+  --egg-white: #FAF7EF;
+  --error-red: #d11717;
 }
 
 body {
@@ -12,7 +14,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FAF7EF;
+  background-color: var(--egg-white);
 }
 
 code {

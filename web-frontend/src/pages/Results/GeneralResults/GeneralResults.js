@@ -10,8 +10,8 @@ const GeneralResults = (props) => {
         <div>
             <DetailsTable>
                 <DetailsTableRow stat={{name:"completion time", ...props.generalStats.completion_time}}/>
-                <DetailsTableRow stat={{name:"completion time", ...props.generalStats.total_cost}}/>
-                <DetailsTableRow stat={{name:"completion time", ...props.generalStats.total_ressource_utilization}}/>
+                <DetailsTableRow stat={{name:"total cost", ...props.generalStats.total_cost}}/>
+                <DetailsTableRow stat={{name:"total ressource utilization", ...props.generalStats.total_ressource_utilization}}/>
             </DetailsTable>
         </div>
     </div>
