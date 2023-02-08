@@ -30,6 +30,34 @@ const PlanDetails = (props) => {
         if (foundSimCases) setSimCases(foundSimCases);
     }, [props.plans, props.simCases, id]);
 
+    const handleSimulate = (planId) => {
+        props
+            .planSimulateHandler(planId)
+            .then((simCaseId) => checkIfDone(simCaseId))
+            .catch((error) => {throw Error(error)});
+    };
+
+    const checkIfDone = (simId) => {
+        props
+            .getSimCaseStatusHandler(simId)
+            .then((result) => {
+                if (result.state === "done") {
+                    console.log("done");
+                    props
+                        .getSimCaseResultHandler(simId)
+                        .then((response) => navigate(`/results/${simId}`))
+                        .catch((error) => {throw Error(error)});
+                } else {
+                    console.log("not done");
+                    const timer = setTimeout(() => {
+                        checkIfDone(simId);
+                        clearTimeout(timer);
+                    }, 1000);
+                }
+            })
+            .catch((error) => {throw Error(error)});
+    };
+
     return (
         <div className={classes.content}>
             <GoBack />
@@ -48,7 +76,9 @@ const PlanDetails = (props) => {
                         </div>
                     </Box>
                     <div className={classes.buttons}>
-                        <Button onClick={() => props.planSimulateHandler(plan.uuid)}>
+                        <Button
+                            onClick={() => handleSimulate(plan.uuid)}
+                        >
                             Simulate
                         </Button>
                     </div>

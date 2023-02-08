@@ -11,6 +11,7 @@ import Plans from "./pages/Plans/Plans";
 import Results from "./pages/Results/Results";
 import Simulations from "./pages/Simulations/Simulations";
 import ErrorBoundary from "./ErrorBoundaries/ErrorBoundary";
+import CompareSelection from "./pages/Compare/CompareSelection";
 import Compare from "./pages/Compare/Compare";
 
 function App() {
@@ -101,6 +102,12 @@ function App() {
                                         plans={plans}
                                         simCases={simCases}
                                         planSimulateHandler={handlePlanSimulate}
+                                        getSimCaseStatusHandler={
+                                            handleGetSimStatus
+                                        }
+                                        getSimCaseResultHandler={
+                                            handleGetSimCase
+                                        }
                                     />
                                 }
                             />
@@ -122,7 +129,11 @@ function App() {
                             />
                             <Route
                                 path="compare"
-                                element={<Compare simCases={simCases} />}
+                                element={<CompareSelection simCases={simCases} plans={plans} />}
+                            />
+                            <Route
+                                path="compare/:id1/:id2"
+                                element={<Compare simCases={simCases}/>}
                             />
                             <Route path="*" element={<FourOFour />} />
                         </Route>

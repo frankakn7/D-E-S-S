@@ -56,32 +56,6 @@ const Results = (props) => {
                     className={classes.contentBox}
                     titleClassName={classes.boxTitle}
                 >
-                    {/* <div className={classes.content}>
-                        <div className={classes.json}>
-                            <p>Event-Log of last simulation run:</p>
-                            <pre>
-                                {JSON.stringify(
-                                    JSON.parse(simCase.results),
-                                    null,
-                                    4
-                                )}
-                            </pre>
-                        </div>
-                        <div className={classes.buttons}>
-                            <Link to="/plans" className="btn-default-style">
-                                View all Uploaded Plans
-                            </Link>
-                            <Link to="/" className="btn-default-style">
-                                Upload new Plan
-                            </Link>
-                            <Link
-                                to="/simulations"
-                                className="btn-default-style"
-                            >
-                                View all Simulations
-                            </Link>
-                        </div>
-                    </div> */}
                     {view === "general" && <GeneralResults generalStats={JSON.parse(simCase.results).general_stats} />}
                     {view === "machines" && <MachineResults machines={JSON.parse(simCase.results).machines} />}
                     {view === "jobs" && <JobResults jobs={JSON.parse(simCase.results).jobs} />}
