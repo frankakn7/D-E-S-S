@@ -63,7 +63,7 @@ const PlanDetails = (props) => {
             <GoBack />
             <div className={classes.planTitle}>
                 <p className={classes.titleInput}>
-                    {plan.name} ({plan.uuid})
+                    "{plan.name}" ({plan.uuid})
                 </p>
             </div>
             <div className={classes.infoContainers}>
@@ -111,6 +111,7 @@ const PlanDetails = (props) => {
                                         key={simCase.id}
                                         id={simCase.id}
                                         name="Simulation"
+                                        onClick={() => navigate("/results/"+simCase.id)}
                                         createdOn={simCase.createdOn}
                                     />
                                 ))}

@@ -4,12 +4,12 @@ import Table from '../../../interface/Table/Table'
 const JobsTable = (props) => {
   return (
     <div>
-        <Table headers={["Id","Release-time","Priority"]}>
+        <Table headers={["Id","Release-time","Due Time"]}>
             {props.jobs.map((job) => (
                 <tr key={job.id}>
                     <td>{job.id}</td>
                     <td>{job.releaseTime}</td>
-                    <td>{job.priority}</td>
+                    <td>{job.dueTime}</td>
                 </tr>
             ))}
         </Table>
