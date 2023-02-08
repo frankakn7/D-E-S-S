@@ -12,7 +12,7 @@ const OperationsTable = (props) => {
                     <td>{operation.machine_id}</td>
                     <td>{operation.machine_pred || "-"}</td>
                     <td>{operation.duration}</td>
-                    <td>{operation.conditional_preds || "-"}</td>
+                    <td>{operation.conditional_preds ? operation.conditional_preds.map((pred) => pred+", ") : "-"}</td>
                 </tr>
             ))}
         </Table>
