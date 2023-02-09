@@ -126,12 +126,15 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
         jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));
 
-        operationStats.add(new OperationStats("op1",exampleFullValues));
-        operationStats.add(new OperationStats("op2",exampleFullValues));
-        operationStats.add(new OperationStats("op3",exampleFullValues));
-        operationStats.add(new OperationStats("op4",exampleFullValues));
-        operationStats.add(new OperationStats("op5",exampleFullValues));
-        operationStats.add(new OperationStats("op6",exampleFullValues));
+        operationStats.add(new OperationStats("op1","A","1",exampleFullValues));
+        operationStats.add(new OperationStats("op2","A","2",exampleFullValues));
+        operationStats.add(new OperationStats("op3","A","3",exampleFullValues));
+        operationStats.add(new OperationStats("op4","B","1",exampleFullValues));
+        operationStats.add(new OperationStats("op5","B","2",exampleFullValues));
+        operationStats.add(new OperationStats("op6","B","3",exampleFullValues));
+        operationStats.add(new OperationStats("op7","C","1",exampleFullValues));
+        operationStats.add(new OperationStats("op8","C","2",exampleFullValues));
+        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));
 
         GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
 

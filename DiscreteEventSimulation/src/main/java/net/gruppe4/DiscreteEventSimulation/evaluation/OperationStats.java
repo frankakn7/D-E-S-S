@@ -4,10 +4,14 @@ import org.json.JSONObject;
 
 public class OperationStats {
     private String id;
+    private String machineId;
+    private String jobId;
     private StatisticalValues length;
 
-    public OperationStats(String id, StatisticalValues length) {
+    public OperationStats(String id, String machineId, String jobId, StatisticalValues length) {
         this.id = id;
+        this.machineId = machineId;
+        this.jobId = jobId;
         this.length = length;
     }
 
