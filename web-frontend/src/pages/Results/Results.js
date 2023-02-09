@@ -27,6 +27,7 @@ const Tab = (props) => {
 const Results = (props) => {
     const { id } = useParams();
     const [simCase, setSimCase] = useState();
+    const [results, setResults] = useState();
     const navigate = useNavigate();
 
     const [view, setView] = useState("general");
@@ -36,7 +37,11 @@ const Results = (props) => {
             return id === simCase.id;
         });
 
+        const results = (foundSimCase ? JSON.parse(foundSimCase.results) : {})
+        
+
         setSimCase(foundSimCase);
+        setResults(results)
     }, [props.simCases, id]);
 
     return (
@@ -56,10 +61,10 @@ const Results = (props) => {
                     className={classes.contentBox}
                     titleClassName={classes.boxTitle}
                 >
-                    {view === "general" && <GeneralResults generalStats={JSON.parse(simCase.results).general_stats} />}
-                    {view === "machines" && <MachineResults machines={JSON.parse(simCase.results).machines} />}
-                    {view === "jobs" && <JobResults jobs={JSON.parse(simCase.results).jobs} />}
-                    {view === "operations" && <OperationResults operations={JSON.parse(simCase.results).operations} />}
+                    {view === "general" && <GeneralResults allResults={results} />}
+                    {view === "machines" && <MachineResults machines={results.machines} />}
+                    {view === "jobs" && <JobResults jobs={results.jobs} />}
+                    {view === "operations" && <OperationResults operations={results.operations} />}
                 </Box>
             )}
         </div>

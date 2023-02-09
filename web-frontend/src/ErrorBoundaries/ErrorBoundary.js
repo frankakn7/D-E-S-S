@@ -27,7 +27,7 @@ class ErrorBoundary extends React.Component {
                         <pre style={{whiteSpace: 'pre-wrap', textAlign: 'center'}}>{this.state.error.name}</pre>
                         <pre style={{whiteSpace: 'pre-wrap'}}>{this.state.error.message}</pre>
                     </ErrorModal>
-                    {this.props.allowChildren && this.props.children}
+                    {/* {this.props.allowChildren && this.props.children} */}
                 </Fragment>
             );
         }

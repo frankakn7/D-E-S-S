@@ -43,7 +43,7 @@ const MachineResultsBox = (props) => {
         return `${(percent * 100).toFixed(0)}%`
     }
 
-    const renderLineChart = (
+    const renderPieChart = (
         <ResponsiveContainer width="100%" height={200}>
             <PieChart>
                 <Pie
@@ -114,7 +114,7 @@ const MachineResultsBox = (props) => {
                 </div>
                 <div className={classes.PieChart}>
                     <p>Machine utilisation</p>
-                    {renderLineChart}
+                    {renderPieChart}
                 </div>
             </div>
         </Box>

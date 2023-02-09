@@ -3,3 +3,21 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.leftData {
+    flex: 1;
+}
+
+.chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.charts {
+    flex: 2;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
