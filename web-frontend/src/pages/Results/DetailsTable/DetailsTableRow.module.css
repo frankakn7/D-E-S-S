@@ -7,13 +7,18 @@
 }
 
 .openClickableRow {
-    /* background-color: rgba(var(--blue-gray),0.2); */
+    background-color: rgba(var(--blue-gray),0.2);
     /* font-weight: bolder; */
 }
 
 .dataRows {
     font-size: 90%;
+
     /* width: 100%; */
+}
+
+.dataRows td:first-child{
+    padding-left: 1rem;
 }
 
 td.angleIcon{
