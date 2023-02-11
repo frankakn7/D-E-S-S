@@ -15,7 +15,9 @@ public class Operation {
     private Integer releaseDate;                            // Earliest possible date at which this operation can begin
     private Integer duration;
     private Machine machine;                                // Parent Machine
+    private Job job;
 
+    // TODO Job in den Konstruktor hinzufügen
     public Operation(String id, Operation machineQueuePredecessor,
                      ArrayList<Operation> conditionalPredecessors,
                      Integer releaseDate, Integer duration, Machine machine) {
@@ -73,5 +75,13 @@ public class Operation {
 
     public Machine getMachine() {
         return machine;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 }

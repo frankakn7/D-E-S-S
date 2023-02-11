@@ -1,10 +1,10 @@
 package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import net.gruppe4.DiscreteEventSimulation.simulation.*;
-import org.javatuples.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 
 public class LogEvaluator {
     private ArrayList<EventLog> logs;
@@ -62,5 +62,32 @@ public class LogEvaluator {
         for (Integer l : lengths) operationDuration += l;
         for (Integer l : breakdownLengths) breakdownDuration += l;
         return (double)operationDuration - breakdownDuration;
+    }
+
+    public Integer calculateJobLateness(Job job, Integer completionDate) {
+        return completionDate - job.dueDate;
+    }
+
+    // For single simulation: Returns a HashMap of the finishing dates of every job passed in the arrayList
+    // TODO Doesnt work properly since Dependencies are not implemented properly yet, check if it works after implementing them
+    public HashMap<Job, Integer> findLastJobDates(ArrayList<Job> jobs, EventLog log) {
+        HashMap<Job, Integer> map = new HashMap<Job, Integer>();
+        ListIterator<Event> i = log.getArrayList().listIterator(log.getArrayList().size());
+
+        while (i.hasPrevious()) {
+            Event event = i.previous();
+
+            if (event.getEventType() != EventType.OPERATION_END) continue;
+            Operation op = event.getOperation();
+            if (map.containsKey(op.getJob())) continue;
+
+            System.out.println(event);
+
+            map.put(op.getJob(), event.getDate());
+
+            if (map.size() == jobs.size()) break;
+        }
+
+        return map;
     }
 }
