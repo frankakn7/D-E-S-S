@@ -66,4 +66,21 @@ public class EventLog {
 
         return false;
     }
+
+    public Boolean hasOperationFinished(Operation op) {
+        ListIterator<Event> i = this.log.listIterator(this.log.size());;
+
+        while (i.hasPrevious()) {
+            Event e = i.previous();
+            if (e.getOperation() == op) {
+                switch (e.getEventType()) {
+                    case OPERATION_BEGIN -> { return false; }
+                    case OPERATION_END -> { return true; }
+                }
+            }
+
+        }
+
+        return false;
+    }
 }

@@ -101,9 +101,19 @@ public class TimeslotQueue {
      * @return   The first/date in the {@link TimeslotQueue}
      */
     public Integer getFirstDate() {
-        if (this.timeslots.isEmpty()) return 0;
+        if (this.timeslots.isEmpty()) return null;
 
         return this.timeslots.firstKey();
+    }
+
+    public Integer getSecondDate() {
+        if (this.timeslots.isEmpty()) return null;
+
+        if (this.timeslots.size() >= 2) {
+            return this.timeslots.higherKey(this.timeslots.firstKey());
+        }
+
+        return this.getFirstDate();
     }
 
     /**
@@ -130,6 +140,14 @@ public class TimeslotQueue {
         return event;
     }
 
+    public Event peekNextEvent() {
+        if (this.timeslots.isEmpty()) return null;
+        if (this.timeslots.get(this.timeslots.firstKey()).isEmpty()) return null;
+        Event event = this.timeslots.get(this.getFirstDate()).get(0);
+        event.setDate(this.getFirstDate());
+        return event;
+    }
+
 
     /**
      * Poll an {@link Event} object from the {@link TimeslotQueue}, if there is
@@ -151,6 +169,15 @@ public class TimeslotQueue {
         return event;
     }
 
+    public Event peekEventIfDate(Integer date) {
+        Event event = null;
+
+        if (this.getFirstDate() == date) {
+            event = this.peekNextEvent();
+        }
+        return event;
+    }
+
     /**
      * Pushes the entire Queue back by `time`. So if the Queue starts with 0
      * and you push it back by 10 time it will be starting at 10 with every
@@ -158,7 +185,7 @@ public class TimeslotQueue {
      *
      * @param time   The amount of `time` to push the queue back by
      */
-    public void pushQueueByTime(Integer time) {
+    public void pushQueueBackByTime(Integer time) {
         TreeMap<Integer, ArrayList<Event>> newTimeslots = new TreeMap<Integer, ArrayList<Event>>();
 
         Iterator<Map.Entry<Integer, ArrayList<Event>>> i = this.timeslots.entrySet().iterator();

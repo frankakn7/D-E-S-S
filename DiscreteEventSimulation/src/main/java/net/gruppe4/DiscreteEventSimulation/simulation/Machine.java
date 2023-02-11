@@ -76,6 +76,13 @@ public class Machine {
         return null;
     }
 
+    public Integer getSecondEventDate() {
+        if (!this.timeslotQueue.isEmpty()) {
+            return this.timeslotQueue.getSecondDate();
+        }
+        return null;
+    }
+
     /**
      * Poll an {@link Event} object from the {@link TimeslotQueue}, if there is
      * one scheduled at the passed `date`. Returns null if no {@link Event}
@@ -88,6 +95,10 @@ public class Machine {
      */
     public Event pollEventIfDate(Integer date) {
         return this.timeslotQueue.pollNextEventIfDate(date);
+    }
+
+    public Event peekEventIfDate(Integer date) {
+        return this.timeslotQueue.peekEventIfDate(date);
     }
 
     public String getId() {
@@ -123,10 +134,14 @@ public class Machine {
         Event end = new Event(EventType.MACHINE_BREAKDOWN_END, this, null);
 
         Integer beginDate = this.timeslotQueue.getFirstDate();
-        this.timeslotQueue.pushQueueByTime(length);
+        this.timeslotQueue.pushQueueBackByTime(length);
 
         this.timeslotQueue.insert(beginDate, begin);
         this.timeslotQueue.insertAtFront(beginDate + length, end);
+    }
+
+    public void pushQueueBackByTime(Integer time) {
+        this.timeslotQueue.pushQueueBackByTime(time);
     }
 
     public Boolean isTimeSlotQueueEmpty(){

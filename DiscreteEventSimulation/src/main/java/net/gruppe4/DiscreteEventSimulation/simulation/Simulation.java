@@ -96,11 +96,32 @@ public class Simulation {
                     }
                 }
 
-                Event e = m.pollEventIfDate(nextDate);
+                Event e = m.peekEventIfDate(nextDate);
+                if (e == null) continue;;
+                if (e.getEventType() == EventType.OPERATION_BEGIN) {
+                    if (!this.isOperationDoable(e.getOperation())) {
+                        m.pushQueueBackByTime(this.findAfterNextEventDate(nextDate) - nextDate);
+                        continue;
+                    }
+
+                }
+
+                e = m.pollEventIfDate(nextDate);
                 if (e != null) this.eventLog.append(e);
             }
         }
         return true;
+    }
+
+    private Boolean isOperationDoable(Operation op) {
+        Boolean res = true;
+
+        if (op.getConditionalPredecessors() == null) return true;
+        for (Operation pred : op.getConditionalPredecessors()) {
+            if(!this.eventLog.hasOperationFinished(pred)) res = false;
+        }
+
+        return res;
     }
 
     /**
@@ -133,6 +154,22 @@ public class Simulation {
         for (Map.Entry<String, Machine> entry : this.machines.entrySet()) {
             Integer date = entry.getValue().getNextEventDate();
             if (date == null) continue;
+
+            dates.add(date);
+        }
+        if (dates.isEmpty()) return null;
+
+        Collections.sort(dates);
+        return dates.get(0);
+    }
+
+    private Integer findAfterNextEventDate(Integer currentDate) {
+        ArrayList<Integer> dates = new ArrayList<Integer>();
+
+        for (Map.Entry<String, Machine> entry : this.machines.entrySet()) {
+            Integer date = entry.getValue().getSecondEventDate();
+            if (date == null) continue;
+            if (date == currentDate) continue;
 
             dates.add(date);
         }
