@@ -97,9 +97,16 @@ public class Simulation {
                 }
 
                 Event e = m.peekEventIfDate(nextDate);
-                if (e == null) continue;;
+                if (e == null) continue;
                 if (e.getEventType() == EventType.OPERATION_BEGIN) {
                     if (!this.isOperationDoable(e.getOperation())) {
+                        // Retrieve all other Operations on same date and check if theyre doable
+                        // if one is doable continue
+                        // if none is doable or list is empty pushBackByTime
+
+                        //if NO operation doable && operations list at date >= 2 then push back to AfterNextDate
+                        //if operation NOT doable && operations list at date == 1 then push back to NextDate
+                        if (this.checkIfDoableEventExistsAtDate(nextDate)) continue;
                         m.pushQueueBackByTime(this.findAfterNextEventDate(nextDate) - nextDate);
                         continue;
                     }
@@ -167,15 +174,37 @@ public class Simulation {
         ArrayList<Integer> dates = new ArrayList<Integer>();
 
         for (Map.Entry<String, Machine> entry : this.machines.entrySet()) {
-            Integer date = entry.getValue().getSecondEventDate();
-            if (date == null) continue;
-            if (date == currentDate) continue;
+            Integer firstDate = entry.getValue().getNextEventDate();
+            Integer secondDate = entry.getValue().getSecondEventDate();
 
-            dates.add(date);
+            if (firstDate != null && firstDate != currentDate) dates.add(firstDate);
+            if (secondDate != null && secondDate != currentDate) dates.add(secondDate);
         }
         if (dates.isEmpty()) return null;
 
         Collections.sort(dates);
         return dates.get(0);
+    }
+
+    // Retrieves all events from all machines that are in a certain timeslot
+    private ArrayList<Event> peekAllEventsAtDate(Integer date) {
+        ArrayList<Event> res = new ArrayList<Event>();
+
+        for(Map.Entry<String, Machine> entry : this.machines.entrySet()) {
+            Event e = entry.getValue().peekEventIfDate(date);
+            if (e == null) continue;
+            res.add(e);
+        }
+
+        return res;
+    }
+
+    private Boolean checkIfDoableEventExistsAtDate(Integer date) {
+        for(Event e : this.peekAllEventsAtDate(date)) {
+            if (e.getEventType() != EventType.OPERATION_BEGIN) return true;
+            if (this.isOperationDoable(e.getOperation())) return true;
+        }
+
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 import net.gruppe4.DiscreteEventSimulation.evaluation.LogEvaluator;
 import org.junit.jupiter.api.Test;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -132,30 +133,42 @@ class SimulationTest {
 
     @Test
     void simpleIsDoableTest() {
-        Machine mA = new Machine("A", 0.8, 3., 0.5);
+        Machine mA = new Machine("A", 0.0, 3., 0.5);
         Machine mB = new Machine("B", 0.0, 5., 2.);
         Machine mC = new Machine("C", 0., 0., 0.);
+        Machine mD = new Machine("D", 0., 0., 0.);
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
         machines.put("B", mB);
         machines.put("C", mC);
+        machines.put("D", mD);
 
-        Operation op1 = new Operation("op1", null, null, 0, 10, mA, 0., 0.);
+        Operation op1 = new Operation("op1", null, null, 0, 10, mA, 1., 4.);
         ArrayList<Operation> condPred = new ArrayList<Operation>();
         condPred.add(op1);
-        Operation op2 = new Operation("op2", null, condPred, 0, 10, mB, 0., 0.);
-        Operation op3 = new Operation("op3", op2, null, 0, 10, mB, 0., 0.);
-        Operation op4 = new Operation("op4", null, null, 0, 7, mC, 0., 0.);
+        Operation op2 = new Operation("op2", null, condPred, 0, 15, mB, 1., 3.);
+        Operation op3 = new Operation("op3", null, null, 0, 5, mC, 1., 1.);
+        var condPred2 = new ArrayList<Operation>();
+        condPred2.add(op3);
+        Operation op4 = new Operation("op4", null, condPred2, 0, 15, mD, 1., 3.);
+        Operation op5 = new Operation("op5", op3, null, 0, 5, mC, 1., 2.);
 
         ArrayList<Operation> ops = new ArrayList<Operation>();
         ops.add(op1);
         ops.add(op2);
         ops.add(op3);
         ops.add(op4);
+        ops.add(op5);
 
         Simulation sim = new Simulation(machines, ops);
         EventLog log = sim.runSim();
         System.out.println(log);
+
+        ArrayList<EventLog> logs = new ArrayList<EventLog>();
+        logs.add(log);
+        LogEvaluator evaluator = new LogEvaluator(logs);
+        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mB)));
+        System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mB));
 
         assertEquals(3, 3);
     }
