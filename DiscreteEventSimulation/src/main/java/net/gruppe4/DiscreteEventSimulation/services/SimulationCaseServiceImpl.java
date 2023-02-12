@@ -139,7 +139,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
 
-
+        //TODO Here results are instantiated
         Result result = new Result(machineStats,jobStats,operationStats,generalStats);
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
@@ -152,8 +152,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             }*/
             long estimatedTime = ((System.currentTimeMillis() - startingTime) / i) * (numOfSimulations - i);
             simStatus.setEstimatedMillisRemaining(estimatedTime);
+            //TODO LogEvaluator call => Take logEvaluator data and pass it to results
             //System.out.println(result);
         }
+        //TODO return results
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
 
@@ -201,7 +203,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     0,
                     //jobs.get(operationObj.getString("job_id")),
                     operationObj.getInt("duration"),
-                    machines.get(operationObj.getString("machine_id"))
+                    machines.get(operationObj.getString("machine_id")),
+                    // TODO Read the following duration variation values from json
+                    0.,
+                    0.
             );
             //Check if is null (error if not checked)
             String machinePredId = operationObj.isNull("machine_pred") ? null : operationObj.getString("machine_pred");

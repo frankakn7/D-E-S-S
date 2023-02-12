@@ -44,6 +44,12 @@ public class Machine {
         Event end = new Event(EventType.OPERATION_END, this, operation);
 
 
+        // Vary Operations duration
+        if (operation.rollDiceForDurVariation()) {
+            operation.setDuration(operation.rollDiceForVariationDur());
+        }
+
+
         // TODO Check if last inserted timestamp is > than releasedate
         //  => if so append begin event to end of queue
         //  => else add begin event at releaseDate
@@ -52,7 +58,7 @@ public class Machine {
 
         Integer beginDate = operation.getReleaseDate();
         Integer releaseDate = operation.getReleaseDate();
-        if (releaseDate != 0) {
+        if (releaseDate != 0) { //TODO Append if release date lower than last machine date
             this.timeslotQueue.insert(releaseDate, begin);
         }
         else {
@@ -76,6 +82,13 @@ public class Machine {
         return null;
     }
 
+    public Integer getSecondEventDate() {
+        if (!this.timeslotQueue.isEmpty()) {
+            return this.timeslotQueue.getSecondDate();
+        }
+        return null;
+    }
+
     /**
      * Poll an {@link Event} object from the {@link TimeslotQueue}, if there is
      * one scheduled at the passed `date`. Returns null if no {@link Event}
@@ -88,6 +101,10 @@ public class Machine {
      */
     public Event pollEventIfDate(Integer date) {
         return this.timeslotQueue.pollNextEventIfDate(date);
+    }
+
+    public Event peekEventIfDate(Integer date) {
+        return this.timeslotQueue.peekEventIfDate(date);
     }
 
     public String getId() {
@@ -109,7 +126,7 @@ public class Machine {
     }
 
     public Integer rollDiceForBreakdownLength() {
-        Integer res = (int)Math.ceil(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
+        Integer res = (int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
         //System.out.println(res);
         return res;
     }
@@ -123,10 +140,14 @@ public class Machine {
         Event end = new Event(EventType.MACHINE_BREAKDOWN_END, this, null);
 
         Integer beginDate = this.timeslotQueue.getFirstDate();
-        this.timeslotQueue.pushQueueByTime(length);
+        this.timeslotQueue.pushQueueBackByTime(length);
 
         this.timeslotQueue.insert(beginDate, begin);
         this.timeslotQueue.insertAtFront(beginDate + length, end);
+    }
+
+    public void pushQueueBackByTime(Integer time) {
+        this.timeslotQueue.pushQueueBackByTime(time);
     }
 
     public Boolean isTimeSlotQueueEmpty(){

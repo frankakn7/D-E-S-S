@@ -3,19 +3,19 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 import org.json.JSONObject;
 
 public class GeneralStats {
-    private StatisticalValues completionTime;
+    private StatisticalValues totalCompletionTime;
     private StatisticalValues totalCost;
     private StatisticalValues totalRessourceUtilization;
 
-    public GeneralStats(StatisticalValues completionTime, StatisticalValues totalCost, StatisticalValues totalRessourceUtilization) {
-        this.completionTime = completionTime;
+    public GeneralStats(StatisticalValues totalCompletionTime, StatisticalValues totalCost, StatisticalValues totalRessourceUtilization) {
+        this.totalCompletionTime = totalCompletionTime;
         this.totalCost = totalCost;
         this.totalRessourceUtilization = totalRessourceUtilization;
     }
 
     /**
      * @return "general_stats": {
-     * "completion_time": {
+     * "total_completion_time": {
      * "mean": 4,
      * "min": 3,
      * "max": 4,
@@ -38,11 +38,11 @@ public class GeneralStats {
     public JSONObject toJsonObject() {
         JSONObject generalStatsJson = new JSONObject();
 
-        JSONObject completionTimeJson = this.completionTime.toJsonObject();
+        JSONObject totalCompletionTimeJson = this.totalCompletionTime.toJsonObject();
         JSONObject totalCostJson = this.totalCost.toJsonObject();
         JSONObject totalRessourceUtilizationJson = this.totalRessourceUtilization.toJsonObject();
 
-        generalStatsJson.put("completion_time", completionTimeJson);
+        generalStatsJson.put("total_completion_time", totalCompletionTimeJson);
         generalStatsJson.put("total_cost", totalCostJson);
         generalStatsJson.put("total_ressource_utilization", totalRessourceUtilizationJson);
 
