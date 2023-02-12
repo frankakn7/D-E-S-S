@@ -2,6 +2,7 @@ import {
     Bar,
     BarChart,
     Cell,
+    Label,
     Legend,
     Pie,
     PieChart,
@@ -11,8 +12,7 @@ import {
     YAxis,
 } from "recharts";
 import React from "react";
-import classes from "./ResultsCharts.module.css"
-
+import classes from "./ResultsCharts.module.css";
 
 const COLOR_DATABASE = [
     "#fa8072",
@@ -133,21 +133,30 @@ const TotalRessourceUtilisationPieChart = (props) => {
 };
 
 const TotalCostPieChart = (props) => {
-
     const costData = [
         {
             name: "lateness cost",
-            value: props.allResults.jobs.reduce((partialSum, job) => partialSum + job.lateness_cost.mean, 0),
+            value: props.allResults.jobs.reduce(
+                (partialSum, job) => partialSum + job.lateness_cost.mean,
+                0
+            ),
             fill: "#e0cc68",
         },
         {
             name: "operational cost",
-            value: props.allResults.machines.reduce((partialSum, machine) => partialSum + machine.operational_cost.mean, 0),
+            value: props.allResults.machines.reduce(
+                (partialSum, machine) =>
+                    partialSum + machine.operational_cost.mean,
+                0
+            ),
             fill: "#3C7FD0",
         },
         {
             name: "repair cost",
-            value: props.allResults.machines.reduce((partialSum, machine) => partialSum + machine.repair_cost.mean, 0),
+            value: props.allResults.machines.reduce(
+                (partialSum, machine) => partialSum + machine.repair_cost.mean,
+                0
+            ),
             fill: "#f55f4e",
         },
     ];
@@ -160,9 +169,9 @@ const TotalCostPieChart = (props) => {
                     dataKey="value"
                     cx="50%"
                     cy="50%"
-                    fill={costData.color}
                     label
-                />
+                    // fill={costData.color}
+                    />
                 <Tooltip />
             </PieChart>
         </ResponsiveContainer>
@@ -174,7 +183,7 @@ const TotalCostPieChart = (props) => {
             {renderTotalCostPieChart}
         </div>
     );
-}
+};
 
 const MachineUtilisationBarChart = (props) => {
     const machineUtilisationData = props.allResults.machines.map((machine) => ({
@@ -197,7 +206,8 @@ const MachineUtilisationBarChart = (props) => {
                 <YAxis domain={[0, 100]} />
                 <Tooltip labelFormatter={(name) => "Machine " + name} />
                 {/* <Legend /> */}
-                <Bar dataKey="utilisation" fill="#8884d8" stroke="black" />
+                {/* <Bar dataKey="utilisation" fill="#8884d8" stroke="black" /> */}
+                <Bar dataKey="utilisation" fill="#8884d8" />
             </BarChart>
         </ResponsiveContainer>
     );
@@ -332,7 +342,7 @@ const MachineMakespanBarChart = (props) => {
                             dataKey={op.id}
                             stackId="1"
                             fill={JOB_COLORS[op.job_id]}
-                            stroke="black"
+                            // stroke="black"
                         />
                     ))
                 )}
@@ -349,11 +359,10 @@ const MachineMakespanBarChart = (props) => {
 };
 
 const MachineCostBarChart = (props) => {
-
     const machineCostData = props.allResults.machines.map((machine) => ({
         name: `${machine.id}`,
         "repair cost": machine.repair_cost.mean,
-        "operational cost": machine.operational_cost.mean
+        "operational cost": machine.operational_cost.mean,
     }));
 
     const renderMachineUtilizationBars = (
@@ -371,8 +380,18 @@ const MachineCostBarChart = (props) => {
                 <YAxis />
                 <Tooltip labelFormatter={(name) => "Machine " + name} />
                 {/* <Legend /> */}
-                <Bar dataKey="repair cost" fill="#f55f4e" stroke="black" stackId="1"/>
-                <Bar dataKey="operational cost" fill="#3C7FD0" stroke="black" stackId="1"/>
+                <Bar
+                    dataKey="repair cost"
+                    fill="#f55f4e"
+                    // stroke="black"
+                    stackId="1"
+                />
+                <Bar
+                    dataKey="operational cost"
+                    fill="#3C7FD0"
+                    // stroke="black"
+                    stackId="1"
+                />
             </BarChart>
         </ResponsiveContainer>
     );
@@ -383,7 +402,7 @@ const MachineCostBarChart = (props) => {
             {renderMachineUtilizationBars}
         </div>
     );
-}
+};
 
 const JobCompletionTimeChart = (props) => {
     const JOB_COLORS = Object.fromEntries(
@@ -414,7 +433,10 @@ const JobCompletionTimeChart = (props) => {
                 <Tooltip labelFormatter={(name) => "job " + name} />
                 {/* <Legend /> */}
 
-                <Bar dataKey="Completion Time" stroke="black">
+                <Bar
+                    dataKey="Completion Time"
+                    // stroke="black"
+                >
                     {props.allResults.jobs.map((job) => (
                         <Cell
                             key={`cell-${job.id}`}

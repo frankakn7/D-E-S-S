@@ -13,7 +13,7 @@ const GeneralResults = (props) => {
                     <DetailsTableRow
                         stat={{
                             name: "completion time",
-                            ...props.allResults.general_stats.completion_time,
+                            ...props.allResults.general_stats.total_completion_time,
                         }}
                     />
                     <DetailsTableRow
