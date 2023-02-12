@@ -44,6 +44,12 @@ public class Machine {
         Event end = new Event(EventType.OPERATION_END, this, operation);
 
 
+        // Vary Operations duration
+        if (operation.rollDiceForDurVariation()) {
+            operation.setDuration(operation.rollDiceForVariationDur());
+        }
+
+
         // TODO Check if last inserted timestamp is > than releasedate
         //  => if so append begin event to end of queue
         //  => else add begin event at releaseDate
@@ -109,7 +115,7 @@ public class Machine {
     }
 
     public Integer rollDiceForBreakdownLength() {
-        Integer res = (int)Math.ceil(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
+        Integer res = (int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
         //System.out.println(res);
         return res;
     }

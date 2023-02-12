@@ -197,7 +197,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     0,
                     //jobs.get(operationObj.getString("job_id")),
                     operationObj.getInt("duration"),
-                    machines.get(operationObj.getString("machine_id"))
+                    machines.get(operationObj.getString("machine_id")),
+                    // TODO Read the following duration variation values from json
+                    0.,
+                    0.
             );
             //Check if is null (error if not checked)
             String machinePredId = operationObj.isNull("machine_pred") ? null : operationObj.getString("machine_pred");
