@@ -6,7 +6,7 @@ import DetailsTableRow from '../DetailsTable/DetailsTableRow'
 const JobResults = (props) => {
   return (
     <div>
-        {props.jobs.map((job) => (
+        {props.allResults.jobs.map((job) => (
             <Box key={job.id} titleText={<p>{`Job "${job.id}`}</p>}>
                 <DetailsTable>
                     <DetailsTableRow stat={{name:"completion time", ...job.completion_time}}/>

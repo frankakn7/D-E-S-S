@@ -32,6 +32,8 @@ public class OperationStats {
         JSONObject lengthJson = this.length.toJsonObject();
 
         OperationJson.put("id", this.id);
+        OperationJson.put("machine_id", this.machineId);
+        OperationJson.put("job_id", this.jobId);
         OperationJson.put("length", lengthJson);
 
         return OperationJson;

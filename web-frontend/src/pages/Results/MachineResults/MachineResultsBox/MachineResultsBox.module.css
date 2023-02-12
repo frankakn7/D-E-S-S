@@ -1,10 +1,9 @@
 .detailsTable {
-    flex: 3;
 }
 .PieChart {
     /* float: right;
     margin-top: -250px; */
-    flex: 2;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center ;
@@ -20,7 +19,12 @@
 }
 
 .tableContainer {
+    flex: 5;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.right {
+    flex: 4;
 }

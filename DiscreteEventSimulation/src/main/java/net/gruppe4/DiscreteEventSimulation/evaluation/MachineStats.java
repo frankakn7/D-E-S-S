@@ -6,21 +6,25 @@ public class MachineStats {
     private String id;
     private StatisticalValues utilisationPercent;
     private StatisticalValues utilisationTime;
+    private StatisticalValues idleTime;
     private StatisticalValues operationalCost;
     private StatisticalValues repairCost;
-    private StatisticalValues breakdownsDowntime;
+    private StatisticalValues breakdownsDowntimePerBreakdown;
     private StatisticalValues breakdownsOccurrence;
     private StatisticalValues breakdownsPercent;
+    private StatisticalValues breakdownsTotalDowntime;
 
-    public MachineStats(String id, StatisticalValues utilisationPercent, StatisticalValues utilisationTime, StatisticalValues operationalCost, StatisticalValues repairCost, StatisticalValues breakdownsDowntime, StatisticalValues breakdownsOccurrence, StatisticalValues breakdownsPercent) {
+    public MachineStats(String id, StatisticalValues utilisationPercent, StatisticalValues utilisationTime, StatisticalValues idleTime, StatisticalValues operationalCost, StatisticalValues repairCost, StatisticalValues breakdownsDowntimePerBreakdown, StatisticalValues breakdownsOccurrence, StatisticalValues breakdownsPercent, StatisticalValues breakdownsTotalDowntime) {
         this.id = id;
         this.utilisationPercent = utilisationPercent;
         this.utilisationTime = utilisationTime;
+        this.idleTime = idleTime;
         this.operationalCost = operationalCost;
         this.repairCost = repairCost;
-        this.breakdownsDowntime = breakdownsDowntime;
+        this.breakdownsDowntimePerBreakdown = breakdownsDowntimePerBreakdown;
         this.breakdownsOccurrence = breakdownsOccurrence;
         this.breakdownsPercent = breakdownsPercent;
+        this.breakdownsTotalDowntime = breakdownsTotalDowntime;
     }
 
     /**
@@ -80,16 +84,20 @@ public class MachineStats {
         JSONObject utilisationJson = new JSONObject();
         JSONObject utilisationPercentJson = this.utilisationPercent.toJsonObject();
         JSONObject utilisationTimeJson = this.utilisationTime.toJsonObject();
+        JSONObject idleTimeJson = this.idleTime.toJsonObject();
         utilisationJson.put("percent", utilisationPercentJson);
         utilisationJson.put("time", utilisationTimeJson);
+        utilisationJson.put("idle_time", idleTimeJson);
 
         JSONObject breakdownsJson = new JSONObject();
-        JSONObject breakdownsDowntimeJson = this.breakdownsDowntime.toJsonObject();
+        JSONObject breakdownsDowntimePerBreakdownJson = this.breakdownsDowntimePerBreakdown.toJsonObject();
         JSONObject breakdownsOccurrenceJson = this.breakdownsOccurrence.toJsonObject();
         JSONObject breakdownsPercentJson = this.breakdownsPercent.toJsonObject();
-        breakdownsJson.put("downtime", breakdownsDowntimeJson);
+        JSONObject breakdownsTotalDowntimeJson = this.breakdownsTotalDowntime.toJsonObject();
+        breakdownsJson.put("downtime_per_breakdown", breakdownsDowntimePerBreakdownJson);
         breakdownsJson.put("occurrence", breakdownsOccurrenceJson);
         breakdownsJson.put("percent", breakdownsPercentJson);
+        breakdownsJson.put("total_downtime", breakdownsTotalDowntimeJson);
 
         JSONObject operationalCostJson = this.operationalCost.toJsonObject();
         JSONObject repairCostJson = this.repairCost.toJsonObject();

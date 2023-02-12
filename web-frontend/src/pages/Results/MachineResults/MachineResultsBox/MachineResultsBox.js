@@ -65,7 +65,7 @@ const MachineResultsBox = (props) => {
         >
             <div className={classes.boxContent}>
                 <div className={classes.tableContainer}>
-                    <DetailsTable className={classes.detailsTable}>
+                    <DetailsTable>
                         <DetailsTableRow
                             stat={{
                                 name: "utilization percent",
@@ -93,8 +93,8 @@ const MachineResultsBox = (props) => {
                         />
                         <DetailsTableRow
                             stat={{
-                                name: "breakdowns downtime",
-                                ...props.machine.breakdowns.downtime,
+                                name: "breakdowns downtime per breakdown",
+                                ...props.machine.breakdowns.downtime_per_breakdown,
                             }}
                         />
                         <DetailsTableRow
@@ -112,11 +112,14 @@ const MachineResultsBox = (props) => {
                         />
                     </DetailsTable>
                 </div>
-                <div className={classes.PieChart}>
-                    <p>Machine utilisation</p>
-                    {renderPieChart}
+                <div className={classes.right}>
+                    <div className={classes.PieChart}>
+                        <p>Machine utilisation</p>
+                        {renderPieChart}
+                    </div>
                 </div>
             </div>
+                <p>OPERATIONS GRAPH</p>
         </Box>
     );
 };
