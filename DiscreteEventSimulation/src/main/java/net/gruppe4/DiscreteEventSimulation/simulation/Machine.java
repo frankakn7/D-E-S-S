@@ -58,7 +58,7 @@ public class Machine {
 
         Integer beginDate = operation.getReleaseDate();
         Integer releaseDate = operation.getReleaseDate();
-        if (releaseDate != 0) {
+        if (releaseDate != 0) { //TODO Append if release date lower than last machine date
             this.timeslotQueue.insert(releaseDate, begin);
         }
         else {

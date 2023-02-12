@@ -135,7 +135,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
 
-
+        //TODO Here results are instantiated
         Result result = new Result(machineStats,jobStats,operationStats,generalStats);
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
@@ -148,8 +148,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             }*/
             long estimatedTime = ((System.currentTimeMillis() - startingTime) / i) * (numOfSimulations - i);
             simStatus.setEstimatedMillisRemaining(estimatedTime);
+            //TODO LogEvaluator call => Take logEvaluator data and pass it to results
             //System.out.println(result);
         }
+        //TODO return results
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
 

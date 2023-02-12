@@ -15,6 +15,8 @@ public class StatisticalValues {
         this.variance = variance;
     }
 
+    //TODO add function will be here
+
     public double getMean() {
         return mean;
     }
