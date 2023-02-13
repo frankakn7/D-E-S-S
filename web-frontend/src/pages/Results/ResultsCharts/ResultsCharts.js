@@ -125,7 +125,7 @@ const TotalRessourceUtilisationPieChart = (props) => {
     );
 
     return (
-        <div className={classes.chart}>
+        <div className={`${classes.chart} ${props.className}`}>
             <p>Total Ressource utilization</p>
             {renderUtilizationPieChart}
         </div>
@@ -171,14 +171,14 @@ const TotalCostPieChart = (props) => {
                     cy="50%"
                     label
                     // fill={costData.color}
-                    />
+                />
                 <Tooltip />
             </PieChart>
         </ResponsiveContainer>
     );
 
     return (
-        <div className={classes.chart}>
+        <div className={`${classes.chart} ${props.className}`}>
             <p>Total Costs</p>
             {renderTotalCostPieChart}
         </div>
@@ -213,7 +213,7 @@ const MachineUtilisationBarChart = (props) => {
     );
 
     return (
-        <div className={classes.chart}>
+        <div className={`${classes.chart} ${props.className}`}>
             <p>Machine utilisation (%)</p>
             {renderMachineUtilizationBars}
         </div>
@@ -351,9 +351,137 @@ const MachineMakespanBarChart = (props) => {
     );
 
     return (
-        <div className={classes.chart}>
+        <div className={`${classes.chart} ${props.className}`}>
             <p>Machine Makespan</p>
             {renderMachineMakespanChart}
+        </div>
+    );
+};
+
+const MachineBreakdownIdleChart = (props) => {
+    const machineBreakdownIdleData = props.allResults.machines.map(
+        (machine) => {
+            const dataObj = {
+                name: `${machine.id}`,
+                breakdown: machine.breakdowns.downtime_per_breakdown.mean,
+                idle: machine.utilisation.idle_time.mean,
+            };
+            return dataObj;
+        }
+    );
+
+    const legendPayload = () => {
+        let legend = [
+            {
+                id: "breakdown",
+                type: "square",
+                value: "Breakdown",
+                color: "url(#breakdownPattern)",
+            },
+            {
+                id: "idle",
+                type: "square",
+                value: "idle",
+                color: "url(#idlePattern)",
+            },
+        ];
+        return legend;
+    };
+
+    const renderMachineBreakdownIdleChart = (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={machineBreakdownIdleData}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <defs>
+                    <pattern
+                        id="idlePattern"
+                        patternUnits="userSpaceOnUse"
+                        width="5"
+                        height="5"
+                    >
+                        <path
+                            d="M0 5 L5 0"
+                            fill="none"
+                            stroke="black"
+                            stroke-width="1"
+                        />
+                    </pattern>
+                    <pattern
+                        id="breakdownPattern"
+                        patternUnits="userSpaceOnUse"
+                        width="5"
+                        height="5"
+                    >
+                        <path
+                            d="M0 5 L5 0"
+                            fill="none"
+                            stroke="red"
+                            strokeWidth="1"
+                        />
+                        <path
+                            d="M0 0 L5 5"
+                            fill="none"
+                            stroke="red"
+                            strokeWidth="1"
+                        />
+                    </pattern>
+                </defs>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip labelFormatter={(name) => "Machine " + name} />
+                <Legend
+                    payload={legendPayload()}
+                    formatter={(value, entry) => (
+                        <span style={{ color: "black" }}>{value}</span>
+                    )}
+                    align={"right"}
+                    layout={"vertical"}
+                    verticalAlign={"middle"}
+                />
+                <Bar
+                    key={"breakdowns"}
+                    dataKey={"breakdown"}
+                    barCategoryGap={"0"}
+                    // stackId="1"
+                    fill="url(#breakdownPattern)"
+                    // shape={BarWithBorder()}
+                    // stroke="black"
+                />
+                <Bar
+                    key={"idle"}
+                    dataKey={"idle"}
+                    barGap={"0"}
+                    // stackId="1"
+                    fill="url(#idlePattern)"
+                    // shape={BarWithBorder()}
+                    // stroke="black"
+                />
+                {/* {props.allResults.machines.map((machine, mIndex) =>
+                    machine.operations.map((op, opIndex) => (
+                        <Bar
+                            key={op.id}
+                            dataKey={op.id}
+                            stackId="1"
+                            fill={JOB_COLORS[op.job_id]}
+                            // stroke="black"
+                        />
+                    ))
+                )} */}
+            </BarChart>
+        </ResponsiveContainer>
+    );
+
+    return (
+        <div className={`${classes.chart} ${props.className}`}>
+            <p>Machine Breakdowns / Idle</p>
+            {renderMachineBreakdownIdleChart}
         </div>
     );
 };
@@ -365,7 +493,7 @@ const MachineCostBarChart = (props) => {
         "operational cost": machine.operational_cost.mean,
     }));
 
-    const renderMachineUtilizationBars = (
+    const renderMachineCostBars = (
         <ResponsiveContainer width="100%" height={200}>
             <BarChart
                 data={machineCostData}
@@ -397,9 +525,9 @@ const MachineCostBarChart = (props) => {
     );
 
     return (
-        <div className={classes.chart}>
+        <div className={`${classes.chart} ${props.className}`}>
             <p>Machine Costs</p>
-            {renderMachineUtilizationBars}
+            {renderMachineCostBars}
         </div>
     );
 };
@@ -449,9 +577,150 @@ const JobCompletionTimeChart = (props) => {
     );
 
     return (
-        <div className={classes.chart}>
+        <div className={`${classes.chart} ${props.className}`}>
             <p>Job Completion Time</p>
             {renderJobCompletionTimeChart}
+        </div>
+    );
+};
+
+const JobLatenessChart = (props) => {
+
+    const jobLatenessData = props.allResults.jobs.map((job) => ({
+        name: `${job.id}`,
+        "Lateness": job.lateness.mean,
+    }));
+
+    const renderJobLatenessChart = (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={jobLatenessData}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip labelFormatter={(name) => "job " + name} />
+                {/* <Legend /> */}
+
+                <Bar
+                    dataKey="Lateness"
+                    // stroke="black"
+                    fill="#BA7BA1"
+                >
+                    {/* {props.allResults.jobs.map((job) => (
+                        <Cell
+                            key={`cell-${job.id}`}
+                            fill={JOB_COLORS[job.id]}
+                        />
+                    ))} */}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+
+    return (
+        <div className={`${classes.chart} ${props.className}`}>
+            <p>Job Lateness</p>
+            {renderJobLatenessChart}
+        </div>
+    );
+};
+
+const JobCostChart = (props) => {
+
+    const jobCostData = props.allResults.jobs.map((job) => ({
+        name: `${job.id}`,
+        "Cost": job.lateness_cost.mean,
+    }));
+
+    const renderJobCostChart = (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={jobCostData}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip labelFormatter={(name) => "job " + name} />
+                {/* <Legend /> */}
+
+                <Bar
+                    dataKey="Cost"
+                    // stroke="black"
+                    fill="#3C7FD0"
+                >
+                    {/* {props.allResults.jobs.map((job) => (
+                        <Cell
+                            key={`cell-${job.id}`}
+                            fill={JOB_COLORS[job.id]}
+                        />
+                    ))} */}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+
+    return (
+        <div className={`${classes.chart} ${props.className}`}>
+            <p>Job Cost</p>
+            {renderJobCostChart}
+        </div>
+    );
+};
+
+const OperationsLengthChart = (props) => {
+
+    const operationLengthData = props.allResults.operations.map((operation) => ({
+        name: `${operation.id}`,
+        "Length": operation.length.mean,
+    }));
+
+    const renderOperationsLengthChart = (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={operationLengthData}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip labelFormatter={(name) => "Operation " + name} />
+                {/* <Legend /> */}
+
+                <Bar
+                    dataKey="Length"
+                    // stroke="black"
+                    fill="#4c5a91"
+                >
+                    {/* {props.allResults.jobs.map((job) => (
+                        <Cell
+                            key={`cell-${job.id}`}
+                            fill={JOB_COLORS[job.id]}
+                        />
+                    ))} */}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+
+    return (
+        <div className={`${classes.chart} ${props.className}`}>
+            <p>Operations Length</p>
+            {renderOperationsLengthChart}
         </div>
     );
 };
@@ -461,6 +730,10 @@ export {
     TotalCostPieChart,
     MachineUtilisationBarChart,
     MachineMakespanBarChart,
+    MachineBreakdownIdleChart,
     MachineCostBarChart,
     JobCompletionTimeChart,
+    JobLatenessChart,
+    JobCostChart,
+    OperationsLengthChart,
 };

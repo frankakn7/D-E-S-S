@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "../../../interface/Box/Box";
-import { MachineCostBarChart, MachineMakespanBarChart, MachineUtilisationBarChart } from "../ResultsCharts/ResultsCharts";
+import { MachineBreakdownIdleChart, MachineCostBarChart, MachineMakespanBarChart, MachineUtilisationBarChart } from "../ResultsCharts/ResultsCharts";
 import classes from "./MachineResults.module.css";
 import MachineResultsBox from "./MachineResultsBox/MachineResultsBox";
 
@@ -10,7 +10,8 @@ const MachineResults = (props) => {
             <Box className={classes.machineSummary} titleText={<p>Machines Summary</p>}>
                 <div className={classes.summaryCharts}>
                     <MachineUtilisationBarChart allResults={props.allResults} />
-                    <MachineMakespanBarChart allResults={props.allResults}/>
+                    <MachineMakespanBarChart allResults={props.allResults} className={classes.makeSpanChart}/>
+                    <MachineBreakdownIdleChart allResults={props.allResults} />
                     <MachineCostBarChart allResults={props.allResults}/>
                 </div>
             </Box>
