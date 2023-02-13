@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import net.gruppe4.DiscreteEventSimulation.evaluation.LogEvaluator;
+import net.gruppe4.DiscreteEventSimulation.evaluation.StatisticalValues;
 import org.junit.jupiter.api.Test;
 
 import java.awt.image.AreaAveragingScaleFilter;
@@ -171,5 +172,21 @@ class SimulationTest {
         System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mB));
 
         assertEquals(3, 3);
+    }
+
+    @Test
+    void simpleStatCalculationTest(){
+        StatisticalValues test = new StatisticalValues();
+
+        test.addValue(1);
+        test.addValue(2);
+        test.addValue(3);
+        test.addValue(4);
+
+        assertEquals(2.5,test.getMean());
+        assertEquals(1.25,test.getVariance());
+        assertEquals(1,test.getMin());
+        assertEquals(4,test.getMax());
+
     }
 }

@@ -7,6 +7,9 @@ public class StatisticalValues {
     private double min;
     private double max;
     private double variance;
+    private double count = 0;
+
+    public StatisticalValues(){}
 
     public StatisticalValues(double mean, double min, double max, double variance) {
         this.mean = mean;
@@ -16,21 +19,42 @@ public class StatisticalValues {
     }
 
     //TODO add function will be here
+    public void addValue(double value) {
+        if (this.count == 0){
+            this.mean = value;
+            this.min = value;
+            this.max = value;
+            this.variance = 0;
+            this.count = 1;
+            return;
+        }
+        if(value > this.max) {
+            this.max = value;
+        }else if(value < this.min){
+            this.min = value;
+        }
+
+        double newMean = (this.mean * this.count + value) / (this.count + 1);
+        double newVariance = (this.count / (this.count + 1)) * (this.variance + Math.pow((this.mean - value),2) / (this.count + 1));
+        this.mean = newMean;
+        this.variance = newVariance;
+        this.count += 1;
+    }
 
     public double getMean() {
-        return mean;
+        return this.mean;
     }
 
     public double getMin() {
-        return min;
+        return this.min;
     }
 
     public double getMax() {
-        return max;
+        return this.max;
     }
 
     public double getVariance() {
-        return variance;
+        return this.variance;
     }
 
     public void setMean(double mean) {
