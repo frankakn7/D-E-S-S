@@ -9,9 +9,20 @@
 .jobBox {
     width: 49%;
     min-width: 30rem;
+
+}
+
+.jobBoxContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .summaryBox {
     display: flex;
     align-items: center;
+}
+
+.rightData {
+    flex: 2;
 }

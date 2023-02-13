@@ -268,10 +268,11 @@ const MachineMakespanBarChart = (props) => {
                 data={machineMakespanData}
                 margin={{
                     top: 20,
-                    right: 30,
-                    left: 20,
+                    right: 0,
+                    left: 0,
                     bottom: 5,
                 }}
+
             >
                 <defs>
                     <pattern
@@ -394,8 +395,8 @@ const MachineBreakdownIdleChart = (props) => {
                 data={machineBreakdownIdleData}
                 margin={{
                     top: 20,
-                    right: 30,
-                    left: 20,
+                    right: 0,
+                    left: 0,
                     bottom: 5,
                 }}
             >
@@ -725,6 +726,106 @@ const OperationsLengthChart = (props) => {
     );
 };
 
+const MachinesOperationsLength = (props) => {
+
+    const machineOperationLengthData = props.machine.operations.map((operation) => ({
+        name: `${operation.id}`,
+        "Length": operation.length.mean,
+    }));
+
+    const renderMachineOperationsLengthChart = (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={machineOperationLengthData}
+                layout="vertical"
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="name"/>
+                {/* <XAxis dataKey="name" />
+                <YAxis /> */}
+                <Tooltip labelFormatter={(name) => "Operation " + name} />
+                {/* <Legend /> */}
+
+                <Bar
+                    dataKey="Length"
+                    // stroke="black"
+                    fill="#4c5a91"
+                >
+                    {/* {props.allResults.jobs.map((job) => (
+                        <Cell
+                            key={`cell-${job.id}`}
+                            fill={JOB_COLORS[job.id]}
+                        />
+                    ))} */}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+
+    return (
+        <div className={`${classes.chart} ${props.className}`}>
+            <p>Operations Length</p>
+            {renderMachineOperationsLengthChart}
+        </div>
+    );
+};
+
+const JobsOperationsLength = (props) => {
+
+    const jobOperationLengthData = props.job.operations.map((operation) => ({
+        name: `${operation.id}`,
+        "Length": operation.length.mean,
+    }));
+
+    const renderJobOperationsLengthChart = (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={jobOperationLengthData}
+                layout="vertical"
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="name"/>
+                {/* <XAxis dataKey="name" />
+                <YAxis /> */}
+                <Tooltip labelFormatter={(name) => "Operation " + name} />
+                {/* <Legend /> */}
+
+                <Bar
+                    dataKey="Length"
+                    // stroke="black"
+                    fill="#4c5a91"
+                >
+                    {/* {props.allResults.jobs.map((job) => (
+                        <Cell
+                            key={`cell-${job.id}`}
+                            fill={JOB_COLORS[job.id]}
+                        />
+                    ))} */}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+
+    return (
+        <div className={`${classes.chart} ${props.className}`}>
+            <p>Operations Length</p>
+            {renderJobOperationsLengthChart}
+        </div>
+    );
+};
+
 export {
     TotalRessourceUtilisationPieChart,
     TotalCostPieChart,
@@ -736,4 +837,6 @@ export {
     JobLatenessChart,
     JobCostChart,
     OperationsLengthChart,
+    MachinesOperationsLength,
+    JobsOperationsLength
 };

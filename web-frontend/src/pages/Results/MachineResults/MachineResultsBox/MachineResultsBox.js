@@ -8,8 +8,10 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import Box from "../../../../interface/Box/Box";
+import CollapsableBox from "../../../../interface/CollapsableBox/CollapsableBox";
 import DetailsTable from "../../DetailsTable/DetailsTable";
 import DetailsTableRow from "../../DetailsTable/DetailsTableRow";
+import { MachinesOperationsLength } from "../../ResultsCharts/ResultsCharts";
 import classes from "./MachineResultsBox.module.css";
 
 const MachineResultsBox = (props) => {
@@ -119,7 +121,9 @@ const MachineResultsBox = (props) => {
                     </div>
                 </div>
             </div>
-                <p>OPERATIONS GRAPH</p>
+            <CollapsableBox titleText={"Machine Operations"}>
+                <MachinesOperationsLength machine={props.machine} />
+            </CollapsableBox>
         </Box>
     );
 };
