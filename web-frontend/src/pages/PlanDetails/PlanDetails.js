@@ -4,11 +4,11 @@ import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
 import CollapsableBox from "../../interface/CollapsableBox/CollapsableBox";
 import GoBack from "../../interface/GoBack/GoBack";
+import ListButton from "../../interface/ListButton/ListButton";
 import FileDetails from "../FileDetails/FileDetails";
 import JobsTable from "../FileDetails/tables/JobsTable";
 import MachinesTable from "../FileDetails/tables/MachinesTable";
 import OperationsTable from "../FileDetails/tables/OperationsTable";
-import SimulationsButton from "../Simulations/SimulationsButton";
 import classes from "./PlanDetails.module.css";
 
 const PlanDetails = (props) => {
@@ -20,23 +20,50 @@ const PlanDetails = (props) => {
 
     useEffect(() => {
         const foundPlan = props.plans.find((plan) => {
-            console.log(plan);
             return id === plan.uuid;
         });
 
         const foundSimCases = props.simCases.filter((simCase) => {
-            return id === simCase.plan_id;
+            return id === simCase.planId;
         });
         if (foundPlan) setPlan(foundPlan);
         if (foundSimCases) setSimCases(foundSimCases);
     }, [props.plans, props.simCases, id]);
+
+    const handleSimulate = (planId) => {
+        props
+            .planSimulateHandler(planId)
+            .then((simCaseId) => checkIfDone(simCaseId))
+            .catch((error) => {throw Error(error)});
+    };
+
+    const checkIfDone = (simId) => {
+        props
+            .getSimCaseStatusHandler(simId)
+            .then((result) => {
+                if (result.state === "done") {
+                    console.log("done");
+                    props
+                        .getSimCaseResultHandler(simId)
+                        .then((response) => navigate(`/results/${simId}`))
+                        .catch((error) => {throw Error(error)});
+                } else {
+                    console.log("not done");
+                    const timer = setTimeout(() => {
+                        checkIfDone(simId);
+                        clearTimeout(timer);
+                    }, 1000);
+                }
+            })
+            .catch((error) => {throw Error(error)});
+    };
 
     return (
         <div className={classes.content}>
             <GoBack />
             <div className={classes.planTitle}>
                 <p className={classes.titleInput}>
-                    {plan.name} ({plan.uuid})
+                    "{plan.name}" ({plan.uuid})
                 </p>
             </div>
             <div className={classes.infoContainers}>
@@ -49,7 +76,9 @@ const PlanDetails = (props) => {
                         </div>
                     </Box>
                     <div className={classes.buttons}>
-                        <Button onClick={() => props.planSimulateHandler(plan.uuid)}>
+                        <Button
+                            onClick={() => handleSimulate(plan.uuid)}
+                        >
                             Simulate
                         </Button>
                     </div>
@@ -77,10 +106,13 @@ const PlanDetails = (props) => {
                     <CollapsableBox titleText="Simulations">
                         <div className={classes.simulations}>
                             {simCases.length > 0 &&
-                                simCases.map((simCases) => (
-                                    <SimulationsButton
-                                        key={simCases.id}
-                                        simCasesID={simCases.id}
+                                simCases.map((simCase) => (
+                                    <ListButton
+                                        key={simCase.id}
+                                        id={simCase.id}
+                                        name="Simulation"
+                                        onClick={() => navigate("/results/"+simCase.id)}
+                                        createdOn={simCase.createdOn}
                                     />
                                 ))}
                             {!simCases.length && <p>No Simulations yet</p>}

@@ -10,6 +10,9 @@ import PlanDetails from "./pages/PlanDetails/PlanDetails";
 import Plans from "./pages/Plans/Plans";
 import Results from "./pages/Results/Results";
 import Simulations from "./pages/Simulations/Simulations";
+import ErrorBoundary from "./ErrorBoundaries/ErrorBoundary";
+import CompareSelection from "./pages/Compare/CompareSelection";
+import Compare from "./pages/Compare/Compare";
 
 function App() {
     const baseUrl = "http://localhost:8080";
@@ -41,8 +44,6 @@ function App() {
             Promise.all([planPromise, resultPromise])
                 .then((values) => {
                     const [planData, resultData] = values;
-                    console.log(planData.plans);
-                    console.log(resultData.sim_cases);
                     setPlans(planData.plans);
                     setSimCases(resultData.sim_cases);
                 })
@@ -54,61 +55,91 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route
-                        index
-                        element={
-                            <Dashboard
-                                plans={plans}
-                                simCases={simCases}
-                                planUploadHandler={handlePlanUpload}
-                                planSimulateHandler={handlePlanSimulate}
-                                getSimCaseStatusHandler={handleGetSimStatus}
-                                getSimCaseResultHandler={handleGetSimCase}
+            <ErrorBoundary>
+                <ErrorBoundary allowChildren={true}>
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
+                            <Route
+                                index
+                                element={
+                                    <Dashboard
+                                        plans={plans}
+                                        simCases={simCases}
+                                        planUploadHandler={handlePlanUpload}
+                                        planSimulateHandler={handlePlanSimulate}
+                                        getSimCaseStatusHandler={
+                                            handleGetSimStatus
+                                        }
+                                        getSimCaseResultHandler={
+                                            handleGetSimCase
+                                        }
+                                    />
+                                }
                             />
-                        }
-                    />
-                    <Route
-                        path="results/:id"
-                        element={<Results simCases={simCases} />}
-                    />
-                    <Route
-                        path="plans"
-                        element={
-                            <Plans
-                                plans={plans}
-                                planSimulateHandler={handlePlanSimulate}
-                                getSimCaseStatusHandler={handleGetSimStatus}
-                                getSimCaseResultHandler={handleGetSimCase}
+                            <Route
+                                path="results/:id"
+                                element={<Results simCases={simCases} />}
                             />
-                        }
-                    />
-                    <Route
-                        path="plans/:id"
-                        element={
-                            <PlanDetails
-                                plans={plans}
-                                simCases={simCases}
-                                planSimulateHandler={handlePlanSimulate}
+                            <Route
+                                path="plans"
+                                element={
+                                    <Plans
+                                        plans={plans}
+                                        planSimulateHandler={handlePlanSimulate}
+                                        getSimCaseStatusHandler={
+                                            handleGetSimStatus
+                                        }
+                                        getSimCaseResultHandler={
+                                            handleGetSimCase
+                                        }
+                                    />
+                                }
                             />
-                        }
-                    />
-                    <Route
-                        path="simulations"
-                        element={
-                            <Simulations
-                                simCases={simCases}
-                                plans={plans}
-                                planSimulateHandler={handlePlanSimulate}
-                                getSimCaseStatusHandler={handleGetSimStatus}
-                                getSimCaseResultHandler={handleGetSimCase}
+                            <Route
+                                path="plans/:id"
+                                element={
+                                    <PlanDetails
+                                        plans={plans}
+                                        simCases={simCases}
+                                        planSimulateHandler={handlePlanSimulate}
+                                        getSimCaseStatusHandler={
+                                            handleGetSimStatus
+                                        }
+                                        getSimCaseResultHandler={
+                                            handleGetSimCase
+                                        }
+                                    />
+                                }
                             />
-                        }
-                    />
-                    <Route path="*" element={<FourOFour />} />
-                </Route>
-            </Routes>
+                            <Route
+                                path="simulations"
+                                element={
+                                    <Simulations
+                                        simCases={simCases}
+                                        plans={plans}
+                                        planSimulateHandler={handlePlanSimulate}
+                                        getSimCaseStatusHandler={
+                                            handleGetSimStatus
+                                        }
+                                        getSimCaseResultHandler={
+                                            handleGetSimCase
+                                        }
+                                    />
+                                }
+                            />
+                            <Route
+                                path="compare"
+                                element={<CompareSelection simCases={simCases} plans={plans} />}
+                            />
+                            <Route
+                                path="compare/:id1/:id2"
+                                element={<Compare simCases={simCases}/>}
+                            />
+                            <Route path="*" element={<FourOFour />} />
+                        </Route>
+                    </Routes>
+                </ErrorBoundary>
+            </ErrorBoundary>
         </BrowserRouter>
     );
 }

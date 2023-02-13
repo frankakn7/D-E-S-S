@@ -4,10 +4,9 @@ import React, { Fragment, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
+import ListButton from "../../interface/ListButton/ListButton";
 import Modal from "../../interface/Modal/Modal";
 import FileDetails from "../FileDetails/FileDetails";
-import PlanButton from "../Plans/PlanButton";
-import SimulationsButton from "../Simulations/SimulationsButton";
 
 import classes from "./Dashboard.module.css";
 
@@ -27,7 +26,7 @@ const Dashboard = (props) => {
             setSelectedFile(file);
         };
         reader.onerror = () => {
-            console.log("file could not be read");
+            throw Error("file could not be read");
         };
     };
 
@@ -102,31 +101,46 @@ const Dashboard = (props) => {
                         titleText={<p>Last 4 uploaded plans</p>}
                         className={classes.box}
                     >
-                        {props.plans.length > 0 && props.plans.slice(0, 4).map((plan) => (
-                            <PlanButton
-                                key={plan.uuid}
-                                planId={plan.uuid}
-                                planName={plan.name}
-                            />
-                        ))}
+                        {props.plans.length > 0 &&
+                            props.plans.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 4).map((plan) => (
+                                <ListButton
+                                    key={plan.uuid}
+                                    onClick={() => {
+                                        navigate(`/plans/${plan.uuid}`);
+                                    }}
+                                    id={plan.uuid}
+                                    name={<b>"{plan.name}"</b>}
+                                    createdOn={plan.createdOn}
+                                />
+                            ))}
                         {!props.plans.length && <p>No plans uploaded yet</p>}
                     </Box>
                     <Box
                         titleText={<p>Last 4 simulations</p>}
                         className={classes.box}
                     >
-                        {props.simCases.length > 0 && props.simCases.slice(0, 4).map((simCase) => (
-                            <SimulationsButton
-                                key={simCase.id}
-                                simCasesID={simCase.id}
-                                planName={
-                                    props.plans.find(
-                                        (plan) => simCase.plan_id === plan.uuid
-                                    ).name
-                                }
-                            />
-                        ))}
-                        {!props.simCases.length && <p>No simulations run yet</p>}
+                        {props.simCases.length > 0 && props.plans.length > 0 &&
+                            props.simCases.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 4).map((simCase) => {
+                                const plan = props.plans.find(
+                                    (plan) => simCase.planId === plan.uuid
+                                );
+                                return (
+                                    <ListButton
+                                        key={simCase.id}
+                                        onClick={() => {
+                                            navigate(`/results/${simCase.id}`);
+                                        }}
+                                        id={simCase.id}
+                                        name={
+                                            <Fragment>Simulation of <b>"{plan ? plan.name : "[No Plan]"}"</b></Fragment>
+                                        }
+                                        createdOn={simCase.createdOn}
+                                    />
+                                );
+                            })}
+                        {!props.simCases.length && (
+                            <p>No simulations run yet</p>
+                        )}
                     </Box>
                 </div>
             )}

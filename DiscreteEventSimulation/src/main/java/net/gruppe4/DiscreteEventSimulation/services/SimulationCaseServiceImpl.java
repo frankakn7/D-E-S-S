@@ -1,10 +1,10 @@
 package net.gruppe4.DiscreteEventSimulation.services;
 
+import net.gruppe4.DiscreteEventSimulation.evaluation.*;
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
-import net.gruppe4.DiscreteEventSimulation.simulation.EventLog;
 import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
 /*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +56,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         JSONObject simCaseJson = new JSONObject();
         simCaseJson.put("id", simCase.getUuid());
         simCaseJson.put("results", new JSONObject(simCase.getResultJson()).getString("results"));
-        simCaseJson.put("plan_id", simCase.getPlan().getUuid());
+        simCaseJson.put("planId", simCase.getPlan().getUuid());
+        simCaseJson.put("createdOn", simCase.getCreatedOn());
         return simCaseJson;
     }
 
@@ -109,10 +109,41 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         simStatus.setState("running");
 
         long startingTime = System.currentTimeMillis();
-        EventLog result = null;
+
+        //TODO Implement test Results
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        ArrayList<JobStats> jobStats = new ArrayList<>();
+        ArrayList<OperationStats> operationStats = new ArrayList<>();
+
+        StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
+        StatisticalValues exampleFullValuesDifferent = new StatisticalValues(7,3,10,4);
+        StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
+
+        machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+        machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+
+        jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));
+
+        operationStats.add(new OperationStats("op1","A","1",exampleFullValues));
+        operationStats.add(new OperationStats("op2","A","2",exampleFullValues));
+        operationStats.add(new OperationStats("op3","A","3",exampleFullValues));
+        operationStats.add(new OperationStats("op4","B","1",exampleFullValues));
+        operationStats.add(new OperationStats("op5","B","2",exampleFullValues));
+        operationStats.add(new OperationStats("op6","B","3",exampleFullValues));
+        operationStats.add(new OperationStats("op7","C","1",exampleFullValues));
+        operationStats.add(new OperationStats("op8","C","2",exampleFullValues));
+        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));
+
+        GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
+
+        //TODO Here results are instantiated
+        Result result = new Result(machineStats,jobStats,operationStats,generalStats);
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
-            result = sim.runSim();
+            //result = sim.runSim();
             simStatus.setProgress(i);
             /*try {
                 Thread.sleep(100);
@@ -121,8 +152,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             }*/
             long estimatedTime = ((System.currentTimeMillis() - startingTime) / i) * (numOfSimulations - i);
             simStatus.setEstimatedMillisRemaining(estimatedTime);
+            //TODO LogEvaluator call => Take logEvaluator data and pass it to results
             //System.out.println(result);
         }
+        //TODO return results
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
 
@@ -170,7 +203,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     0,
                     //jobs.get(operationObj.getString("job_id")),
                     operationObj.getInt("duration"),
-                    machines.get(operationObj.getString("machine_id"))
+                    machines.get(operationObj.getString("machine_id")),
+                    // TODO Read the following duration variation values from json
+                    0.,
+                    0.
             );
             //Check if is null (error if not checked)
             String machinePredId = operationObj.isNull("machine_pred") ? null : operationObj.getString("machine_pred");

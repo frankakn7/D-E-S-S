@@ -16,11 +16,12 @@ const useApiPlanHandler = (baseUrl, setPlans) => {
                 .then((response) => {
                     newPlan = {
                         name: newPlan.name,
-                        uuid: response.plan_id,
+                        uuid: response.plan.uuid,
                         planJson: JSON.stringify(newPlan.plan),
+                        createdOn: response.plan.createdOn
                     };
                     setPlans((prevState) => [newPlan, ...prevState]);
-                    resolve(response.plan_id);
+                    resolve(response.plan.uuid);
                 })
                 .catch((error) => {
                     reject(error);

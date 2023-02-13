@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * // TODO Comment OperationClass
@@ -15,16 +16,28 @@ public class Operation {
     private Integer releaseDate;                            // Earliest possible date at which this operation can begin
     private Integer duration;
     private Machine machine;                                // Parent Machine
+    private Job job;
+
+    // TODO Job in den Konstruktor hinzufügen
+    private Double durVariationProb = 0.;
+    private Double durStandardDeviation;
+    private Random generator;
+
+
 
     public Operation(String id, Operation machineQueuePredecessor,
                      ArrayList<Operation> conditionalPredecessors,
-                     Integer releaseDate, Integer duration, Machine machine) {
+                     Integer releaseDate, Integer duration, Machine machine,
+                     Double durVariationProb, Double durStandardDeviation) {
         this.id = id;
         this.conditionalPredecessors = conditionalPredecessors;
         this.machineQueuePredecessor = machineQueuePredecessor;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.machine = machine;
+        this.durVariationProb = durVariationProb;
+        this.durStandardDeviation = durStandardDeviation;
+        this.generator = new Random();
     }
 
     public String getId() {
@@ -73,5 +86,33 @@ public class Operation {
 
     public Machine getMachine() {
         return machine;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
+    public Boolean rollDiceForDurVariation() {
+        if (this.durVariationProb == 0.) return false;
+
+        if (this.durVariationProb >= this.generator.nextDouble()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Returns full length, not only variation
+    // TODO rename, sounds too much like the method above
+    public Integer rollDiceForVariationDur() {
+        Integer res = (int)Math.round((generator.nextGaussian(this.duration, this.durStandardDeviation)));
+        return res;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 }

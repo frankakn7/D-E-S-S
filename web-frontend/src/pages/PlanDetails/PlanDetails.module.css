@@ -44,8 +44,8 @@
 .simulations {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
     overflow: scroll;
     max-height: 10rem;
 }

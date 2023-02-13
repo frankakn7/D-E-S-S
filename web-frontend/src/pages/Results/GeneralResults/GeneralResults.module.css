@@ -1,0 +1,34 @@
+.mainContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.leftData {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.chart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart p {
+    font-size: 110%;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.rightData {
+    flex: 2;
+}

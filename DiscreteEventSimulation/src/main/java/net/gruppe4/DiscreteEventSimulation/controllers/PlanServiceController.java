@@ -21,8 +21,7 @@ public class PlanServiceController {
 
         Plan plan = planService.createPlanFromJson(json);
         planService.savePlan(plan);
-
-        resultObj.put("plan_id", plan.getUuid());
+        resultObj.put("plan", plan.toJsonObject());
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 

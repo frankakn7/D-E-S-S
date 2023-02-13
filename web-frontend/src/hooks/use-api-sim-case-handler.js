@@ -1,4 +1,4 @@
-import useHttp from "./use-http"
+import useHttp from "./use-http";
 
 const useApiSimCaseHandler = (baseUrl, setSimCases) => {
     const { sendRequest: sendHttpRequest } = useHttp();
@@ -8,31 +8,39 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
             sendHttpRequest({
                 url: baseUrl + "/api/sim/" + simCaseId,
                 method: "GET",
-            }).then((response) => {
-                const simCase = {id: simCaseId, results: response.results, plan_id: response.plan_id}
-                console.log(simCase)
-                setSimCases((prevState) => [...prevState, simCase])
-                resolve(response.results)
-            }).catch((error) => {
-                reject(error)
             })
-        })
-    }
+                .then((response) => {
+                    const simCase = {
+                        id: simCaseId,
+                        results: response.results,
+                        planId: response.planId,
+                        createdOn: response.createdOn,
+                    };
+                    setSimCases((prevState) => [...prevState, simCase]);
+                    resolve(response.results);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    };
 
     const handleGetSimStatus = (simCaseId) => {
         return new Promise((resolve, reject) => {
             sendHttpRequest({
                 url: baseUrl + "/api/sim/" + simCaseId + "/status",
                 method: "GET",
-            }).then((response) => {
-                resolve(response)
-            }).catch((error) => {
-                reject(error)
             })
-        })
-    }
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    };
 
-    return { handleGetSimCase, handleGetSimStatus }
-}
+    return { handleGetSimCase, handleGetSimStatus };
+};
 
 export default useApiSimCaseHandler;
