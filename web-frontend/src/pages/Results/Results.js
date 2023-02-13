@@ -49,6 +49,7 @@ const Results = (props) => {
             })
         }
         
+        console.log(results)
         setSimCase(foundSimCase);
         setResults(results)
     }, [props.simCases, id]);
