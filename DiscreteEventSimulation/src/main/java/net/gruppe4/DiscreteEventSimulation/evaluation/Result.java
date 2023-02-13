@@ -4,41 +4,50 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Result {
-    private ArrayList<MachineStats> machines;
-    private ArrayList<JobStats> jobs;
-    private ArrayList<OperationStats> operations;
+    private HashMap<String, MachineStats> machines;
+    private HashMap<String, JobStats> jobs;
+    private HashMap<String, OperationStats> operations;
     private GeneralStats generalStats;
 
-    public Result(ArrayList<MachineStats> machines, ArrayList<JobStats> jobs, ArrayList<OperationStats> operations, GeneralStats generalStats) {
+    public Result(HashMap<String, MachineStats> machines, HashMap<String, JobStats> jobs, HashMap<String, OperationStats> operations, GeneralStats generalStats) {
         this.machines = machines;
         this.jobs = jobs;
         this.operations = operations;
         this.generalStats = generalStats;
     }
 
-    public void addMachine(MachineStats machineStats){
-        this.machines.add(machineStats);
+    public Result(){
+        this.machines = new HashMap<>();
+        this.jobs = new HashMap<>();
+        this.operations = new HashMap<>();
+        this.generalStats = new GeneralStats();
     }
 
-    public void addJob(JobStats jobStats){
-        this.jobs.add(jobStats);
+    public void addMachine(String id, MachineStats machineStats){
+        this.machines.put(id,machineStats);
     }
 
-    public void addOperation(OperationStats operationStats){
-        this.operations.add(operationStats);
+    public void addJob(String id, JobStats jobStats){
+        this.jobs.put(id, jobStats);
     }
 
-    public ArrayList<MachineStats> getMachines() {
+    public void addOperation(String id, OperationStats operationStats){
+        this.operations.put(id, operationStats);
+    }
+
+    public HashMap<String, MachineStats> getMachines() {
         return machines;
     }
 
-    public ArrayList<JobStats> getJobs() {
+    public HashMap<String, JobStats> getJobs() {
         return jobs;
     }
 
-    public ArrayList<OperationStats> getOperations() {
+    public HashMap<String, OperationStats> getOperations() {
         return operations;
     }
 
@@ -57,15 +66,18 @@ public class Result {
         JSONArray operationsJson = new JSONArray();
         JSONObject generalStatsJson = new JSONObject();
 
-        for(MachineStats machineStats : this.machines){
+        for(Map.Entry<String, MachineStats> entry : this.machines.entrySet()){
+            MachineStats machineStats = entry.getValue();
             machinesJson.put(machineStats.toJsonObject());
         }
 
-        for(JobStats jobStats : this.jobs){
+        for(Map.Entry<String, JobStats> entry : this.jobs.entrySet()){
+            JobStats jobStats = entry.getValue();
             jobsJson.put(jobStats.toJsonObject());
         }
 
-        for(OperationStats operationStats : this.operations){
+        for(Map.Entry<String, OperationStats> entry : this.operations.entrySet()){
+            OperationStats operationStats = entry.getValue();
             operationsJson.put(operationStats.toJsonObject());
         }
 

@@ -27,6 +27,19 @@ public class MachineStats {
         this.breakdownsTotalDowntime = breakdownsTotalDowntime;
     }
 
+    public MachineStats(String id) {
+        this.id = id;
+        this.utilisationPercent = new StatisticalValues();
+        this.utilisationTime = new StatisticalValues();
+        this.idleTime = new StatisticalValues();
+        this.operationalCost = new StatisticalValues();
+        this.repairCost = new StatisticalValues();
+        this.breakdownsDowntimePerBreakdown = new StatisticalValues();
+        this.breakdownsOccurrence = new StatisticalValues();
+        this.breakdownsPercent = new StatisticalValues();
+        this.breakdownsTotalDowntime = new StatisticalValues();
+    }
+
     /**
      * @return {
      * "id": "A",

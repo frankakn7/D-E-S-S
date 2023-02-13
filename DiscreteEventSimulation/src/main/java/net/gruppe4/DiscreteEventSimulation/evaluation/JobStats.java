@@ -3,16 +3,23 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 import org.json.JSONObject;
 
 public class JobStats {
-    private String id;
-    private StatisticalValues lateness;
-    private StatisticalValues latenessCost;
-    private StatisticalValues completionTime;
+    public String id;
+    public StatisticalValues lateness;
+    public StatisticalValues latenessCost;
+    public StatisticalValues completionTime;
 
     public JobStats(String id, StatisticalValues lateness, StatisticalValues latenessCost, StatisticalValues completionTime) {
         this.id = id;
         this.lateness = lateness;
         this.latenessCost = latenessCost;
         this.completionTime = completionTime;
+    }
+
+    public JobStats(String id){
+        this.id = id;
+        this.lateness = new StatisticalValues();
+        this.latenessCost = new StatisticalValues();
+        this.completionTime = new StatisticalValues();
     }
 
     /**

@@ -18,7 +18,6 @@ public class StatisticalValues {
         this.variance = variance;
     }
 
-    //TODO add function will be here
     public void addValue(double value) {
         if (this.count == 0){
             this.mean = value;

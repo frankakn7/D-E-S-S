@@ -5,11 +5,11 @@ import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
-import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
-import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
+import net.gruppe4.DiscreteEventSimulation.simulation.*;
 /*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Machine;*/
-import net.gruppe4.DiscreteEventSimulation.simulation.Operation;
+import org.apache.juli.logging.Log;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,13 +105,14 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         JSONObject planJsonObj = new JSONObject(simCase.getPlan().getPlanJson());
         HashMap<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
         ArrayList<Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines);
+        ArrayList<Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
 
         simStatus.setState("running");
 
         long startingTime = System.currentTimeMillis();
 
         //TODO Implement test Results
-        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        /*ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<JobStats> jobStats = new ArrayList<>();
         ArrayList<OperationStats> operationStats = new ArrayList<>();
 
@@ -135,14 +136,35 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         operationStats.add(new OperationStats("op6","B","3",exampleFullValues));
         operationStats.add(new OperationStats("op7","C","1",exampleFullValues));
         operationStats.add(new OperationStats("op8","C","2",exampleFullValues));
-        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));
+        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));*/
 
-        GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
+        GeneralStats generalStats = new GeneralStats();
+
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        ArrayList<JobStats> jobStats = new ArrayList<>();
+        ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         //TODO Here results are instantiated
-        Result result = new Result(machineStats,jobStats,operationStats,generalStats);
+        //Result result = new Result(machineStats,jobStats,operationStats,generalStats);
+        Result result = new Result();
+
+        //TODO instantiate statistical values for all elements
+
+        JobStats jobStats1 = new JobStats("id1");
+        ArrayList<JobStats> jStats = new ArrayList<JobStats>();
+
+
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
+            EventLog log = sim.runSim();
+            LogEvaluator evaluator = new LogEvaluator(log, machines, operations, null);
+
+            //TODO example
+            for(JobStats jStat : jStats) {
+                jobStats1.lateness.addValue();
+            }
+
+
             //result = sim.runSim();
             simStatus.setProgress(i);
             /*try {
@@ -172,6 +194,20 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         }
         return jobs;
     }*/
+
+    private ArrayList<Job> extractJobs(JSONArray jobsJson){
+        ArrayList<Job> jobs = new ArrayList<>();
+        for(int i = 0; i < jobsJson.length(); i++){
+            JSONObject jobObj = jobsJson.getJSONObject(i);
+
+            Job job = new Job(
+                    jobObj.getString("id"),
+                    jobObj.getInt("duedate")
+            );
+            jobs.add(job);
+        }
+        return jobs;
+    }
 
     private HashMap<String, Machine> extractMachines(JSONArray machinesJson) {
         HashMap<String, Machine> machines = new HashMap<>();
