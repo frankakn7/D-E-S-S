@@ -28,3 +28,7 @@
 .right {
     flex: 4;
 }
+
+.operationsChartBoxContent {
+    display: flex;
+}

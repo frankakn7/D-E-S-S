@@ -85,14 +85,14 @@ const TotalRessourceUtilisationPieChart = (props) => {
             name: "utilized",
             value: props.allResults.general_stats.total_ressource_utilization
                 .mean,
-            fill: "#62c46c",
+            fill: "#3C7FD0",
         },
         {
             name: "unutilized",
             value:
                 1 -
                 props.allResults.general_stats.total_ressource_utilization.mean,
-            fill: "#3C7FD0",
+            fill: "url(#idlePattern)",
         },
     ];
 
@@ -108,14 +108,60 @@ const TotalRessourceUtilisationPieChart = (props) => {
         return `${(value * 100).toFixed(0)}%`;
     };
 
+    // const renderCustomizedLabel = ({
+    //     cx,
+    //     cy,
+    //     midAngle,
+    //     innerRadius,
+    //     outerRadius,
+    //     value,
+    //     index
+    //   }) => {
+    //     const RADIAN = Math.PI / 180;
+    //     // eslint-disable-next-line
+    //     const radius = 25 + innerRadius + (outerRadius - innerRadius);
+    //     // eslint-disable-next-line
+    //     const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    //     // eslint-disable-next-line
+    //     const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    //     return (
+    //       <text
+    //         x={x}
+    //         y={y}
+    //         fill={}
+    //         textAnchor={x > cx ? "start" : "end"}
+    //         dominantBaseline="central"
+    //       >
+    //         {`${(value * 100).toFixed(0)}%`}
+    //       </text>
+    //     )}
+    
+
     const renderUtilizationPieChart = (
         <ResponsiveContainer width="100%" height={200}>
             <PieChart>
+                <defs>
+                    <pattern
+                        id="idlePattern"
+                        patternUnits="userSpaceOnUse"
+                        width="5"
+                        height="5"
+                    >
+                        <path
+                            d="M0 5 L5 0"
+                            fill="none"
+                            stroke="black"
+                            strokeWidth="1"
+                        />
+                    </pattern>
+                </defs>
                 <Pie
                     data={utilisationData}
                     dataKey="value"
                     cx="50%"
                     label={renderCustomizedLabel}
+                    labelLine={{stroke: "black"}}
                     cy="50%"
                     fill={utilisationData.color}
                 />
@@ -272,7 +318,6 @@ const MachineMakespanBarChart = (props) => {
                     left: 0,
                     bottom: 5,
                 }}
-
             >
                 <defs>
                     <pattern
@@ -285,7 +330,7 @@ const MachineMakespanBarChart = (props) => {
                             d="M0 5 L5 0"
                             fill="none"
                             stroke="black"
-                            stroke-width="1"
+                            strokeWidth="1"
                         />
                     </pattern>
                     <pattern
@@ -411,7 +456,7 @@ const MachineBreakdownIdleChart = (props) => {
                             d="M0 5 L5 0"
                             fill="none"
                             stroke="black"
-                            stroke-width="1"
+                            strokeWidth="1"
                         />
                     </pattern>
                     <pattern
@@ -586,10 +631,9 @@ const JobCompletionTimeChart = (props) => {
 };
 
 const JobLatenessChart = (props) => {
-
     const jobLatenessData = props.allResults.jobs.map((job) => ({
         name: `${job.id}`,
-        "Lateness": job.lateness.mean,
+        Lateness: job.lateness.mean,
     }));
 
     const renderJobLatenessChart = (
@@ -633,10 +677,9 @@ const JobLatenessChart = (props) => {
 };
 
 const JobCostChart = (props) => {
-
     const jobCostData = props.allResults.jobs.map((job) => ({
         name: `${job.id}`,
-        "Cost": job.lateness_cost.mean,
+        Cost: job.lateness_cost.mean,
     }));
 
     const renderJobCostChart = (
@@ -680,11 +723,12 @@ const JobCostChart = (props) => {
 };
 
 const OperationsLengthChart = (props) => {
-
-    const operationLengthData = props.allResults.operations.map((operation) => ({
-        name: `${operation.id}`,
-        "Length": operation.length.mean,
-    }));
+    const operationLengthData = props.allResults.operations.map(
+        (operation) => ({
+            name: `${operation.id}`,
+            Length: operation.length.mean,
+        })
+    );
 
     const renderOperationsLengthChart = (
         <ResponsiveContainer width="100%" height={200}>
@@ -727,11 +771,12 @@ const OperationsLengthChart = (props) => {
 };
 
 const MachinesOperationsLength = (props) => {
-
-    const machineOperationLengthData = props.machine.operations.map((operation) => ({
-        name: `${operation.id}`,
-        "Length": operation.length.mean,
-    }));
+    const machineOperationLengthData = props.machine.operations.map(
+        (operation) => ({
+            name: `${operation.id}`,
+            Length: operation.length.mean,
+        })
+    );
 
     const renderMachineOperationsLengthChart = (
         <ResponsiveContainer width="100%" height={200}>
@@ -746,7 +791,7 @@ const MachinesOperationsLength = (props) => {
                 }}
             >
                 <XAxis type="number" />
-                <YAxis type="category" dataKey="name"/>
+                <YAxis type="category" dataKey="name" />
                 {/* <XAxis dataKey="name" />
                 <YAxis /> */}
                 <Tooltip labelFormatter={(name) => "Operation " + name} />
@@ -777,10 +822,9 @@ const MachinesOperationsLength = (props) => {
 };
 
 const JobsOperationsLength = (props) => {
-
     const jobOperationLengthData = props.job.operations.map((operation) => ({
         name: `${operation.id}`,
-        "Length": operation.length.mean,
+        Length: operation.length.mean,
     }));
 
     const renderJobOperationsLengthChart = (
@@ -796,7 +840,7 @@ const JobsOperationsLength = (props) => {
                 }}
             >
                 <XAxis type="number" />
-                <YAxis type="category" dataKey="name"/>
+                <YAxis type="category" dataKey="name" />
                 {/* <XAxis dataKey="name" />
                 <YAxis /> */}
                 <Tooltip labelFormatter={(name) => "Operation " + name} />
@@ -838,5 +882,5 @@ export {
     JobCostChart,
     OperationsLengthChart,
     MachinesOperationsLength,
-    JobsOperationsLength
+    JobsOperationsLength,
 };

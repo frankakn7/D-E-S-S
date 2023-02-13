@@ -31,30 +31,86 @@ const MachineResultsBox = (props) => {
                     props.machine.breakdowns.percent.mean
                 ).toFixed(2)
             ),
-            fill: "#3C7FD0",
+            // fill: "#3C7FD0",
+            fill: "url(#idlePattern)",
         },
         // { name: "unutilized", value: parseFloat((1 - props.machine.utilisation.percent.mean - props.machine.breakdowns.percent.mean).toFixed(2)), fill: "#d4d002" },
         {
             name: "breakdown",
             value: props.machine.breakdowns.percent.mean,
-            fill: "#f55f4e",
+            // fill: "#f55f4e",
+            fill: "url(#breakdownPattern)",
         },
     ];
 
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        return `${(percent * 100).toFixed(0)}%`
-    }
+    // const renderCustomizedLabel = ({
+    //     cx,
+    //     cy,
+    //     midAngle,
+    //     innerRadius,
+    //     outerRadius,
+    //     percent,
+    //     index,
+    // }) => {
+    //     console.log(index)
+    //     return `${(percent * 100).toFixed(0)}%`;
+    // };
+    const renderCustomizedLabel = (value) => {
+        //return `${(percent * 100).toFixed(0)}%`;
+        let newValue = value;
+        if(newValue.name === "breakdown"){
+            newValue.fill = "red"
+        }else if(newValue.name === "unutilized"){
+            newValue.fill = "black"
+        }
+        return <text {...newValue}>{`${(newValue.value * 100).toFixed(0)}%`}</text>;
+    };
 
     const renderPieChart = (
         <ResponsiveContainer width="100%" height={200}>
             <PieChart>
+                <defs>
+                    <pattern
+                        id="idlePattern"
+                        patternUnits="userSpaceOnUse"
+                        width="5"
+                        height="5"
+                    >
+                        <path
+                            d="M0 5 L5 0"
+                            fill="none"
+                            stroke="black"
+                            strokeWidth="1"
+                        />
+                    </pattern>
+                    <pattern
+                        id="breakdownPattern"
+                        patternUnits="userSpaceOnUse"
+                        width="5"
+                        height="5"
+                    >
+                        <path
+                            d="M0 5 L5 0"
+                            fill="none"
+                            stroke="red"
+                            strokeWidth="1"
+                        />
+                        <path
+                            d="M0 0 L5 5"
+                            fill="none"
+                            stroke="red"
+                            strokeWidth="1"
+                        />
+                    </pattern>
+                </defs>
                 <Pie
                     data={data}
                     dataKey="value"
                     cx="50%"
                     label={renderCustomizedLabel}
+                    labelLine={{stroke:"black"}}
                     cy="50%"
-                    fill={data.color}
+                    // fill={data.color}
                 />
                 <Tooltip />
             </PieChart>
@@ -96,7 +152,8 @@ const MachineResultsBox = (props) => {
                         <DetailsTableRow
                             stat={{
                                 name: "breakdowns downtime per breakdown",
-                                ...props.machine.breakdowns.downtime_per_breakdown,
+                                ...props.machine.breakdowns
+                                    .downtime_per_breakdown,
                             }}
                         />
                         <DetailsTableRow
@@ -122,7 +179,9 @@ const MachineResultsBox = (props) => {
                 </div>
             </div>
             <CollapsableBox titleText={"Machine Operations"}>
-                <MachinesOperationsLength machine={props.machine} />
+                <div className={classes.operationsChartBoxContent}>
+                    <MachinesOperationsLength machine={props.machine} />
+                </div>
             </CollapsableBox>
         </Box>
     );
