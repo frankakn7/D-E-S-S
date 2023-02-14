@@ -26,26 +26,37 @@ public class LogEvaluator {
         this.logs = logs;
     }
 
-    public Double calculateMachineCapacityUtilizationMean(Machine m) {
-        Double sum = 0.;
-        for (EventLog log : this.logs) {
-            sum += this.calculateMachineCapacityUtilization(m, log);
-        }
-
-        return sum / (double)this.logs.size();
-    }
-
-    public Double calculateMachineCapacityUtilization(Machine m, EventLog log) {
-        ArrayList<Event> machineLog = log.getMachineLog(m);
-
-        Double machineLogLength = (double)machineLog.get(machineLog.size() - 1).getDate();
-
-        return this.calculateAbsoluteMachineUsage(machineLog) / machineLogLength;
-    }
-
     // Calculates how much a Machine has been actually running
     // TODO Check if its still buggy when breakdowns are happening or if that was only due too breakdowns being buggy
-    public Double calculateAbsoluteMachineUsage(ArrayList<Event> machineLog) {
+
+    public HashMap<Machine, HashMap<String, Object>> calculateMachineStatValues() {
+        HashMap<Machine, HashMap<String, Object>> res = new HashMap<Machine, HashMap<String, Object>>();
+
+        for(Map.Entry<String, Machine> entry : this.machines.entrySet()) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            ArrayList<Event> machineLog = this.log.getMachineLog(entry.getValue());
+
+            HashMap<String, Integer> machineLogEval = this.evaluateMachineLog(machineLog);
+
+            Integer absoluteMachineUsage = machineLogEval.get("operationDuration") - machineLogEval.get("breakdownDuration");
+            Double machineLogLength = (double)(int)machineLog.get(machineLog.size() - 1).getDate();
+
+            map.put("utilisation_percent", (double)absoluteMachineUsage / machineLogLength);
+            map.put("utilisation_time", (double)absoluteMachineUsage);
+            map.put("repair_cost", (double)entry.getValue().getRepairCostPerTime() * (double)(int)machineLogEval.get("breakdownDuration"));
+            map.put("operational_cost", (double)absoluteMachineUsage * entry.getValue().getCostPerTime());
+            map.put("breakdowns_downtime", (double)(int)machineLogEval.get("breakdownDuration"));
+            map.put("breakdowns_occurrence",(double)(int)machineLogEval.get("breakdownOccurence"));
+            map.put("breakdowns_percent", (double)map.get("breakdowns_downtime") / machineLogLength);
+            Double idleTime = machineLogLength - machineLogEval.get("operationDuration");
+            map.put("idle_time_absolute", idleTime);
+            res.put(entry.getValue(), map);
+        }
+
+        return res;
+    }
+
+    private HashMap<String, Integer> evaluateMachineLog(ArrayList<Event> machineLog) {
         HashMap<Operation, Event[]> map = new HashMap<Operation, Event[]>();
         ArrayList<Integer> lengths = new ArrayList<Integer>();
         ArrayList<Integer> breakdownLengths = new ArrayList<Integer>();
@@ -74,7 +85,13 @@ public class LogEvaluator {
         Integer breakdownDuration = 0;
         for (Integer l : lengths) operationDuration += l;
         for (Integer l : breakdownLengths) breakdownDuration += l;
-        return (double)operationDuration - breakdownDuration;
+
+        HashMap<String, Integer> res = new HashMap<String, Integer>();
+        res.put("operationDuration", operationDuration);
+        res.put("breakdownDuration", breakdownDuration);
+        res.put("breakdownOccurence", breakdownLengths.size());
+
+        return res;
     }
 
     public HashMap<Job, HashMap<String, Object>> calculateJobStatValues() {

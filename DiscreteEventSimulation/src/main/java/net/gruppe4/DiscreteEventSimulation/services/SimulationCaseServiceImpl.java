@@ -112,16 +112,16 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         long startingTime = System.currentTimeMillis();
 
         //TODO Implement test Results
-        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        //ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
         StatisticalValues exampleFullValuesDifferent = new StatisticalValues(7,3,10,4);
         StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
 
-        machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+       /* machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
         machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
-        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));*/
 
         /*jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
         jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
@@ -139,7 +139,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
 
-        //ArrayList<MachineStats> machineStats = new ArrayList<>();
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        for (Map.Entry<String, Machine> entry : machines.entrySet()) machineStats.add(new MachineStats(entry.getValue()));
         ArrayList<JobStats> jobStats = new ArrayList<>();
         for (Map.Entry<String, Job> entry : jobs.entrySet()) jobStats.add(new JobStats(entry.getValue()));
         //ArrayList<OperationStats> operationStats = new ArrayList<>();
@@ -164,6 +165,18 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                 jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
                 jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
                 jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completiondate"));
+            }
+
+            HashMap<Machine, HashMap<String, Object>> machineValues = evaluator.calculateMachineStatValues();
+            for(MachineStats mStat : result.getMachineStats()) {
+                mStat.utilisationPercent.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_percent"));
+                mStat.utilisationTime.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_time"));
+                mStat.repairCost.addValue((double)machineValues.get(mStat.getMachine()).get("repair_cost"));
+                mStat.operationalCost.addValue((double)machineValues.get(mStat.getMachine()).get("operational_cost"));
+                mStat.breakdownsTotalDowntime.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_downtime"));
+                mStat.breakdownsOccurrence.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_occurrence"));
+                mStat.breakdownsPercent.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_percent"));
+                mStat.idleTime.addValue((double)machineValues.get(mStat.getMachine()).get("idle_time_absolute"));
             }
 
 
@@ -223,7 +236,9 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     machineObj.getString("id"),
                     machineObj.getDouble("breakdown_probability"),
                     machineObj.getDouble("mean"),
-                    machineObj.getDouble("standard_deviation"));
+                    machineObj.getDouble("standard_deviation"),
+                    machineObj.getDouble("repair_cost_per_time"),
+                    machineObj.getDouble("cost_per_time"));
             machines.put(machineObj.getString("id"), machine);
         }
         return machines;

@@ -2,6 +2,7 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import net.gruppe4.DiscreteEventSimulation.evaluation.JobStats;
 import net.gruppe4.DiscreteEventSimulation.evaluation.LogEvaluator;
+import net.gruppe4.DiscreteEventSimulation.evaluation.MachineStats;
 import net.gruppe4.DiscreteEventSimulation.evaluation.StatisticalValues;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +18,9 @@ class SimulationTest {
 
     @Test
     void testSimulationCoreWithoutDependencies() {
-        Machine mA = new Machine("A", 0.2, 4., 2.);
-        Machine mB = new Machine("B", 0.0, 5., 2.);
-        Machine mC = new Machine("C", 0.0, 5., 2.);
+        Machine mA = new Machine("A", 0.2, 4., 2., 4., 3.);
+        Machine mB = new Machine("B", 0.0, 5., 2., 2., 2.);
+        Machine mC = new Machine("C", 0.0, 5., 2., 2., 3.);
 
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
@@ -60,9 +61,9 @@ class SimulationTest {
 
     @Test
     void testLogEvaluator() {
-        Machine mA = new Machine("A", 0.0, 4., 2.);
-        Machine mB = new Machine("B", 0.2, 5., 2.);
-        Machine mC = new Machine("C", 0.2, 5., 2.);
+        Machine mA = new Machine("A", 0.0, 4., 2., 3., 4.);
+        Machine mB = new Machine("B", 0.2, 5., 2., 2., 3.);
+        Machine mC = new Machine("C", 0.2, 5., 2., 2.4, 3.);
 
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
@@ -136,16 +137,32 @@ class SimulationTest {
             System.out.println(jStat.toJsonObject().toString());
         }
 
+        var jMachineStats = new ArrayList<MachineStats>();
+        for (Map.Entry<String, Machine> m : machines.entrySet()) jMachineStats.add(new MachineStats(m.getValue()));
+
+        HashMap<Machine, HashMap<String, Object>> machineValues = evaluator.calculateMachineStatValues();
+        for(MachineStats mStat : jMachineStats) {
+            mStat.utilisationPercent.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_percent"));
+            mStat.utilisationTime.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_time"));
+            mStat.repairCost.addValue((double)machineValues.get(mStat.getMachine()).get("repair_cost"));
+            mStat.operationalCost.addValue((double)machineValues.get(mStat.getMachine()).get("operational_cost"));
+            mStat.breakdownsTotalDowntime.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_downtime"));
+            mStat.breakdownsOccurrence.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_occurrence"));
+            mStat.breakdownsPercent.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_percent"));
+            mStat.idleTime.addValue((double)machineValues.get(mStat.getMachine()).get("idle_time_absolute"));
+        }
+        System.out.println(machineValues);
+
 
         assertEquals(3, 3);
     }
 
     @Test
     void simpleIsDoableTest() {
-        Machine mA = new Machine("A", 0.0, 3., 0.5);
-        Machine mB = new Machine("B", 0.0, 5., 2.);
-        Machine mC = new Machine("C", 0., 0., 0.);
-        Machine mD = new Machine("D", 0., 0., 0.);
+        Machine mA = new Machine("A", 0.0, 3., 0.5, 4., 2.);
+        Machine mB = new Machine("B", 0.0, 5., 2., 5., 2.);
+        Machine mC = new Machine("C", 0., 0., 0., 5., 3.);
+        Machine mD = new Machine("D", 0., 0., 0., 4., 2.);
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
         machines.put("B", mB);
@@ -176,8 +193,7 @@ class SimulationTest {
         ArrayList<EventLog> logs = new ArrayList<EventLog>();
         logs.add(log);
         LogEvaluator evaluator = new LogEvaluator(logs);
-        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mB)));
-        System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mB));
+
 
 
         assertEquals(3, 3);

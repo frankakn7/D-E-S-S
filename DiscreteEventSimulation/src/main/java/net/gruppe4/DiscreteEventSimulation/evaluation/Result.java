@@ -59,6 +59,10 @@ public class Result {
         return jobStats;
     }
 
+    public ArrayList<MachineStats> getMachineStats() {
+        return machineStats;
+    }
+
     @Override
     public String toString() {
         return this.toJsonObject().toString();

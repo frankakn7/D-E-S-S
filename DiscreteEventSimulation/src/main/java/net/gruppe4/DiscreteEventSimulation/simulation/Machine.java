@@ -11,13 +11,17 @@ public class Machine {
     private Double brkdwnProb = 0.;
     private Double brkdwnLengthMean;
     private Double brkdwnLengthStandardDeviation;
+    private Double repairCostPerTime;
+    private Double costPerTime;
 
 
     private Random generator;
 
 
-    public Machine(String id, Double brkdwnProb, Double brkdwnLengthMean, Double brkdwnLengthStandardDeviation) {
+    public Machine(String id, Double brkdwnProb, Double brkdwnLengthMean, Double brkdwnLengthStandardDeviation, Double repairCostPerTime, Double costPerTime) {
         this.id = id;
+        this.repairCostPerTime = repairCostPerTime;
+        this.costPerTime = costPerTime;
         this.timeslotQueue = new TimeslotQueue();
         this.brkdwnProb = brkdwnProb;
         this.brkdwnLengthMean = brkdwnLengthMean;
@@ -153,5 +157,13 @@ public class Machine {
 
     public Boolean isTimeSlotQueueEmpty(){
         return this.timeslotQueue.isEmpty();
+    }
+
+    public Double getRepairCostPerTime() {
+        return repairCostPerTime;
+    }
+
+    public Double getCostPerTime() {
+        return costPerTime;
     }
 }
