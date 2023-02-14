@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Button from "../../interface/Button/Button";
 import ListButton from "../../interface/ListButton/ListButton";
 
 import classes from "./Plans.module.css";
@@ -46,9 +47,14 @@ const Plans = (props) => {
                         />
                     ))}
             </div>
-            <Link to="/" className="btn-default-style">
+            <Button
+                onClick={() => {
+                    navigate(`/`);
+                }}
+                className="btn-default-style"
+            >
                 Upload new Plan
-            </Link>
+            </Button>
         </div>
     );
 };

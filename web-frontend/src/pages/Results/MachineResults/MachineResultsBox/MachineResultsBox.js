@@ -68,7 +68,7 @@ const MachineResultsBox = (props) => {
 
     const renderPieChart = (
         <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
+            <PieChart margin={{top:20}}>
                 <defs>
                     <pattern
                         id="idlePattern"

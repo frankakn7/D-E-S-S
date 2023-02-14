@@ -20,14 +20,14 @@ const Tab = (props) => {
 
   const selected = props.newView === props.view;
 
-  return (
-    <Button
-      className={`${!selected ? classes.unselectedTab : ""}`}
-      onClick={onClickHandler}
-    >
-      {props.children}
-    </Button>
-  );
+    return (
+        <Button
+            className={`${classes.tab} ${!selected ? classes.unselectedTab : ""}`}
+            onClick={onClickHandler}
+        >
+            {props.children}
+        </Button>
+    );
 };
 
 const Compare = (props) => {
@@ -52,77 +52,86 @@ const Compare = (props) => {
     const results1 = foundSimCase1 ? JSON.parse(foundSimCase1.results) : {};
     const results2 = foundSimCase2 ? JSON.parse(foundSimCase2.results) : {};
 
-    if(results1.general_stats){
-      results1.machines = results1.machines.map((machine) => {
-          return {operations: results1.operations.filter((op) => op.machine_id === machine.id,), ...machine}
-      })
-      
-      results1.jobs = results1.jobs.map((job) => {
-          return {operations: results1.operations.filter((op) => op.job_id === job.id,), ...job}
-      })}
+        if(results1.general_stats){
+            results1.machines = results1.machines.map((machine) => {
+                return {operations: results1.operations.filter((op) => op.machine_id === machine.id,), ...machine}
+            })
+            
+            results1.jobs = results1.jobs.map((job) => {
+                return {operations: results1.operations.filter((op) => op.job_id === job.id,), ...job}
+            })
+        }
 
-      if(results2.general_stats){
-        results2.machines = results2.machines.map((machine) => {
-            return {operations: results2.operations.filter((op) => op.machine_id === machine.id,), ...machine}
-        })
-        
-        results2.jobs = results2.jobs.map((job) => {
-            return {operations: results2.operations.filter((op) => op.job_id === job.id,), ...job}
-        })}
+        if(results2.general_stats){
+            results2.machines = results2.machines.map((machine) => {
+                return {operations: results2.operations.filter((op) => op.machine_id === machine.id,), ...machine}
+            })
+            
+            results2.jobs = results2.jobs.map((job) => {
+                return {operations: results2.operations.filter((op) => op.job_id === job.id,), ...job}
+            })
+        }
 
-    setSimCase1(foundSimCase1);
-    setSimCase2(foundSimCase2);
-    setResults1(results1);
-    setResults2(results2);
-  }, [props.simCases, id1, id2]);
+        setSimCase1(foundSimCase1);
+        setSimCase2(foundSimCase2);
+        setResults1(results1);
+        setResults2(results2);
+    }, [props.simCases, id1, id2]);
 
-  return (
-    <div className={classes.content}>
-      <div className={classes.top}>
-        <GoBack />
-        <div>
-          {simCase1 && <h2>Comparing Results of Simulation: {simCase1.id}</h2>}
-          {simCase2 && <h2>and: {simCase2.id}</h2>}
-        </div>
-      </div>
-      <div className={classes.tabs}>
-        <Tab setView={setView} view={view} newView={"general"}>
-          General Results
-        </Tab>
-        <Tab setView={setView} view={view} newView={"machines"}>
-          Machines
-        </Tab>
-        <Tab setView={setView} view={view} newView={"jobs"}>
-          Jobs
-        </Tab>
-        <Tab setView={setView} view={view} newView={"operations"}>
-          Operations
-        </Tab>
-      </div>
-      {simCase1 && (
-        <Box className={classes.contentBox} titleClassName={classes.boxTitle}>
-          {view === "general" && (
-            <div>
-                <GeneralCompare results1={results1} results2={results2}/>
+    return (
+        <div className={classes.content}>
+            <div className={classes.top}>
+                <GoBack />
+                <div>
+                    {simCase1 && (
+                        <h2>Comparing Results of Simulation: {simCase1.id}</h2>
+                    )}
+                    {simCase2 && <h2>and: {simCase2.id}</h2>}
+                </div>
             </div>
-          )}
-          {view === "machines" && (
-            <MachineCompare
-            // machines={results1.machines}
-            />
-          )}
-          {view === "jobs" && (
-            // <JobCompare jobs={JSON.parse(simCase1.results).jobs} />
-            <JobCompare />
-          )}
-          {view === "operations" && (
-            <OperationCompare
-            // operations={JSON.parse(simCase1.results).operations}
-            />
-          )}
-        </Box>
-      )}
-    </div>
+            <div className={classes.tabs}>
+                <Tab setView={setView} view={view} newView={"general"}>
+                    General Results
+                </Tab>
+                <Tab setView={setView} view={view} newView={"machines"}>
+                    Machines
+                </Tab>
+                <Tab setView={setView} view={view} newView={"jobs"}>
+                    Jobs
+                </Tab>
+                <Tab setView={setView} view={view} newView={"operations"}>
+                    Operations
+                </Tab>
+            </div>
+            {simCase1 && (
+                <Box
+                    className={classes.contentBox}
+                    titleClassName={classes.boxTitle}
+                >
+                    {view === "general" && (
+                        <GeneralCompare results1={results1} results2={results2}
+                            // generalStats={
+                            //     results1.general_stats
+                            // }
+                        />
+                    )}
+                    {view === "machines" && (
+                        <MachineCompare resultsOne={results1} resultsTwo={results2}
+                            // machines={results1.machines}
+                        />
+                    )}
+                    {view === "jobs" && (
+                        // <JobCompare jobs={JSON.parse(simCase1.results).jobs} />
+                        <JobCompare />
+                    )}
+                    {view === "operations" && (
+                        <OperationCompare
+                            // operations={JSON.parse(simCase1.results).operations}
+                        />
+                    )}
+                </Box>
+            )}
+        </div>
   );
 };
 

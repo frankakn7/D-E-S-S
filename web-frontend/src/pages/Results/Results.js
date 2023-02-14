@@ -18,7 +18,7 @@ const Tab = (props) => {
     const selected = props.newView === props.view;
 
   return (
-    <Button className={`${!selected ? classes.unselectedTab : ""}`} onClick={onClickHandler}>
+    <Button className={`${classes.tab} ${!selected ? classes.unselectedTab : ""}`} onClick={onClickHandler}>
         {props.children}
     </Button>
   )
@@ -49,7 +49,6 @@ const Results = (props) => {
             })
         }
         
-        console.log(results)
         setSimCase(foundSimCase);
         setResults(results)
     }, [props.simCases, id]);

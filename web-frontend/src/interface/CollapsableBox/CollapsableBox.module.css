@@ -22,10 +22,28 @@
     cursor: pointer;
 }
 
+.title .arrowIcon{
+    transition: all 0.2s;
+}
+
+.title:hover .arrowIcon {
+    /* transform: translateY(3px); */
+    transform: scale(1.15);
+    transition: all 0.2s;
+}
+
+.title:active .arrowIcon {
+    /* transform: translateY(3px); */
+    transform: scale(1);
+    transition: all 0.2s;
+}
+
 .content {
     padding: 0.2rem;
 }
 
 .arrowIcon {
     font-size: 1.5rem;
+    transition: all 0.2s;
+
 }

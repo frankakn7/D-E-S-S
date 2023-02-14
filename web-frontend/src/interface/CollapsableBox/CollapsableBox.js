@@ -12,7 +12,7 @@ const CollapsableBox = (props) => {
     <div className={classes.box}>
         <div className={classes.title} onClick={() => {setOpen((prevState) => !prevState)}}>
             <p>{props.titleText}</p>
-            <div className={classes.arrowIcon}>
+            <div className={`${classes.arrowIcon} ${open ? classes.open : ""}`}>
                 {!open && <FontAwesomeIcon icon={faAngleDown} />}
                 {open && <FontAwesomeIcon icon={faAngleUp} />}
             </div>

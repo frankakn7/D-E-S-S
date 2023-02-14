@@ -1,0 +1,7 @@
+.compareMachinesContainer {
+    display: flex;
+}
+
+.half {
+    flex: 1;
+}

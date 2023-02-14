@@ -118,10 +118,11 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
         StatisticalValues exampleFullValuesDifferent = new StatisticalValues(7,3,10,4);
         StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
+        StatisticalValues examplePercentValuesDifferent = new StatisticalValues(0.5,0.1,0.6,0.3);
 
-        machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+        machineStats.add(new MachineStats("A",examplePercentValuesDifferent,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
         machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
-        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+        machineStats.add(new MachineStats("C",examplePercentValuesDifferent,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
 
         jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
         jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
