@@ -11,8 +11,12 @@ import {
 const GeneralCompare = (props) => {
   return (
    <div className={classes.content}>
-      <GeneralResultsGraph results={props.results1}/>
+    <div style={{width:"49%"}}>
+        <GeneralResultsGraph results={props.results1}/>
+    </div>
+    <div style={{width:"49%"}}>
       <GeneralResultsGraph results={props.results2}/>
+    </div>
    </div>
   );
 }

@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f20bfc01-f039-45e8-ba66-a1e6359cc4b5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-frontend/src/pages/Compare/Compare.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-frontend/src/pages/Compare/Compare.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.module.css" afterDir="false" />
-    </list>
+    <list default="true" id="f20bfc01-f039-45e8-ba66-a1e6359cc4b5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +55,7 @@
       <workItem from="1676322946732" duration="220000" />
       <workItem from="1676365896077" duration="21000" />
       <workItem from="1676365920008" duration="628000" />
-      <workItem from="1676373309725" duration="872000" />
+      <workItem from="1676373309725" duration="874000" />
     </task>
     <servers />
   </component>
