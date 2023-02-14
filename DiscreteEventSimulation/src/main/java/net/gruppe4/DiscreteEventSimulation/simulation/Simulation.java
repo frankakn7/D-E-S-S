@@ -177,8 +177,8 @@ public class Simulation {
             Integer firstDate = entry.getValue().getNextEventDate();
             Integer secondDate = entry.getValue().getSecondEventDate();
 
-            if (firstDate != null && firstDate != currentDate) dates.add(firstDate);
-            if (secondDate != null && secondDate != currentDate) dates.add(secondDate);
+            if (firstDate != null && !firstDate.equals(currentDate)) dates.add(firstDate);
+            if (secondDate != null && !secondDate.equals(currentDate)) dates.add(secondDate);
         }
         if (dates.isEmpty()) return null;
 

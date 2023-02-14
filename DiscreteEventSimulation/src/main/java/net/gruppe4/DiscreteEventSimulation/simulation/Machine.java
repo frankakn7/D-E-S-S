@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -117,7 +118,7 @@ public class Machine {
     }
 
     public Boolean rollDiceForBreakdown() {
-        if (this.brkdwnProb == 0.) return false;
+        if (Objects.equals(this.brkdwnProb, 0.)) return false;
 
         if (this.brkdwnProb >= this.generator.nextDouble()) {
             return true;

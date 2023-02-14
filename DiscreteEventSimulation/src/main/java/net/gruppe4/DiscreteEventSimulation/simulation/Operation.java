@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -98,7 +99,7 @@ public class Operation {
     }
 
     public Boolean rollDiceForDurVariation() {
-        if (this.durVariationProb == 0.) return false;
+        if (Objects.equals(this.durVariationProb, 0.)) return false;
 
         if (this.durVariationProb >= this.generator.nextDouble()) {
             return true;

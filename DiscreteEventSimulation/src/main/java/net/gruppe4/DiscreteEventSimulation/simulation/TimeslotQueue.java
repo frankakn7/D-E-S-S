@@ -162,7 +162,7 @@ public class TimeslotQueue {
     public Event pollNextEventIfDate(Integer date) {
         Event event = null;
 
-        if (this.getFirstDate() == date) {
+        if (date.equals(this.getFirstDate())) {
             event = this.pollNextEvent();
         }
 
@@ -172,7 +172,7 @@ public class TimeslotQueue {
     public Event peekEventIfDate(Integer date) {
         Event event = null;
 
-        if (this.getFirstDate() == date) {
+        if (date.equals(this.getFirstDate())) {
             event = this.peekNextEvent();
         }
         return event;
