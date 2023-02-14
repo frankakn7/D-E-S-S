@@ -68,10 +68,10 @@ class SimulationTest {
         machines.put("B", mB);
         machines.put("C", mC);
 
-        Job j1 = new Job("Job1", 13);
-        Job j2 = new Job("Job2", 16);
-        Job j3 = new Job("Job3", 17);
-        Job j4 = new Job("Job4", 14);
+        Job j1 = new Job("Job1", 13, 3.);
+        Job j2 = new Job("Job2", 16, 2.);
+        Job j3 = new Job("Job3", 17, 1.);
+        Job j4 = new Job("Job4", 14, 3.);
         ArrayList<Job> jobs = new ArrayList<Job>();
         jobs.add(j1);
         jobs.add(j2);
@@ -122,10 +122,10 @@ class SimulationTest {
         System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mC));
         System.out.println(jobs);
 
-        var map = evaluator.findLastJobDates(jobs, log);
-        for (Map.Entry<Job, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + " Lateness: " + evaluator.calculateJobLateness(entry.getKey(), entry.getValue()));
-        }
+        // var map = evaluator.findLastJobDates(jobs, log);
+        //for (Map.Entry<Job, Integer> entry : map.entrySet()) {
+//             System.out.println(entry.getKey() + " Lateness: " + evaluator.calculateJobLateness(entry.getKey(), entry.getValue()));
+   //     }
 
 
         // Versuche den Test auszuführen und schau dir die entstehenden Fehler an

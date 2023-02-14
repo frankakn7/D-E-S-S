@@ -4,51 +4,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Result {
-    private HashMap<String, MachineStats> machines;
-    private HashMap<String, JobStats> jobs;
-    private HashMap<String, OperationStats> operations;
+    private ArrayList<MachineStats> machineStats;
+    private ArrayList<JobStats> jobStats;
+    private ArrayList<OperationStats> operationStats;
     private GeneralStats generalStats;
 
-    public Result(HashMap<String, MachineStats> machines, HashMap<String, JobStats> jobs, HashMap<String, OperationStats> operations, GeneralStats generalStats) {
-        this.machines = machines;
-        this.jobs = jobs;
-        this.operations = operations;
+    public Result(ArrayList<MachineStats> machines, ArrayList<JobStats> jobs, ArrayList<OperationStats> operations, GeneralStats generalStats) {
+        this.machineStats = machines;
+        this.jobStats = jobs;
+        this.operationStats = operations;
         this.generalStats = generalStats;
-    }
-
-    public Result(){
-        this.machines = new HashMap<>();
-        this.jobs = new HashMap<>();
-        this.operations = new HashMap<>();
-        this.generalStats = new GeneralStats();
-    }
-
-    public void addMachine(String id, MachineStats machineStats){
-        this.machines.put(id,machineStats);
-    }
-
-    public void addJob(String id, JobStats jobStats){
-        this.jobs.put(id, jobStats);
-    }
-
-    public void addOperation(String id, OperationStats operationStats){
-        this.operations.put(id, operationStats);
-    }
-
-    public HashMap<String, MachineStats> getMachines() {
-        return machines;
-    }
-
-    public HashMap<String, JobStats> getJobs() {
-        return jobs;
-    }
-
-    public HashMap<String, OperationStats> getOperations() {
-        return operations;
     }
 
     public void setGeneralStats(GeneralStats generalStats) {
@@ -66,19 +33,16 @@ public class Result {
         JSONArray operationsJson = new JSONArray();
         JSONObject generalStatsJson = new JSONObject();
 
-        for(Map.Entry<String, MachineStats> entry : this.machines.entrySet()){
-            MachineStats machineStats = entry.getValue();
+        for(MachineStats machineStats : this.machineStats) {
             machinesJson.put(machineStats.toJsonObject());
         }
 
-        for(Map.Entry<String, JobStats> entry : this.jobs.entrySet()){
-            JobStats jobStats = entry.getValue();
+        for(JobStats jobStats : this.jobStats){
             jobsJson.put(jobStats.toJsonObject());
         }
 
-        for(Map.Entry<String, OperationStats> entry : this.operations.entrySet()){
-            OperationStats operationStats = entry.getValue();
-            operationsJson.put(operationStats.toJsonObject());
+        for(OperationStats operation : this.operationStats){
+            operationsJson.put(operation.toJsonObject());
         }
 
         generalStatsJson = this.generalStats.toJsonObject();
@@ -91,9 +55,14 @@ public class Result {
         return resultsJson;
     }
 
+    public ArrayList<JobStats> getJobStats() {
+        return jobStats;
+    }
+
     @Override
     public String toString() {
         return this.toJsonObject().toString();
     }
+
 }
 

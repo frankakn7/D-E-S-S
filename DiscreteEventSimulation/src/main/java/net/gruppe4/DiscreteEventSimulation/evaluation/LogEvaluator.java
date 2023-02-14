@@ -1,11 +1,11 @@
 package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import net.gruppe4.DiscreteEventSimulation.simulation.*;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class LogEvaluator {
     private ArrayList<EventLog> logs;
@@ -77,14 +77,33 @@ public class LogEvaluator {
         return (double)operationDuration - breakdownDuration;
     }
 
-    public Integer calculateJobLateness(Job job, Integer completionDate) {
-        return completionDate - job.dueDate;
+    public HashMap<Job, HashMap<String, Object>> calculateJobStatValues() {
+        HashMap<Job, HashMap<String, Object>> res = new HashMap<Job, HashMap<String, Object>>();
+
+        ListIterator<Event> i = this.log.getArrayList().listIterator(this.log.getArrayList().size());
+        while (i.hasPrevious()) {
+            Event event = i.previous();
+
+            if (event.getEventType() != EventType.OPERATION_END) continue;
+            Operation op = event.getOperation();
+            if (res.containsKey(op.getJob())) continue;
+
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("completiondate", event.getDate());
+            map.put("lateness", ((Integer)map.get("completiondate") - op.getJob().getDueDate()));
+            map.put("latenesscost", ((Double)map.get("lateness") * op.getJob().getCostPerLatenessTime()));
+            res.put(op.getJob(), map);
+
+            if (res.size() == this.jobs.size()) break;
+        }
+
+        return res;
     }
 
     // For single simulation: Returns a HashMap of the finishing dates of every job passed in the arrayList
     // TODO Doesnt work properly since Dependencies are not implemented properly yet, check if it works after implementing them
-    public HashMap<Job, Integer> findLastJobDates() {
-        HashMap<Job, Integer> map = new HashMap<Job, Integer>();
+    public HashMap<Job, Object> findJobCompletionDates() {
+        HashMap<Job, Object> res = new HashMap<Job, Object>();
         ListIterator<Event> i = this.log.getArrayList().listIterator(this.log.getArrayList().size());
 
         while (i.hasPrevious()) {
@@ -92,13 +111,13 @@ public class LogEvaluator {
 
             if (event.getEventType() != EventType.OPERATION_END) continue;
             Operation op = event.getOperation();
-            if (map.containsKey(op.getJob())) continue;
+            if (res.containsKey(op.getJob())) continue;
 
-            map.put(op.getJob(), event.getDate());
+            res.put(op.getJob(), event.getDate());
 
-            if (map.size() == this.jobs.size()) break;
+            if (res.size() == this.jobs.size()) break;
         }
 
-        return map;
+        return res;
     }
 }

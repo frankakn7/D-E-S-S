@@ -142,16 +142,15 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<JobStats> jobStats = new ArrayList<>();
+        for (Job job : jobs) jobStats.add(new JobStats(job));
         ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         //TODO Here results are instantiated
-        //Result result = new Result(machineStats,jobStats,operationStats,generalStats);
-        Result result = new Result();
+        Result result = new Result(machineStats, jobStats, operationStats, generalStats);
 
         //TODO instantiate statistical values for all elements
 
-        JobStats jobStats1 = new JobStats("id1");
-        ArrayList<JobStats> jStats = new ArrayList<JobStats>();
+
 
 
         for (int i = 1; i < numOfSimulations; i++) {
@@ -160,8 +159,13 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             LogEvaluator evaluator = new LogEvaluator(log, machines, operations, null);
 
             //TODO example
-            for(JobStats jStat : jStats) {
-                jobStats1.lateness.addValue();
+
+
+            HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
+            for(JobStats jStat : result.getJobStats()) {
+                jStat.completionTime.addValue((double) jobValues.get(jStat.getJob()).get("completiontime"));
+                jStat.lateness.addValue((double) jobValues.get(jStat.getJob()).get("lateness"));
+                jStat.latenessCost.addValue((double) jobValues.get(jStat.getJob()).get("latenesscost"));
             }
 
 
@@ -202,7 +206,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
             Job job = new Job(
                     jobObj.getString("id"),
-                    jobObj.getInt("duedate")
+                    jobObj.getInt("duedate"),
+                    jobObj.getDouble("costperlatenesstime")
             );
             jobs.add(job);
         }
