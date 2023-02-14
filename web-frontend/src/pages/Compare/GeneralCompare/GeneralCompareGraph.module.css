@@ -1,0 +1,24 @@
+.half {
+    flex: 1;
+}
+
+.graphCompare {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.graphContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

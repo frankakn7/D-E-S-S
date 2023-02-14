@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="f20bfc01-f039-45e8-ba66-a1e6359cc4b5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-frontend/src/pages/Compare/Compare.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-frontend/src/pages/Compare/Compare.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-frontend/src/pages/Compare/GeneralCompare/GeneralCompare.module.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +56,11 @@
       <workItem from="1675759077037" duration="1519000" />
       <workItem from="1675775299180" duration="610000" />
       <workItem from="1675796590404" duration="420000" />
+      <workItem from="1676321279808" duration="1188000" />
+      <workItem from="1676322946732" duration="220000" />
+      <workItem from="1676365896077" duration="21000" />
+      <workItem from="1676365920008" duration="628000" />
+      <workItem from="1676373309725" duration="872000" />
     </task>
     <servers />
   </component>
