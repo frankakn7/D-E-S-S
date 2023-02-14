@@ -72,7 +72,7 @@ public class EventLog {
 
         while (i.hasPrevious()) {
             Event e = i.previous();
-            if (e.getOperation().equals(op)) {
+            if (op == e.getOperation()) {
                 switch (e.getEventType()) {
                     case OPERATION_BEGIN -> { return false; }
                     case OPERATION_END -> { return true; }

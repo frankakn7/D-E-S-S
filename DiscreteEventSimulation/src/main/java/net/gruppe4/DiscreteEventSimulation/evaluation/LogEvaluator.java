@@ -48,7 +48,7 @@ public class LogEvaluator {
             map.put("breakdowns_downtime", (double)(int)machineLogEval.get("breakdownDuration"));
             map.put("breakdowns_occurrence",(double)(int)machineLogEval.get("breakdownOccurence"));
             map.put("breakdowns_percent", (double)map.get("breakdowns_downtime") / machineLogLength);
-            Double idleTime = machineLogLength - machineLogEval.get("operationDuration");
+            Double idleTime = Math.max(machineLogLength - machineLogEval.get("operationDuration"),0);
             map.put("idle_time_absolute", idleTime);
             res.put(entry.getValue(), map);
         }

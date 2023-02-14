@@ -716,7 +716,7 @@ const JobCostChart = (props) => {
 
     return (
         <div className={`${classes.chart} ${props.className}`}>
-            <p>Job Cost</p>
+            <p>Penalty Cost</p>
             {renderJobCostChart}
         </div>
     );
