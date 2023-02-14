@@ -51,6 +51,26 @@ const Compare = (props) => {
         const results1 = (foundSimCase1 ? JSON.parse(foundSimCase1.results) : {})
         const results2 = (foundSimCase2 ? JSON.parse(foundSimCase2.results) : {})
 
+        if(results1.general_stats){
+            results1.machines = results1.machines.map((machine) => {
+                return {operations: results1.operations.filter((op) => op.machine_id === machine.id,), ...machine}
+            })
+            
+            results1.jobs = results1.jobs.map((job) => {
+                return {operations: results1.operations.filter((op) => op.job_id === job.id,), ...job}
+            })
+        }
+
+        if(results2.general_stats){
+            results2.machines = results2.machines.map((machine) => {
+                return {operations: results2.operations.filter((op) => op.machine_id === machine.id,), ...machine}
+            })
+            
+            results2.jobs = results2.jobs.map((job) => {
+                return {operations: results2.operations.filter((op) => op.job_id === job.id,), ...job}
+            })
+        }
+
         setSimCase1(foundSimCase1);
         setSimCase2(foundSimCase2);
         setResults1(results1);
@@ -95,7 +115,7 @@ const Compare = (props) => {
                         />
                     )}
                     {view === "machines" && (
-                        <MachineCompare
+                        <MachineCompare resultsOne={results1} resultsTwo={results2}
                             // machines={results1.machines}
                         />
                     )}
