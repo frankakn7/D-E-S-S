@@ -112,8 +112,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         long startingTime = System.currentTimeMillis();
 
         //TODO Implement test Results
-        /*ArrayList<MachineStats> machineStats = new ArrayList<>();
-        ArrayList<JobStats> jobStats = new ArrayList<>();
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
@@ -124,9 +123,9 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
         machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
 
-        jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
+        /*jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
         jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
-        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));*/
 
         operationStats.add(new OperationStats("op1","A","1",exampleFullValues));
         operationStats.add(new OperationStats("op2","A","2",exampleFullValues));
@@ -136,14 +135,14 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         operationStats.add(new OperationStats("op6","B","3",exampleFullValues));
         operationStats.add(new OperationStats("op7","C","1",exampleFullValues));
         operationStats.add(new OperationStats("op8","C","2",exampleFullValues));
-        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));*/
+        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));
 
         GeneralStats generalStats = new GeneralStats();
 
-        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        //ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<JobStats> jobStats = new ArrayList<>();
         for (Job job : jobs) jobStats.add(new JobStats(job));
-        ArrayList<OperationStats> operationStats = new ArrayList<>();
+        //ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         //TODO Here results are instantiated
         Result result = new Result(machineStats, jobStats, operationStats, generalStats);
