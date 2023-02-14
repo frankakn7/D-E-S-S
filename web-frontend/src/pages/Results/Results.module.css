@@ -40,6 +40,26 @@
     min-width: 6rem;
 }
 
+.tab {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: none;
+}
+
+.tab:hover {
+    /* transform: none; */
+    transform: scale(1.05);
+    box-shadow: none;
+    /* transform:  translateY(-2px); */
+}
+
+.tab:active {
+    /* transform: none; */
+    transform: scale(1);
+    box-shadow: none;
+    /* transform:  translateY(-2px); */
+}
+
 .contentBox {
     margin-top: 0;
 }

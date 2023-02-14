@@ -22,7 +22,7 @@ const Tab = (props) => {
 
     return (
         <Button
-            className={`${!selected ? classes.unselectedTab : ""}`}
+            className={`${classes.tab} ${!selected ? classes.unselectedTab : ""}`}
             onClick={onClickHandler}
         >
             {props.children}
