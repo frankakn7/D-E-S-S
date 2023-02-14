@@ -14,11 +14,11 @@ import MachineCompare from "./MachineCompare/MachineCompare";
 import OperationCompare from "./OperationCompare/OperationCompare";
 
 const Tab = (props) => {
-    const onClickHandler = () => {
-        props.setView(props.newView);
-    };
+  const onClickHandler = () => {
+    props.setView(props.newView);
+  };
 
-    const selected = props.newView === props.view;
+  const selected = props.newView === props.view;
 
     return (
         <Button
@@ -31,25 +31,26 @@ const Tab = (props) => {
 };
 
 const Compare = (props) => {
-    const { id1, id2 } = useParams();
-    const [simCase1, setSimCase1] = useState();
-    const [simCase2, setSimCase2] = useState();
-    const [results1, setResults1] = useState();
-    const [results2, setResults2] = useState();
+  const { id1, id2 } = useParams();
+  const [simCase1, setSimCase1] = useState();
+  const [simCase2, setSimCase2] = useState();
+  const [results1, setResults1] = useState();
+  const [results2, setResults2] = useState();
 
-    const [view, setView] = useState("general");
+  const [view, setView] = useState("general");
 
-    useEffect(() => {
-        const foundSimCase1 = props.simCases.find((simCase) => {
-            return id1 === simCase.id;
-        });
+  useEffect(() => {
+    const foundSimCase1 = props.simCases.find((simCase) => {
+      return id1 === simCase.id;
+    });
 
-        const foundSimCase2 = props.simCases.find((simCase) => {
-            return id2 === simCase.id;
-        });
+    const foundSimCase2 = props.simCases.find((simCase) => {
+      return id2 === simCase.id;
+      
+    });
 
-        const results1 = (foundSimCase1 ? JSON.parse(foundSimCase1.results) : {})
-        const results2 = (foundSimCase2 ? JSON.parse(foundSimCase2.results) : {})
+    const results1 = foundSimCase1 ? JSON.parse(foundSimCase1.results) : {};
+    const results2 = foundSimCase2 ? JSON.parse(foundSimCase2.results) : {};
 
         if(results1.general_stats){
             results1.machines = results1.machines.map((machine) => {
@@ -108,7 +109,7 @@ const Compare = (props) => {
                     titleClassName={classes.boxTitle}
                 >
                     {view === "general" && (
-                        <GeneralCompare
+                        <GeneralCompare results1={results1} results2={results2}
                             // generalStats={
                             //     results1.general_stats
                             // }
@@ -131,7 +132,7 @@ const Compare = (props) => {
                 </Box>
             )}
         </div>
-    );
+  );
 };
 
 export default Compare;
