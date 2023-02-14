@@ -126,7 +126,7 @@ public class Machine {
     }
 
     public Integer rollDiceForBreakdownLength() {
-        Integer res = (int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
+        Integer res = Math.max((int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation)),1);
         //System.out.println(res);
         return res;
     }

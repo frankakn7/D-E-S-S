@@ -104,8 +104,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         //TODO Get Machines in Hashmap from JSON
         JSONObject planJsonObj = new JSONObject(simCase.getPlan().getPlanJson());
         HashMap<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
-        ArrayList<Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines);
-        ArrayList<Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
+        HashMap<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
+        ArrayList<Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines, jobs);
 
         simStatus.setState("running");
 
@@ -137,11 +137,11 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         operationStats.add(new OperationStats("op8","C","2",exampleFullValues));
         operationStats.add(new OperationStats("op9","C","3",exampleFullValues));
 
-        GeneralStats generalStats = new GeneralStats();
+        GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
 
         //ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<JobStats> jobStats = new ArrayList<>();
-        for (Job job : jobs) jobStats.add(new JobStats(job));
+        for (Map.Entry<String, Job> entry : jobs.entrySet()) jobStats.add(new JobStats(entry.getValue()));
         //ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         //TODO Here results are instantiated
@@ -151,14 +151,13 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
 
 
-
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
             EventLog log = sim.runSim();
-            LogEvaluator evaluator = new LogEvaluator(log, machines, operations, null);
+            ArrayList<Job> jobList = new ArrayList<Job>(jobs.values());
+            LogEvaluator evaluator = new LogEvaluator(log, machines, operations, jobList);
 
             //TODO example
-
 
             HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
             for(JobStats jStat : result.getJobStats()) {
@@ -183,6 +182,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         //TODO return results
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
+        System.out.println(result);
 
         setResultsAndSave(simCaseUuid, result.toString());
     }
@@ -198,8 +198,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return jobs;
     }*/
 
-    private ArrayList<Job> extractJobs(JSONArray jobsJson){
-        ArrayList<Job> jobs = new ArrayList<>();
+    private HashMap<String, Job> extractJobs(JSONArray jobsJson){
+        HashMap<String, Job> jobs = new HashMap<>();
         for(int i = 0; i < jobsJson.length(); i++){
             JSONObject jobObj = jobsJson.getJSONObject(i);
 
@@ -209,7 +209,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     jobObj.getInt("due_date"),
                     jobObj.getDouble("cost_per_lateness_time")
             );
-            jobs.add(job);
+            jobs.put(job.getId(),job);
         }
         return jobs;
     }
@@ -230,7 +230,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
     }
 
     //private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Job> jobs, Map<String, Machine> machines) {
-    private ArrayList<Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines) {
+    private ArrayList<Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines, Map<String, Job> jobs) {
         //<Operation ID, Operation>
         Map<String, Operation> operations = new HashMap<>();
         //<Operation ID, Machine Predecessor Operation ID>
@@ -245,14 +245,12 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     operationObj.getString("id"),
                     null,
                     null,
-                    //operationObj.getInt("release_date"),
-                    0,
-                    //jobs.get(operationObj.getString("job_id")),
+                    operationObj.getInt("release_date"),
                     operationObj.getInt("duration"),
                     machines.get(operationObj.getString("machine_id")),
-                    // TODO Read the following duration variation values from json
-                    0.,
-                    0.
+                    jobs.get(operationObj.getString("job_id")),
+                    operationObj.getDouble("duration_variation_probability"),
+                    operationObj.getDouble("duration_standard_deviation")
             );
             //Check if is null (error if not checked)
             String machinePredId = operationObj.isNull("machine_pred") ? null : operationObj.getString("machine_pred");

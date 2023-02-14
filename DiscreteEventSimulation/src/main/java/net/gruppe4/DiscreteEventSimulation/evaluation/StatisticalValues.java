@@ -2,6 +2,8 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 public class StatisticalValues {
     private double mean;
     private double min;
@@ -73,11 +75,12 @@ public class StatisticalValues {
     }
 
     public JSONObject toJsonObject() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
         JSONObject statJsonObj = new JSONObject();
-        statJsonObj.put("mean", this.mean);
-        statJsonObj.put("min", this.min);
-        statJsonObj.put("max", this.max);
-        statJsonObj.put("variance", this.variance);
+        statJsonObj.put("mean", decimalFormat.format(this.mean));
+        statJsonObj.put("min", decimalFormat.format(this.min));
+        statJsonObj.put("max", decimalFormat.format(this.max));
+        statJsonObj.put("variance", decimalFormat.format(this.variance));
         return statJsonObj;
     }
 }
