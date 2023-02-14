@@ -162,9 +162,9 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
             HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
             for(JobStats jStat : result.getJobStats()) {
-                jStat.completionTime.addValue((double) jobValues.get(jStat.getJob()).get("completiontime"));
-                jStat.lateness.addValue((double) jobValues.get(jStat.getJob()).get("lateness"));
-                jStat.latenessCost.addValue((double) jobValues.get(jStat.getJob()).get("latenesscost"));
+                jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
+                jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
+                jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completiondate"));
             }
 
 

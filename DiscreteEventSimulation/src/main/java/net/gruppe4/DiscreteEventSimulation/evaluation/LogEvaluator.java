@@ -88,10 +88,11 @@ public class LogEvaluator {
             Operation op = event.getOperation();
             if (res.containsKey(op.getJob())) continue;
 
+            // TODO Fix up this mess wtf
             HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("completiondate", event.getDate());
-            map.put("lateness", ((Integer)map.get("completiondate") - op.getJob().getDueDate()));
-            map.put("latenesscost", ((Double)map.get("lateness") * op.getJob().getCostPerLatenessTime()));
+            map.put("completiondate", (double)(int)event.getDate());
+            map.put("lateness", (double)((double)map.get("completiondate") - (double) op.getJob().getDueDate()));
+            map.put("latenesscost", (double)map.get("lateness") * op.getJob().getCostPerLatenessTime());
             res.put(op.getJob(), map);
 
             if (res.size() == this.jobs.size()) break;

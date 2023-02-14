@@ -4,7 +4,7 @@ public class Job {
     public String id;
     private Integer releaseDate;
     private Integer dueDate;
-    private Double costPerLatenessTime;
+     Double costPerLatenessTime;
 
     public Job(String id, Integer dueDate, Double costPerLatenessTime) {
         this.id = id;

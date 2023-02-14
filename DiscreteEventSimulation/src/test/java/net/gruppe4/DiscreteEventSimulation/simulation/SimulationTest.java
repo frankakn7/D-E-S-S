@@ -1,5 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
+import net.gruppe4.DiscreteEventSimulation.evaluation.JobStats;
 import net.gruppe4.DiscreteEventSimulation.evaluation.LogEvaluator;
 import net.gruppe4.DiscreteEventSimulation.evaluation.StatisticalValues;
 import org.junit.jupiter.api.Test;
@@ -116,19 +117,26 @@ class SimulationTest {
         System.out.println(log);
 
         ArrayList<EventLog> logs = new ArrayList<EventLog>();
-        logs.add(log);
-        LogEvaluator evaluator = new LogEvaluator(logs);
-        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mC)));
-        System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mC));
-        System.out.println(jobs);
+        LogEvaluator evaluator = new LogEvaluator(log, machines, ops, jobs);
 
-        // var map = evaluator.findLastJobDates(jobs, log);
-        //for (Map.Entry<Job, Integer> entry : map.entrySet()) {
-//             System.out.println(entry.getKey() + " Lateness: " + evaluator.calculateJobLateness(entry.getKey(), entry.getValue()));
-   //     }
+        var jStats = new ArrayList<JobStats>();
+        for (Job j : jobs) jStats.add(new JobStats(j));
+        HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
+        //System.out.println(jobValues.get(jStats.get(0).getJob()));
+        for(JobStats jStat : jStats) {
+            /*
+            jStat.completionTime.addValue((double) jobValues.get(jStat.getJob()).get("completiontime"));
+            jStat.lateness.addValue((double) jobValues.get(jStat.getJob()).get("lateness"));
+            jStat.latenessCost.addValue((double) jobValues.get(jStat.getJob()).get("latenesscost"));
+            */
+            //System.out.println(jobValues.get(jStat));
+            jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
+            jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
+            jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completiondate"));
+            System.out.println(jStat.toJsonObject().toString());
+        }
 
 
-        // Versuche den Test auszuführen und schau dir die entstehenden Fehler an
         assertEquals(3, 3);
     }
 
@@ -170,6 +178,7 @@ class SimulationTest {
         LogEvaluator evaluator = new LogEvaluator(logs);
         System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mB)));
         System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mB));
+
 
         assertEquals(3, 3);
     }
