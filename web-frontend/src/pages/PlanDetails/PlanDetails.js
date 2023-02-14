@@ -33,28 +33,7 @@ const PlanDetails = (props) => {
     const handleSimulate = (planId) => {
         props
             .planSimulateHandler(planId)
-            .then((simCaseId) => checkIfDone(simCaseId))
-            .catch((error) => {throw Error(error)});
-    };
-
-    const checkIfDone = (simId) => {
-        props
-            .getSimCaseStatusHandler(simId)
-            .then((result) => {
-                if (result.state === "done") {
-                    console.log("done");
-                    props
-                        .getSimCaseResultHandler(simId)
-                        .then((response) => navigate(`/results/${simId}`))
-                        .catch((error) => {throw Error(error)});
-                } else {
-                    console.log("not done");
-                    const timer = setTimeout(() => {
-                        checkIfDone(simId);
-                        clearTimeout(timer);
-                    }, 1000);
-                }
-            })
+            .then((simCaseId) => props.checkIfDoneHandler(simCaseId, () => navigate(`/results/${simCaseId}`)))
             .catch((error) => {throw Error(error)});
     };
 

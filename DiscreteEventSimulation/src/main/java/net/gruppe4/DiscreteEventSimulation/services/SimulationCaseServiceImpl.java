@@ -203,10 +203,11 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         for(int i = 0; i < jobsJson.length(); i++){
             JSONObject jobObj = jobsJson.getJSONObject(i);
 
+            //TODO add release time
             Job job = new Job(
                     jobObj.getString("id"),
-                    jobObj.getInt("duedate"),
-                    jobObj.getDouble("costperlatenesstime")
+                    jobObj.getInt("due_date"),
+                    jobObj.getDouble("cost_per_lateness_time")
             );
             jobs.add(job);
         }
@@ -217,7 +218,12 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         HashMap<String, Machine> machines = new HashMap<>();
         for (int i = 0; i < machinesJson.length(); i++) {
             JSONObject machineObj = machinesJson.getJSONObject(i);
-            Machine machine = new Machine(machineObj.getString("id"), machineObj.getDouble("breakdown_probability"), machineObj.getDouble("mean"), machineObj.getDouble("standard_deviation"));
+            //TODO add statistical values from json
+            Machine machine = new Machine(
+                    machineObj.getString("id"),
+                    machineObj.getDouble("breakdown_probability"),
+                    machineObj.getDouble("mean"),
+                    machineObj.getDouble("standard_deviation"));
             machines.put(machineObj.getString("id"), machine);
         }
         return machines;
