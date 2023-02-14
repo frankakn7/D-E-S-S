@@ -49,30 +49,9 @@ const Dashboard = (props) => {
         props.planUploadHandler(newPlan).then((newPlanId) =>
             props
                 .planSimulateHandler(newPlanId)
-                .then((simCaseId) => checkIfDone(simCaseId))
+                .then((simCaseId) => props.checkIfDoneHandler(simCaseId, () => navigate(`/results/${simCaseId}`)))
                 .catch((error) => console.log(error))
         );
-    };
-
-    const checkIfDone = (simId) => {
-        props
-            .getSimCaseStatusHandler(simId)
-            .then((result) => {
-                if (result.state === "done") {
-                    console.log("done");
-                    props
-                        .getSimCaseResultHandler(simId)
-                        .then((response) => navigate(`/results/${simId}`))
-                        .catch((error) => console.log(error));
-                } else {
-                    console.log("not done");
-                    const timer = setTimeout(() => {
-                        checkIfDone(simId);
-                        clearTimeout(timer);
-                    }, 1000);
-                }
-            })
-            .catch((error) => console.log(error));
     };
 
     const handleDrag = function (e) {

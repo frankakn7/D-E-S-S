@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -10,13 +11,17 @@ public class Machine {
     private Double brkdwnProb = 0.;
     private Double brkdwnLengthMean;
     private Double brkdwnLengthStandardDeviation;
+    private Double repairCostPerTime;
+    private Double costPerTime;
 
 
     private Random generator;
 
 
-    public Machine(String id, Double brkdwnProb, Double brkdwnLengthMean, Double brkdwnLengthStandardDeviation) {
+    public Machine(String id, Double brkdwnProb, Double brkdwnLengthMean, Double brkdwnLengthStandardDeviation, Double repairCostPerTime, Double costPerTime) {
         this.id = id;
+        this.repairCostPerTime = repairCostPerTime;
+        this.costPerTime = costPerTime;
         this.timeslotQueue = new TimeslotQueue();
         this.brkdwnProb = brkdwnProb;
         this.brkdwnLengthMean = brkdwnLengthMean;
@@ -117,7 +122,7 @@ public class Machine {
     }
 
     public Boolean rollDiceForBreakdown() {
-        if (this.brkdwnProb == 0.) return false;
+        if (Objects.equals(this.brkdwnProb, 0.)) return false;
 
         if (this.brkdwnProb >= this.generator.nextDouble()) {
             return true;
@@ -126,7 +131,7 @@ public class Machine {
     }
 
     public Integer rollDiceForBreakdownLength() {
-        Integer res = (int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation));
+        Integer res = Math.max((int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation)),1);
         //System.out.println(res);
         return res;
     }
@@ -152,5 +157,13 @@ public class Machine {
 
     public Boolean isTimeSlotQueueEmpty(){
         return this.timeslotQueue.isEmpty();
+    }
+
+    public Double getRepairCostPerTime() {
+        return repairCostPerTime;
+    }
+
+    public Double getCostPerTime() {
+        return costPerTime;
     }
 }

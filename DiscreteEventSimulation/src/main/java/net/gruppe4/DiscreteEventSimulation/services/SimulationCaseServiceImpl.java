@@ -5,11 +5,11 @@ import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository;
-import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
-import net.gruppe4.DiscreteEventSimulation.simulation.Simulation;
+import net.gruppe4.DiscreteEventSimulation.simulation.*;
 /*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Machine;*/
-import net.gruppe4.DiscreteEventSimulation.simulation.Operation;
+import org.apache.juli.logging.Log;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,15 +104,15 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         //TODO Get Machines in Hashmap from JSON
         JSONObject planJsonObj = new JSONObject(simCase.getPlan().getPlanJson());
         HashMap<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
-        ArrayList<Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines);
+        HashMap<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
+        ArrayList<Operation> operations = extractOperations(planJsonObj.getJSONArray("operations"), machines, jobs);
 
         simStatus.setState("running");
 
         long startingTime = System.currentTimeMillis();
 
         //TODO Implement test Results
-        ArrayList<MachineStats> machineStats = new ArrayList<>();
-        ArrayList<JobStats> jobStats = new ArrayList<>();
+        //ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<OperationStats> operationStats = new ArrayList<>();
 
         StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
@@ -120,13 +120,13 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
         StatisticalValues examplePercentValuesDifferent = new StatisticalValues(0.5,0.1,0.6,0.3);
 
-        machineStats.add(new MachineStats("A",examplePercentValuesDifferent,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+       /* machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
         machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
-        machineStats.add(new MachineStats("C",examplePercentValuesDifferent,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
+        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));*/
 
-        jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
+        /*jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
         jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
-        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));
+        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));*/
 
         operationStats.add(new OperationStats("op1","A","1",exampleFullValues));
         operationStats.add(new OperationStats("op2","A","2",exampleFullValues));
@@ -140,10 +140,47 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
 
+        ArrayList<MachineStats> machineStats = new ArrayList<>();
+        for (Map.Entry<String, Machine> entry : machines.entrySet()) machineStats.add(new MachineStats(entry.getValue()));
+        ArrayList<JobStats> jobStats = new ArrayList<>();
+        for (Map.Entry<String, Job> entry : jobs.entrySet()) jobStats.add(new JobStats(entry.getValue()));
+        //ArrayList<OperationStats> operationStats = new ArrayList<>();
+
         //TODO Here results are instantiated
-        Result result = new Result(machineStats,jobStats,operationStats,generalStats);
+        Result result = new Result(machineStats, jobStats, operationStats, generalStats);
+
+        //TODO instantiate statistical values for all elements
+
+
+
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
+            EventLog log = sim.runSim();
+            ArrayList<Job> jobList = new ArrayList<Job>(jobs.values());
+            LogEvaluator evaluator = new LogEvaluator(log, machines, operations, jobList);
+
+            //TODO example
+
+            HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
+            for(JobStats jStat : result.getJobStats()) {
+                jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
+                jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
+                jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completiondate"));
+            }
+
+            HashMap<Machine, HashMap<String, Object>> machineValues = evaluator.calculateMachineStatValues();
+            for(MachineStats mStat : result.getMachineStats()) {
+                mStat.utilisationPercent.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_percent"));
+                mStat.utilisationTime.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_time"));
+                mStat.repairCost.addValue((double)machineValues.get(mStat.getMachine()).get("repair_cost"));
+                mStat.operationalCost.addValue((double)machineValues.get(mStat.getMachine()).get("operational_cost"));
+                mStat.breakdownsTotalDowntime.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_downtime"));
+                mStat.breakdownsOccurrence.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_occurrence"));
+                mStat.breakdownsPercent.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_percent"));
+                mStat.idleTime.addValue((double)machineValues.get(mStat.getMachine()).get("idle_time_absolute"));
+            }
+
+
             //result = sim.runSim();
             simStatus.setProgress(i);
             /*try {
@@ -159,6 +196,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         //TODO return results
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
+        System.out.println(result);
 
         setResultsAndSave(simCaseUuid, result.toString());
     }
@@ -174,18 +212,41 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return jobs;
     }*/
 
+    private HashMap<String, Job> extractJobs(JSONArray jobsJson){
+        HashMap<String, Job> jobs = new HashMap<>();
+        for(int i = 0; i < jobsJson.length(); i++){
+            JSONObject jobObj = jobsJson.getJSONObject(i);
+
+            //TODO add release time
+            Job job = new Job(
+                    jobObj.getString("id"),
+                    jobObj.getInt("due_date"),
+                    jobObj.getDouble("cost_per_lateness_time")
+            );
+            jobs.put(job.getId(),job);
+        }
+        return jobs;
+    }
+
     private HashMap<String, Machine> extractMachines(JSONArray machinesJson) {
         HashMap<String, Machine> machines = new HashMap<>();
         for (int i = 0; i < machinesJson.length(); i++) {
             JSONObject machineObj = machinesJson.getJSONObject(i);
-            Machine machine = new Machine(machineObj.getString("id"), machineObj.getDouble("breakdown_probability"), machineObj.getDouble("mean"), machineObj.getDouble("standard_deviation"));
+            //TODO add statistical values from json
+            Machine machine = new Machine(
+                    machineObj.getString("id"),
+                    machineObj.getDouble("breakdown_probability"),
+                    machineObj.getDouble("mean"),
+                    machineObj.getDouble("standard_deviation"),
+                    machineObj.getDouble("repair_cost_per_time"),
+                    machineObj.getDouble("cost_per_time"));
             machines.put(machineObj.getString("id"), machine);
         }
         return machines;
     }
 
     //private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Job> jobs, Map<String, Machine> machines) {
-    private ArrayList<Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines) {
+    private ArrayList<Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines, Map<String, Job> jobs) {
         //<Operation ID, Operation>
         Map<String, Operation> operations = new HashMap<>();
         //<Operation ID, Machine Predecessor Operation ID>
@@ -200,14 +261,12 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                     operationObj.getString("id"),
                     null,
                     null,
-                    //operationObj.getInt("release_date"),
-                    0,
-                    //jobs.get(operationObj.getString("job_id")),
+                    operationObj.getInt("release_date"),
                     operationObj.getInt("duration"),
                     machines.get(operationObj.getString("machine_id")),
-                    // TODO Read the following duration variation values from json
-                    0.,
-                    0.
+                    jobs.get(operationObj.getString("job_id")),
+                    operationObj.getDouble("duration_variation_probability"),
+                    operationObj.getDouble("duration_standard_deviation")
             );
             //Check if is null (error if not checked)
             String machinePredId = operationObj.isNull("machine_pred") ? null : operationObj.getString("machine_pred");

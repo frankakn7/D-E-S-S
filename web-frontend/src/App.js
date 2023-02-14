@@ -26,7 +26,7 @@ function App() {
         baseUrl,
         setPlans
     );
-    const { handleGetSimCase, handleGetSimStatus } = useApiSimCaseHandler(
+    const { handleGetSimCase, handleGetSimStatus, checkIfDone } = useApiSimCaseHandler(
         baseUrl,
         setSimCases
     );
@@ -73,6 +73,7 @@ function App() {
                                         getSimCaseResultHandler={
                                             handleGetSimCase
                                         }
+                                        checkIfDoneHandler={checkIfDone}
                                     />
                                 }
                             />
@@ -108,6 +109,7 @@ function App() {
                                         getSimCaseResultHandler={
                                             handleGetSimCase
                                         }
+                                        checkIfDoneHandler={checkIfDone}
                                     />
                                 }
                             />

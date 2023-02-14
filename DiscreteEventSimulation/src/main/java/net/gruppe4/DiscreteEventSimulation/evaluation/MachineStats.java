@@ -1,30 +1,32 @@
 package net.gruppe4.DiscreteEventSimulation.evaluation;
 
+import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import org.json.JSONObject;
 
 public class MachineStats {
-    private String id;
-    private StatisticalValues utilisationPercent;
-    private StatisticalValues utilisationTime;
-    private StatisticalValues idleTime;
-    private StatisticalValues operationalCost;
-    private StatisticalValues repairCost;
-    private StatisticalValues breakdownsDowntimePerBreakdown;
-    private StatisticalValues breakdownsOccurrence;
-    private StatisticalValues breakdownsPercent;
-    private StatisticalValues breakdownsTotalDowntime;
+    Machine machine;
+    public StatisticalValues utilisationPercent;
+    public StatisticalValues utilisationTime;
+    public StatisticalValues idleTime;
+    public StatisticalValues operationalCost;
+    public StatisticalValues repairCost;
+    public StatisticalValues breakdownsDowntimePerBreakdown;
+    public StatisticalValues breakdownsOccurrence;
+    public StatisticalValues breakdownsPercent;
+    public StatisticalValues breakdownsTotalDowntime;
 
-    public MachineStats(String id, StatisticalValues utilisationPercent, StatisticalValues utilisationTime, StatisticalValues idleTime, StatisticalValues operationalCost, StatisticalValues repairCost, StatisticalValues breakdownsDowntimePerBreakdown, StatisticalValues breakdownsOccurrence, StatisticalValues breakdownsPercent, StatisticalValues breakdownsTotalDowntime) {
-        this.id = id;
-        this.utilisationPercent = utilisationPercent;
-        this.utilisationTime = utilisationTime;
-        this.idleTime = idleTime;
-        this.operationalCost = operationalCost;
-        this.repairCost = repairCost;
-        this.breakdownsDowntimePerBreakdown = breakdownsDowntimePerBreakdown;
-        this.breakdownsOccurrence = breakdownsOccurrence;
-        this.breakdownsPercent = breakdownsPercent;
-        this.breakdownsTotalDowntime = breakdownsTotalDowntime;
+
+    public MachineStats(Machine machine) {
+        this.machine = machine;
+        this.utilisationPercent = new StatisticalValues();
+        this.utilisationTime = new StatisticalValues();
+        this.idleTime = new StatisticalValues();
+        this.operationalCost = new StatisticalValues();
+        this.repairCost = new StatisticalValues();
+        this.breakdownsDowntimePerBreakdown = new StatisticalValues();
+        this.breakdownsOccurrence = new StatisticalValues();
+        this.breakdownsPercent = new StatisticalValues();
+        this.breakdownsTotalDowntime = new StatisticalValues();
     }
 
     /**
@@ -102,12 +104,16 @@ public class MachineStats {
         JSONObject operationalCostJson = this.operationalCost.toJsonObject();
         JSONObject repairCostJson = this.repairCost.toJsonObject();
 
-        machineJson.put("id", this.id);
+        machineJson.put("id", this.machine.getId());
         machineJson.put("utilisation", utilisationJson);
         machineJson.put("breakdowns", breakdownsJson);
         machineJson.put("operational_cost", operationalCostJson);
         machineJson.put("repair_cost", repairCostJson);
 
         return machineJson;
+    }
+
+    public Machine getMachine() {
+        return machine;
     }
 }

@@ -15,6 +15,13 @@ public class OperationStats {
         this.length = length;
     }
 
+    public OperationStats(String id, String machineId, String jobId) {
+        this.id = id;
+        this.machineId = machineId;
+        this.jobId = jobId;
+        this.length = new StatisticalValues();
+    }
+
     /**
      * @return {
      * "id": "op1",

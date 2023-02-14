@@ -13,6 +13,12 @@ public class GeneralStats {
         this.totalRessourceUtilization = totalRessourceUtilization;
     }
 
+    public GeneralStats() {
+        this.totalCompletionTime = new StatisticalValues();
+        this.totalCost = new StatisticalValues();
+        this.totalRessourceUtilization = new StatisticalValues();
+    }
+
     /**
      * @return "general_stats": {
      * "total_completion_time": {

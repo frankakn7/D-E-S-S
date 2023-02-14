@@ -1,6 +1,7 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -27,7 +28,7 @@ public class Operation {
 
     public Operation(String id, Operation machineQueuePredecessor,
                      ArrayList<Operation> conditionalPredecessors,
-                     Integer releaseDate, Integer duration, Machine machine,
+                     Integer releaseDate, Integer duration, Machine machine, Job job,
                      Double durVariationProb, Double durStandardDeviation) {
         this.id = id;
         this.conditionalPredecessors = conditionalPredecessors;
@@ -35,6 +36,7 @@ public class Operation {
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.machine = machine;
+        this.job = job;
         this.durVariationProb = durVariationProb;
         this.durStandardDeviation = durStandardDeviation;
         this.generator = new Random();
@@ -97,7 +99,7 @@ public class Operation {
     }
 
     public Boolean rollDiceForDurVariation() {
-        if (this.durVariationProb == 0.) return false;
+        if (Objects.equals(this.durVariationProb, 0.)) return false;
 
         if (this.durVariationProb >= this.generator.nextDouble()) {
             return true;
@@ -108,7 +110,7 @@ public class Operation {
     // Returns full length, not only variation
     // TODO rename, sounds too much like the method above
     public Integer rollDiceForVariationDur() {
-        Integer res = (int)Math.round((generator.nextGaussian(this.duration, this.durStandardDeviation)));
+        Integer res = Math.max((int)Math.round((generator.nextGaussian(this.duration, this.durStandardDeviation))),1);
         return res;
     }
 

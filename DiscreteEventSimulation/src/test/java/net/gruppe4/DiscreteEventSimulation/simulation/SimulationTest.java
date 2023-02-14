@@ -1,6 +1,8 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
+import net.gruppe4.DiscreteEventSimulation.evaluation.JobStats;
 import net.gruppe4.DiscreteEventSimulation.evaluation.LogEvaluator;
+import net.gruppe4.DiscreteEventSimulation.evaluation.MachineStats;
 import net.gruppe4.DiscreteEventSimulation.evaluation.StatisticalValues;
 import org.junit.jupiter.api.Test;
 
@@ -16,9 +18,9 @@ class SimulationTest {
 
     @Test
     void testSimulationCoreWithoutDependencies() {
-        Machine mA = new Machine("A", 0.2, 4., 2.);
-        Machine mB = new Machine("B", 0.0, 5., 2.);
-        Machine mC = new Machine("C", 0.0, 5., 2.);
+        Machine mA = new Machine("A", 0.2, 4., 2., 4., 3.);
+        Machine mB = new Machine("B", 0.0, 5., 2., 2., 2.);
+        Machine mC = new Machine("C", 0.0, 5., 2., 2., 3.);
 
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
@@ -59,19 +61,19 @@ class SimulationTest {
 
     @Test
     void testLogEvaluator() {
-        Machine mA = new Machine("A", 0.0, 4., 2.);
-        Machine mB = new Machine("B", 0.2, 5., 2.);
-        Machine mC = new Machine("C", 0.2, 5., 2.);
+        Machine mA = new Machine("A", 0.0, 4., 2., 3., 4.);
+        Machine mB = new Machine("B", 0.2, 5., 2., 2., 3.);
+        Machine mC = new Machine("C", 0.2, 5., 2., 2.4, 3.);
 
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
         machines.put("B", mB);
         machines.put("C", mC);
 
-        Job j1 = new Job("Job1", 13);
-        Job j2 = new Job("Job2", 16);
-        Job j3 = new Job("Job3", 17);
-        Job j4 = new Job("Job4", 14);
+        Job j1 = new Job("Job1", 13, 3.);
+        Job j2 = new Job("Job2", 16, 2.);
+        Job j3 = new Job("Job3", 17, 1.);
+        Job j4 = new Job("Job4", 14, 3.);
         ArrayList<Job> jobs = new ArrayList<Job>();
         jobs.add(j1);
         jobs.add(j2);
@@ -116,28 +118,51 @@ class SimulationTest {
         System.out.println(log);
 
         ArrayList<EventLog> logs = new ArrayList<EventLog>();
-        logs.add(log);
-        LogEvaluator evaluator = new LogEvaluator(logs);
-        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mC)));
-        System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mC));
-        System.out.println(jobs);
+        LogEvaluator evaluator = new LogEvaluator(log, machines, ops, jobs);
 
-        var map = evaluator.findLastJobDates(jobs, log);
-        for (Map.Entry<Job, Integer> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + " Lateness: " + evaluator.calculateJobLateness(entry.getKey(), entry.getValue()));
+        var jStats = new ArrayList<JobStats>();
+        for (Job j : jobs) jStats.add(new JobStats(j));
+        HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
+        //System.out.println(jobValues.get(jStats.get(0).getJob()));
+        for(JobStats jStat : jStats) {
+            /*
+            jStat.completionTime.addValue((double) jobValues.get(jStat.getJob()).get("completiontime"));
+            jStat.lateness.addValue((double) jobValues.get(jStat.getJob()).get("lateness"));
+            jStat.latenessCost.addValue((double) jobValues.get(jStat.getJob()).get("latenesscost"));
+            */
+            //System.out.println(jobValues.get(jStat));
+            jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
+            jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
+            jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completiondate"));
+            System.out.println(jStat.toJsonObject().toString());
         }
 
+        var jMachineStats = new ArrayList<MachineStats>();
+        for (Map.Entry<String, Machine> m : machines.entrySet()) jMachineStats.add(new MachineStats(m.getValue()));
 
-        // Versuche den Test auszuführen und schau dir die entstehenden Fehler an
+        HashMap<Machine, HashMap<String, Object>> machineValues = evaluator.calculateMachineStatValues();
+        for(MachineStats mStat : jMachineStats) {
+            mStat.utilisationPercent.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_percent"));
+            mStat.utilisationTime.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_time"));
+            mStat.repairCost.addValue((double)machineValues.get(mStat.getMachine()).get("repair_cost"));
+            mStat.operationalCost.addValue((double)machineValues.get(mStat.getMachine()).get("operational_cost"));
+            mStat.breakdownsTotalDowntime.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_downtime"));
+            mStat.breakdownsOccurrence.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_occurrence"));
+            mStat.breakdownsPercent.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_percent"));
+            mStat.idleTime.addValue((double)machineValues.get(mStat.getMachine()).get("idle_time_absolute"));
+        }
+        System.out.println(machineValues);
+
+
         assertEquals(3, 3);
     }
 
     @Test
     void simpleIsDoableTest() {
-        Machine mA = new Machine("A", 0.0, 3., 0.5);
-        Machine mB = new Machine("B", 0.0, 5., 2.);
-        Machine mC = new Machine("C", 0., 0., 0.);
-        Machine mD = new Machine("D", 0., 0., 0.);
+        Machine mA = new Machine("A", 0.0, 3., 0.5, 4., 2.);
+        Machine mB = new Machine("B", 0.0, 5., 2., 5., 2.);
+        Machine mC = new Machine("C", 0., 0., 0., 5., 3.);
+        Machine mD = new Machine("D", 0., 0., 0., 4., 2.);
         HashMap<String, Machine> machines = new HashMap<String, Machine>();
         machines.put("A", mA);
         machines.put("B", mB);
@@ -168,8 +193,8 @@ class SimulationTest {
         ArrayList<EventLog> logs = new ArrayList<EventLog>();
         logs.add(log);
         LogEvaluator evaluator = new LogEvaluator(logs);
-        System.out.println(evaluator.calculateAbsoluteMachineUsage(log.getMachineLog(mB)));
-        System.out.println(evaluator.calculateMachineCapacityUtilizationMean(mB));
+
+
 
         assertEquals(3, 3);
     }

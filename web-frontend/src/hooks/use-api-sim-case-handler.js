@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import useHttp from "./use-http";
 
 const useApiSimCaseHandler = (baseUrl, setSimCases) => {
@@ -32,6 +33,7 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
                 method: "GET",
             })
                 .then((response) => {
+                    console.log(response);
                     resolve(response);
                 })
                 .catch((error) => {
@@ -40,7 +42,31 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
         });
     };
 
-    return { handleGetSimCase, handleGetSimStatus };
+    const checkIfDone = (simId, executeIfDone, count=0) => {
+
+        handleGetSimStatus(simId)
+            .then((result) => {
+                if(count > 200){
+                    throw Error("Simulation Timeout")
+                }
+                count++;
+                if (result.state === "done") {
+                    console.log("done");
+                    handleGetSimCase(simId)
+                        .then((response) => executeIfDone())
+                        .catch((error) => console.log(error));
+                } else {
+                    console.log("not done");
+                    const timer = setTimeout(() => {
+                        checkIfDone(simId,executeIfDone,count);
+                        clearTimeout(timer);
+                    }, 1000);
+                }
+            })
+            .catch((error) => console.log(error));
+    };
+
+    return { handleGetSimCase, handleGetSimStatus, checkIfDone };
 };
 
 export default useApiSimCaseHandler;
