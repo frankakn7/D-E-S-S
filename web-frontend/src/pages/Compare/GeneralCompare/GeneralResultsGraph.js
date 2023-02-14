@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import Box from "../../../interface/Box/Box";
 import {
   JobCompletionTimeChart,
   MachineUtilisationBarChart,
   MachineMakespanBarChart
 } from "../../Results/ResultsCharts/ResultsCharts";
 import classes from "./GeneralCompareGraph.module.css";
-import Box from "/Users/matziol/web-app/web-frontend/src/interface/Box/Box.js";
 
 const GeneralResultsGraph = (props) => {
   return (
@@ -16,15 +16,15 @@ const GeneralResultsGraph = (props) => {
     >
       <div className={classes.boxContent}>
         <div className={classes.graphContainer}>
-          <MachineUtilisationBarChart allResults={props.results} />
+          <MachineUtilisationBarChart allResults={props.allResults} />
         </div>
 
         <div className={classes.graphContainer}>
-          <JobCompletionTimeChart allResults={props.results} />
+          <JobCompletionTimeChart allResults={props.allResults} />
         </div>
 
         <div className={classes.graphContainer}>
-            <MachineMakespanBarChart allResults={props.results} />
+            <MachineMakespanBarChart allResults={props.allResults} />
         </div>
 
       </div>
