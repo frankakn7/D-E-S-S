@@ -1,0 +1,10 @@
+.boxContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.graphs {
+    width: 100%;
+}

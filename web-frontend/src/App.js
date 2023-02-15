@@ -135,7 +135,7 @@ function App() {
                             />
                             <Route
                                 path="compare/:id1/:id2"
-                                element={<Compare simCases={simCases}/>}
+                                element={<Compare simCases={simCases} plans={plans}/>}
                             />
                             <Route path="*" element={<FourOFour />} />
                         </Route>

@@ -1,9 +1,10 @@
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
+import ListButton from "../../interface/ListButton/ListButton";
 import classes from "./CompareButton.module.css";
 
 const CompareSelection = (props) => {
@@ -39,21 +40,32 @@ const CompareSelection = (props) => {
                 <Box titleText={<p>All Simulations</p>}>
                     <div className={classes.lists}>
                         {notSelectedIds &&
-                            notSelectedIds.map((simCase) => (
-                                <Button
-                                    className={classes.button}
-                                    onClick={() => removeItem(simCase)}
-                                >
-                                    Simulation of
-                                    "{
-                                        props.plans.find(
-                                            (plan) =>
-                                                simCase.planId === plan.uuid
-                                        ).name
-                                    }" {"   "}
-                                    ({simCase.id})
-                                    <FontAwesomeIcon icon={faAngleRight} />
-                                </Button>
+                            notSelectedIds.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).map((simCase) => (
+                                <ListButton
+                                    key={simCase.id}
+                                    onClick={() => {
+                                        removeItem(simCase);
+                                    }}
+                                    id={simCase.id}
+                                    name={
+                                        <Fragment>
+                                            {" "}
+                                            Simulation of{" "}
+                                            <b>
+                                                "
+                                                {
+                                                    props.plans.find(
+                                                        (plan) =>
+                                                            simCase.planId ===
+                                                            plan.uuid
+                                                    ).name
+                                                }
+                                                "
+                                            </b>
+                                        </Fragment>
+                                    }
+                                    createdOn={simCase.createdOn}
+                                />
                             ))}
                     </div>
                 </Box>
@@ -62,21 +74,33 @@ const CompareSelection = (props) => {
                 <Box titleText={<p>Selected Simulations</p>}>
                     <div className={classes.lists}>
                         {selectedIds &&
-                            selectedIds.map((simCase) => (
-                                <Button
-                                    className={classes.button}
-                                    onClick={() => removeSelectedItem(simCase)}
-                                >
-                                    <FontAwesomeIcon icon={faAngleLeft} />
-                                    Simulation of
-                                    "{
-                                        props.plans.find(
-                                            (plan) =>
-                                                simCase.planId === plan.uuid
-                                        ).name
-                                    }" {"   "}
-                                    ({simCase.id})
-                                </Button>
+                            selectedIds.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).map((simCase) => (
+                                <ListButton
+                                    key={simCase.id}
+                                    arrowLeft={true}
+                                    onClick={() => {
+                                        removeSelectedItem(simCase);
+                                    }}
+                                    id={simCase.id}
+                                    name={
+                                        <Fragment>
+                                            {" "}
+                                            Simulation of{" "}
+                                            <b>
+                                                "
+                                                {
+                                                    props.plans.find(
+                                                        (plan) =>
+                                                            simCase.planId ===
+                                                            plan.uuid
+                                                    ).name
+                                                }
+                                                "
+                                            </b>
+                                        </Fragment>
+                                    }
+                                    createdOn={simCase.createdOn}
+                                />
                             ))}
                     </div>
                 </Box>

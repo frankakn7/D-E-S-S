@@ -1,12 +1,11 @@
-import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import Button from "../../../../interface/Button/Button";
-import MachineResultsBox from "../../../Results/MachineResults/MachineResultsBox/MachineResultsBox";
-import classes from "./MachineCompareSelector.module.css"
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useState } from 'react'
+import Button from '../../../../interface/Button/Button'
+import JobResultsBox from '../../../Results/JobResults/JobResultsBox/JobResultsBox'
+import classes from './JobCompareSelector.module.css'
 
-const MachineCompareSelector = (props) => {
-
+const JobCompareSelector = (props) => {
     const [selected, setSelected] = useState(0)
 
     const minusSelected = () => {
@@ -20,7 +19,7 @@ const MachineCompareSelector = (props) => {
 
     const plusSelected = () => {
         setSelected((prevState) => {
-            if(prevState < props.machines.length - 1){
+            if(prevState < props.jobs.length - 1){
                 return prevState += 1;
             }
             return prevState;
@@ -32,14 +31,14 @@ const MachineCompareSelector = (props) => {
             <Button onClick={minusSelected}>
                 <FontAwesomeIcon icon={faAngleUp} />
             </Button>
-            <div className={classes.machineBoxContainer}>
-                <MachineResultsBox machine={props.machines[selected]} extraTitleText={"in "+props.simName}/>
+            <div className={classes.jobBoxContainer}>
+                <JobResultsBox job={props.jobs[selected]} className={classes.jobBox} extraTitleText={"in "+props.simName} />
             </div>
             <Button onClick={plusSelected}>
                 <FontAwesomeIcon icon={faAngleDown} />
             </Button>
         </div>
     );
-};
+}
 
-export default MachineCompareSelector;
+export default JobCompareSelector

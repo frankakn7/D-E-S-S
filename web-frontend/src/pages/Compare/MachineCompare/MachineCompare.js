@@ -13,19 +13,21 @@ const MachineCompare = (props) => {
         <div>
             <CollapsableBox titleText="Machines Summary">
               <div className={classes.collapsableContent}>
-                  <MachineSummaryCompareHalf allResults={props.resultsOne} className={classes.summaryHalf} />
-                  <MachineSummaryCompareHalf allResults={props.resultsTwo} className={classes.summaryHalf}/>
+                  <MachineSummaryCompareHalf allResults={props.resultsOne} className={classes.summaryHalf}  simName={props.simName1}/>
+                  <MachineSummaryCompareHalf allResults={props.resultsTwo} className={classes.summaryHalf} simName={props.simName2}/>
               </div>
             </CollapsableBox>
             <div className={classes.compareMachinesContainer}>
                 <div className={classes.half}>
                     <MachineCompareSelector
                         machines={props.resultsOne.machines}
+                        simName={props.simName1}
                     />
                 </div>
                 <div className={classes.half}>
                     <MachineCompareSelector
                         machines={props.resultsTwo.machines}
+                        simName={props.simName2}
                     />
                 </div>
             </div>
