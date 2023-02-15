@@ -1,9 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * TimeSlotQueue --- DataType storing a list of events happening in a given timeslot indexed by a `date`
@@ -172,7 +169,7 @@ public class TimeslotQueue {
     public Event peekEventIfDate(Integer date) {
         Event event = null;
 
-        if (date.equals(this.getFirstDate())) {
+        if (Objects.equals(date,this.getFirstDate())) {
             event = this.peekNextEvent();
         }
         return event;

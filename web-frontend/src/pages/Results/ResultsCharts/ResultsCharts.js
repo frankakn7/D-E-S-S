@@ -6,6 +6,7 @@ import {
     Legend,
     Pie,
     PieChart,
+    ReferenceLine,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -649,6 +650,7 @@ const JobLatenessChart = (props) => {
             >
                 <XAxis dataKey="name" />
                 <YAxis />
+                <ReferenceLine y={0} stroke="#000" />
                 <Tooltip labelFormatter={(name) => "job " + name} />
                 {/* <Legend /> */}
 
