@@ -4,6 +4,7 @@ import DetailsTable from "../DetailsTable/DetailsTable";
 import DetailsTableRow from "../DetailsTable/DetailsTableRow";
 import { OperationsLengthChart } from "../ResultsCharts/ResultsCharts";
 import classes from "./OperationResults.module.css";
+import OperationsResultsBox from "./OperationsResultsBox";
 
 const OperationResults = (props) => {
     return (
@@ -15,17 +16,7 @@ const OperationResults = (props) => {
             </Box>
             <div className={classes.operationBoxes}>
                 {props.allResults.operations.map((operation) => (
-                    <Box
-                        key={operation.id}
-                        titleText={<p>{`Operation "${operation.id}"`}</p>}
-                        className={classes.operationsBox}
-                    >
-                        <DetailsTable>
-                            <DetailsTableRow
-                                stat={{ name: "length", ...operation.length }}
-                            />
-                        </DetailsTable>
-                    </Box>
+                    <OperationsResultsBox operation={operation} />
                 ))}
             </div>
         </div>

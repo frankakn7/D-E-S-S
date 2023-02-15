@@ -1,4 +1,4 @@
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -13,13 +13,14 @@ const ListButton = (props) => {
             className={classes.button}
             onClick={props.onClick}
         >
+            {props.arrowLeft && <FontAwesomeIcon icon={faAngleLeft} />}
             <div className={classes.buttonText}>
                 <div>
-                    {props.name} ({props.id}) <br />
+                    {props.name} <br />
                 </div>
                 <div className={classes.date}>created on {props.createdOn}</div>
             </div>
-            <FontAwesomeIcon icon={faAngleRight} />
+            {!props.arrowLeft && <FontAwesomeIcon icon={faAngleRight} />}
         </Button>
     );
 }

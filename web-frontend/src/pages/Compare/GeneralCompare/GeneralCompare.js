@@ -6,10 +6,10 @@ const GeneralCompare = (props) => {
     return (
         <div className={classes.content}>
             <div style={{ width: "49%" }}>
-                <GeneralResultsGraph allResults={props.results1} />
+                <GeneralResultsGraph allResults={props.results1} simName={props.simName1} />
             </div>
             <div style={{ width: "49%" }}>
-                <GeneralResultsGraph allResults={props.results2} />
+                <GeneralResultsGraph allResults={props.results2} simName={props.simName2}/>
             </div>
         </div>
     );

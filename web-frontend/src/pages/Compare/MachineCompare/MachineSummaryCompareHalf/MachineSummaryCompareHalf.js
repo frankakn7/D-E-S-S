@@ -5,7 +5,7 @@ import classes from "./MachineSummaryCompareHalf.module.css";
 
 const MachineSummaryCompareHalf = (props) => {
     return (
-        <Box titleText={<p>Simulation</p>} className={props.className}>
+        <Box titleText={<p>{props.simName}</p>} className={props.className}>
             <div className={classes.boxContent}>
                 <MachineUtilisationBarChart
                     className={classes.graphs}

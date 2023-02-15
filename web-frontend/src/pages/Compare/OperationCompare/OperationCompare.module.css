@@ -1,0 +1,9 @@
+.operationsLists {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.half {
+    width: 49%;
+}

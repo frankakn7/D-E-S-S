@@ -1,0 +1,10 @@
+
+.jobBoxContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightData {
+    flex: 2;
+}

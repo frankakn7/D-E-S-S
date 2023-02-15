@@ -17,7 +17,7 @@ const Simulations = (props) => {
                         key={simCase.id}
                         onClick={() => {navigate(`/results/${simCase.id}`)}}
                         id={simCase.id}
-                        name={<Fragment>Simulation of <b>"{props.plans.find((plan) => simCase.planId === plan.uuid).name}</b></Fragment>}
+                        name={<Fragment>Simulation of <b>"{props.plans.find((plan) => simCase.planId === plan.uuid).name}"</b></Fragment>}
                         createdOn={simCase.createdOn}
                     />
                 ))}

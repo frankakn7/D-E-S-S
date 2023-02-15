@@ -118,7 +118,7 @@ const MachineResultsBox = (props) => {
     );
     return (
         <Box
-            titleText={<p>{`Machine "${props.machine.id}"`}</p>}
+            titleText={<p>{`Machine "${props.machine.id}" ${props.extraTitleText}`}</p>}
             className={props.className}
         >
             <div className={classes.boxContent}>

@@ -10,6 +10,7 @@ import {
     JobsOperationsLength,
 } from "../ResultsCharts/ResultsCharts";
 import classes from "./JobResults.module.css";
+import JobResultsBox from "./JobResultsBox/JobResultsBox";
 
 const JobResults = (props) => {
     return (
@@ -23,40 +24,7 @@ const JobResults = (props) => {
             </Box>
             <div className={classes.jobBoxes}>
                 {props.allResults.jobs.map((job) => (
-                    <Box
-                        key={job.id}
-                        className={classes.jobBox}
-                        titleText={<p>{`Job "${job.id}`}</p>}
-                    >
-                        <div className={classes.jobBoxContent}>
-                            <div>
-                                <DetailsTable>
-                                    <DetailsTableRow
-                                        stat={{
-                                            name: "completion time",
-                                            ...job.completion_time,
-                                        }}
-                                    />
-                                    <DetailsTableRow
-                                        stat={{
-                                            name: "lateness",
-                                            ...job.lateness,
-                                        }}
-                                    />
-                                    <DetailsTableRow
-                                        stat={{
-                                            name: "lateness cost",
-                                            ...job.lateness_cost,
-                                        }}
-                                    />
-                                </DetailsTable>
-                            </div>
-                            <JobsOperationsLength
-                                job={job}
-                                className={classes.rightData}
-                            />
-                        </div>
-                    </Box>
+                    <JobResultsBox job={job} className={classes.jobBox}/>
                 ))}
             </div>
         </div>
