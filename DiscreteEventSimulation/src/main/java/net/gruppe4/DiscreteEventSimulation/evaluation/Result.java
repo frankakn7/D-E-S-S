@@ -63,6 +63,10 @@ public class Result {
         return machineStats;
     }
 
+    public ArrayList<OperationStats> getOperationStats() {
+        return operationStats;
+    }
+
     @Override
     public String toString() {
         return this.toJsonObject().toString();

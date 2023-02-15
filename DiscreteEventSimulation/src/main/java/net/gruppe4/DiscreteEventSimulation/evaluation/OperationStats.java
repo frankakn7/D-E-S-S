@@ -1,24 +1,17 @@
 package net.gruppe4.DiscreteEventSimulation.evaluation;
 
+import net.gruppe4.DiscreteEventSimulation.simulation.Job;
+import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
+import net.gruppe4.DiscreteEventSimulation.simulation.Operation;
 import org.json.JSONObject;
 
 public class OperationStats {
-    private String id;
-    private String machineId;
-    private String jobId;
-    private StatisticalValues length;
+    private Operation operation;
+    public StatisticalValues length;
 
-    public OperationStats(String id, String machineId, String jobId, StatisticalValues length) {
-        this.id = id;
-        this.machineId = machineId;
-        this.jobId = jobId;
-        this.length = length;
-    }
 
-    public OperationStats(String id, String machineId, String jobId) {
-        this.id = id;
-        this.machineId = machineId;
-        this.jobId = jobId;
+    public OperationStats(Operation operation) {
+        this.operation = operation;
         this.length = new StatisticalValues();
     }
 
@@ -38,11 +31,15 @@ public class OperationStats {
 
         JSONObject lengthJson = this.length.toJsonObject();
 
-        OperationJson.put("id", this.id);
-        OperationJson.put("machine_id", this.machineId);
-        OperationJson.put("job_id", this.jobId);
+        OperationJson.put("id", this.operation.getId());
+        OperationJson.put("machine_id", this.operation.getMachine().getId());
+        OperationJson.put("job_id", this.operation.getJob().getId());
         OperationJson.put("length", lengthJson);
 
         return OperationJson;
+    }
+
+    public Operation getOperation() {
+        return operation;
     }
 }

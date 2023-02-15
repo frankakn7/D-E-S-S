@@ -3,9 +3,10 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 import org.json.JSONObject;
 
 public class GeneralStats {
-    private StatisticalValues totalCompletionTime;
-    private StatisticalValues totalCost;
-    private StatisticalValues totalRessourceUtilization;
+    public StatisticalValues totalCompletionTime;
+    public StatisticalValues totalCost;
+    // TODO Fix typo in ressource
+    public StatisticalValues totalRessourceUtilization;
 
     public GeneralStats(StatisticalValues totalCompletionTime, StatisticalValues totalCost, StatisticalValues totalRessourceUtilization) {
         this.totalCompletionTime = totalCompletionTime;

@@ -114,32 +114,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         //TODO Implement test Results
         //ArrayList<MachineStats> machineStats = new ArrayList<>();
         ArrayList<OperationStats> operationStats = new ArrayList<>();
+        for(Operation op : operations) operationStats.add(new OperationStats(op));
 
-        StatisticalValues exampleFullValues = new StatisticalValues(5.,2.,8.,3.);
-        StatisticalValues exampleFullValuesDifferent = new StatisticalValues(7,3,10,4);
-        StatisticalValues examplePercentValues = new StatisticalValues(0.3,0.1,0.7,0.4);
-        StatisticalValues examplePercentValuesDifferent = new StatisticalValues(0.5,0.1,0.6,0.3);
 
-       /* machineStats.add(new MachineStats("A",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
-        machineStats.add(new MachineStats("B",examplePercentValues,exampleFullValues,exampleFullValuesDifferent,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));
-        machineStats.add(new MachineStats("C",examplePercentValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,exampleFullValues,examplePercentValues, exampleFullValues));*/
-
-        /*jobStats.add(new JobStats("1",exampleFullValues,exampleFullValues,exampleFullValues));
-        jobStats.add(new JobStats("2",exampleFullValues,exampleFullValues,exampleFullValues));
-        jobStats.add(new JobStats("3",exampleFullValues,exampleFullValues,exampleFullValues));*/
-
-        operationStats.add(new OperationStats("op1","A","1",exampleFullValues));
-        operationStats.add(new OperationStats("op2","A","2",exampleFullValues));
-        operationStats.add(new OperationStats("op3","A","3",exampleFullValues));
-        operationStats.add(new OperationStats("op4","B","1",exampleFullValues));
-        operationStats.add(new OperationStats("op5","B","2",exampleFullValues));
-        operationStats.add(new OperationStats("op6","B","3",exampleFullValues));
-        operationStats.add(new OperationStats("op7","C","1",exampleFullValues));
-        operationStats.add(new OperationStats("op8","C","2",exampleFullValues));
-        operationStats.add(new OperationStats("op9","C","3",exampleFullValues));
-
-        GeneralStats generalStats = new GeneralStats(exampleFullValues,exampleFullValues,examplePercentValues);
-
+        GeneralStats generalStats = new GeneralStats();
         ArrayList<MachineStats> machineStats = new ArrayList<>();
         for (Map.Entry<String, Machine> entry : machines.entrySet()) machineStats.add(new MachineStats(entry.getValue()));
         ArrayList<JobStats> jobStats = new ArrayList<>();
@@ -179,6 +157,17 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                 mStat.breakdownsPercent.addValue((double)machineValues.get(mStat.getMachine()).get("breakdowns_percent"));
                 mStat.idleTime.addValue((double)machineValues.get(mStat.getMachine()).get("idle_time_absolute"));
             }
+
+            HashMap<Operation, HashMap<String, Object>> operationValues = evaluator.calculateOperationStats(machineValues);
+            for (OperationStats opStat : result.getOperationStats()) {
+                opStat.length.addValue((double)(int) operationValues.get(opStat.getOperation()).get("length"));
+            }
+
+
+            HashMap<String, Object> generalValues = evaluator.calculateGeneralStats(machineValues, jobValues);
+            result.getGeneralStats().totalRessourceUtilization.addValue((double)generalValues.get("total_ressource_utilisation"));
+            result.getGeneralStats().totalCost.addValue((double)generalValues.get("total_cost"));
+            result.getGeneralStats().totalCompletionTime.addValue((double)generalValues.get("total_completion_time"));
 
 
             //result = sim.runSim();

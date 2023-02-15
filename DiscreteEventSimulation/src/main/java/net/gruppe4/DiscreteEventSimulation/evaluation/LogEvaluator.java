@@ -8,7 +8,6 @@ import java.util.ListIterator;
 import java.util.Map;
 
 public class LogEvaluator {
-    private ArrayList<EventLog> logs;
     private EventLog log;
     private HashMap<String, Machine> machines = new HashMap<String, Machine>();
     private ArrayList<Job> jobs = new ArrayList<Job>();
@@ -22,12 +21,46 @@ public class LogEvaluator {
         this.jobs = jobs;
     }
 
-    public LogEvaluator(ArrayList<EventLog> logs) {
-        this.logs = logs;
+    public HashMap<Operation, HashMap<String, Object>> calculateOperationStats(HashMap<Machine, HashMap<String, Object>> machines) {
+        HashMap<Operation, HashMap<String, Object>> res = new HashMap<Operation, HashMap<String, Object>>();
+
+        for (Map.Entry<Machine, HashMap<String, Object>> entry : machines.entrySet()) {
+            HashMap<Operation, Integer> operationLengths = (HashMap)(entry.getValue().get("operation_lengths"));
+
+            for (Map.Entry<Operation, Integer> opSet : operationLengths.entrySet()) {
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("length", opSet.getValue());
+                res.put(opSet.getKey(), map);
+            }
+        }
+
+        return res;
     }
 
-    // Calculates how much a Machine has been actually running
-    // TODO Check if its still buggy when breakdowns are happening or if that was only due too breakdowns being buggy
+    public HashMap<String, Object> calculateGeneralStats(HashMap<Machine, HashMap<String, Object>> machines,
+                                                         HashMap<Job, HashMap<String, Object>> jobs) {
+
+        HashMap<String, Object> res = new HashMap<String, Object>();
+
+        Integer completionDate = this.log.getArrayList().get(this.log.getArrayList().size() - 1).getDate();
+        res.put("total_completion_time", (double)(int)completionDate);
+
+        Double totalCosts = 0.;
+        Double machineUtilisation = 0.;
+        for (Map.Entry<Machine, HashMap<String, Object>> entry : machines.entrySet()) {
+            // TODO Tidy up the camelCase snake_case whatevercase bs when passing around HashMaps
+            totalCosts += (double)entry.getValue().get("operational_cost") + (double)entry.getValue().get("repair_cost");
+            machineUtilisation += (double)entry.getValue().get("utilisation_time");
+        }
+        // TODO In some places its written utilisation in others its utilization
+        res.put("total_ressource_utilisation", (double)(machineUtilisation / (double)machines.size()));
+
+        for (Map.Entry<Job, HashMap<String, Object>> entry : jobs.entrySet())
+            totalCosts += (double)entry.getValue().get("latenesscost");
+
+        res.put("total_cost", (double)totalCosts);
+        return res;
+    }
 
     public HashMap<Machine, HashMap<String, Object>> calculateMachineStatValues() {
         HashMap<Machine, HashMap<String, Object>> res = new HashMap<Machine, HashMap<String, Object>>();
@@ -36,9 +69,9 @@ public class LogEvaluator {
             HashMap<String, Object> map = new HashMap<String, Object>();
             ArrayList<Event> machineLog = this.log.getMachineLog(entry.getValue());
 
-            HashMap<String, Integer> machineLogEval = this.evaluateMachineLog(machineLog);
+            HashMap<String, Object> machineLogEval = this.evaluateMachineLog(machineLog);
 
-            Integer absoluteMachineUsage = machineLogEval.get("operationDuration") - machineLogEval.get("breakdownDuration");
+            Integer absoluteMachineUsage = (int)machineLogEval.get("operationDuration") - (int)machineLogEval.get("breakdownDuration");
             Double machineLogLength = (double)(int)machineLog.get(machineLog.size() - 1).getDate();
 
             map.put("utilisation_percent", (double)absoluteMachineUsage / machineLogLength);
@@ -48,17 +81,19 @@ public class LogEvaluator {
             map.put("breakdowns_downtime", (double)(int)machineLogEval.get("breakdownDuration"));
             map.put("breakdowns_occurrence",(double)(int)machineLogEval.get("breakdownOccurence"));
             map.put("breakdowns_percent", (double)map.get("breakdowns_downtime") / machineLogLength);
-            Double idleTime = Math.max(machineLogLength - machineLogEval.get("operationDuration"),0);
+            Double idleTime = Math.max(machineLogLength - (double)(int)machineLogEval.get("operationDuration"),0);
             map.put("idle_time_absolute", idleTime);
+            map.put("operation_lengths", machineLogEval.get("operationLengths"));
             res.put(entry.getValue(), map);
         }
 
         return res;
     }
 
-    private HashMap<String, Integer> evaluateMachineLog(ArrayList<Event> machineLog) {
+    private HashMap<String, Object> evaluateMachineLog(ArrayList<Event> machineLog) {
         HashMap<Operation, Event[]> map = new HashMap<Operation, Event[]>();
         ArrayList<Integer> lengths = new ArrayList<Integer>();
+        HashMap<Operation, Integer> lengthMap = new HashMap<Operation, Integer>();
         ArrayList<Integer> breakdownLengths = new ArrayList<Integer>();
         Integer lastBreakdownBeginDate = 0;
 
@@ -72,6 +107,7 @@ public class LogEvaluator {
                 map.get(op)[1] = e;
                 Integer length = map.get(op)[1].getDate() - map.get(op)[0].getDate();
                 lengths.add(length);
+                lengthMap.put(op, length);
             }
             else if (e.getEventType() == EventType.MACHINE_BREAKDOWN_BEGIN) lastBreakdownBeginDate = e.getDate();
             else if (e.getEventType() == EventType.MACHINE_BREAKDOWN_END) {
@@ -86,10 +122,12 @@ public class LogEvaluator {
         for (Integer l : lengths) operationDuration += l;
         for (Integer l : breakdownLengths) breakdownDuration += l;
 
-        HashMap<String, Integer> res = new HashMap<String, Integer>();
+        HashMap<String, Object> res = new HashMap<String, Object>();
         res.put("operationDuration", operationDuration);
         res.put("breakdownDuration", breakdownDuration);
         res.put("breakdownOccurence", breakdownLengths.size());
+        res.put("operationLengths", lengthMap);
+
 
         return res;
     }
