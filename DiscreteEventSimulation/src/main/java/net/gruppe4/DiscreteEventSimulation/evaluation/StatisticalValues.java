@@ -77,10 +77,10 @@ public class StatisticalValues {
     public JSONObject toJsonObject() {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         JSONObject statJsonObj = new JSONObject();
-        statJsonObj.put("mean", decimalFormat.format(this.mean));
-        statJsonObj.put("min", decimalFormat.format(this.min));
-        statJsonObj.put("max", decimalFormat.format(this.max));
-        statJsonObj.put("variance", decimalFormat.format(this.variance));
+        statJsonObj.put("mean", Double.parseDouble(decimalFormat.format(this.mean)));
+        statJsonObj.put("min", Double.parseDouble(decimalFormat.format(this.min)));
+        statJsonObj.put("max", Double.parseDouble(decimalFormat.format(this.max)));
+        statJsonObj.put("variance", Double.parseDouble(decimalFormat.format(this.variance)));
         return statJsonObj;
     }
 }
