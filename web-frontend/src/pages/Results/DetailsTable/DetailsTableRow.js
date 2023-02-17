@@ -7,7 +7,7 @@ const DetailsTableRow = (props) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const getValueText = (value) => {
-        return props.percentage ? `${value * 100}%` : value
+        return props.percentage ? `${parseFloat(value * 100).toFixed(0)}%` : parseFloat(value).toFixed(2)
     }
 
     return (

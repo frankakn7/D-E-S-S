@@ -66,9 +66,10 @@ public class Simulation {
                 Operation op = i.next();
                 if (op.getMachineQueuePredecessor() == sortedOperations.get(sortedOperations.size() - 1)) {
                     sortedOperations.add(op);
+                    i.remove();
                     break;
                 }
-                i.remove();
+                //TODO bug op8 gets removed without being inserted
             }
         }
 

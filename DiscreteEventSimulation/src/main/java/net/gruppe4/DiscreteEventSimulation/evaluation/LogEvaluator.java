@@ -50,7 +50,7 @@ public class LogEvaluator {
         for (Map.Entry<Machine, HashMap<String, Object>> entry : machines.entrySet()) {
             // TODO Tidy up the camelCase snake_case whatevercase bs when passing around HashMaps
             totalCosts += (double)entry.getValue().get("operational_cost") + (double)entry.getValue().get("repair_cost");
-            machineUtilisation += (double)entry.getValue().get("utilisation_time");
+            machineUtilisation += (double)entry.getValue().get("utilisation_percent");
         }
         // TODO In some places its written utilisation in others its utilization
         res.put("total_ressource_utilisation", (double)(machineUtilisation / (double)machines.size()));

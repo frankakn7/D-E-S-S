@@ -18,7 +18,8 @@ const MachineResultsBox = (props) => {
     const data = [
         {
             name: "utilized",
-            value: props.machine.utilisation.percent.mean,
+            value: parseFloat(
+                (props.machine.utilisation.percent.mean).toFixed(2)),
             fill: "#5a99e5",
         },
         // { name: "utilized", value: props.machine.utilisation.percent.mean, fill: "#50ba47" },
@@ -151,9 +152,9 @@ const MachineResultsBox = (props) => {
                         />
                         <DetailsTableRow
                             stat={{
-                                name: "breakdowns downtime per breakdown",
+                                name: "breakdowns downtime",
                                 ...props.machine.breakdowns
-                                    .downtime_per_breakdown,
+                                    .total_downtime,
                             }}
                         />
                         <DetailsTableRow

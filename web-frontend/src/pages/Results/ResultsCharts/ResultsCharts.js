@@ -84,15 +84,16 @@ const TotalRessourceUtilisationPieChart = (props) => {
     const utilisationData = [
         {
             name: "utilized",
-            value: props.allResults.general_stats.total_ressource_utilization
-                .mean,
+            value: parseFloat(
+                (props.allResults.general_stats.total_ressource_utilization
+                .mean).toFixed(2)),
             fill: "#3C7FD0",
         },
         {
             name: "unutilized",
             value:
-                1 -
-                props.allResults.general_stats.total_ressource_utilization.mean,
+                parseFloat((1 -
+                props.allResults.general_stats.total_ressource_utilization.mean).toFixed(2)),
             fill: "url(#idlePattern)",
         },
     ];
@@ -183,34 +184,35 @@ const TotalCostPieChart = (props) => {
     const costData = [
         {
             name: "lateness cost",
-            value: props.allResults.jobs.reduce(
+            value: parseFloat(props.allResults.jobs.reduce(
                 (partialSum, job) => partialSum + job.lateness_cost.mean,
                 0
-            ),
+            ).toFixed(2)),
             fill: "#e0cc68",
         },
         {
             name: "operational cost",
-            value: props.allResults.machines.reduce(
+            value: parseFloat(props.allResults.machines.reduce(
                 (partialSum, machine) =>
                     partialSum + machine.operational_cost.mean,
                 0
-            ),
+            ).toFixed(2)),
             fill: "#3C7FD0",
         },
         {
             name: "repair cost",
-            value: props.allResults.machines.reduce(
+            value: parseFloat(props.allResults.machines.reduce(
                 (partialSum, machine) => partialSum + machine.repair_cost.mean,
                 0
-            ),
+            ).toFixed(2)),
             fill: "#f55f4e",
         },
     ];
 
     const renderTotalCostPieChart = (
         <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
+            <PieChart
+            margin={{top: 10}}>
                 <Pie
                     data={costData}
                     dataKey="value"
@@ -278,7 +280,7 @@ const MachineMakespanBarChart = (props) => {
     const machineMakespanData = props.allResults.machines.map((machine) => {
         const dataObj = {
             name: `${machine.id}`,
-            breakdown: machine.breakdowns.downtime_per_breakdown.mean,
+            breakdown: machine.breakdowns.total_downtime.mean,
             idle: machine.utilisation.idle_time.mean,
         };
         for (const op of machine.operations) {
@@ -410,7 +412,7 @@ const MachineBreakdownIdleChart = (props) => {
         (machine) => {
             const dataObj = {
                 name: `${machine.id}`,
-                breakdown: machine.breakdowns.downtime_per_breakdown.mean,
+                breakdown: machine.breakdowns.total_downtime.mean,
                 idle: machine.utilisation.idle_time.mean,
             };
             return dataObj;
