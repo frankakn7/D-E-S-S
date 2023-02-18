@@ -37,6 +37,10 @@ const DetailsTableRow = (props) => {
                         <td>{getValueText(props.stat.max)}</td>
                     </tr>
                     <tr>
+                        <td>standard deviation {props.stat.name}</td>
+                        <td>{getValueText(props.stat.standard_deviation)}</td>
+                    </tr>
+                    <tr>
                         <td>variance {props.stat.name}</td>
                         <td>{getValueText(props.stat.variance)}</td>
                     </tr>

@@ -20,6 +20,7 @@ public class Operation {
     private Job job;
 
     // TODO Job in den Konstruktor hinzufügen
+    private int durationMean;
     private Double durVariationProb = 0.;
     private Double durStandardDeviation;
     private Random generator;
@@ -35,6 +36,7 @@ public class Operation {
         this.machineQueuePredecessor = machineQueuePredecessor;
         this.releaseDate = releaseDate;
         this.duration = duration;
+        this.durationMean = duration;
         this.machine = machine;
         this.job = job;
         this.durVariationProb = durVariationProb;
@@ -110,7 +112,7 @@ public class Operation {
     // Returns full length, not only variation
     // TODO rename, sounds too much like the method above
     public Integer rollDiceForVariationDur() {
-        Integer res = Math.max((int)Math.round((generator.nextGaussian(this.duration, this.durStandardDeviation))),1);
+        Integer res = Math.max((int)Math.round((generator.nextGaussian(this.durationMean, this.durStandardDeviation))),1);
         return res;
     }
 

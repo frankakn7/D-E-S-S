@@ -9,15 +9,17 @@ public class StatisticalValues {
     private double min;
     private double max;
     private double variance;
+    private double standardDeviation;
     private double count = 0;
 
     public StatisticalValues(){}
 
-    public StatisticalValues(double mean, double min, double max, double variance) {
+    public StatisticalValues(double mean, double min, double max, double variance, double standardDeviation) {
         this.mean = mean;
         this.min = min;
         this.max = max;
         this.variance = variance;
+        this.standardDeviation =  standardDeviation;
     }
 
     public void addValue(double value) {
@@ -26,6 +28,7 @@ public class StatisticalValues {
             this.min = value;
             this.max = value;
             this.variance = 0;
+            this.standardDeviation = 0;
             this.count = 1;
             return;
         }
@@ -37,8 +40,11 @@ public class StatisticalValues {
 
         double newMean = (this.mean * this.count + value) / (this.count + 1);
         double newVariance = (this.count / (this.count + 1)) * (this.variance + Math.pow((this.mean - value),2) / (this.count + 1));
+        double newStandardDeviation = Math.sqrt(newVariance);
         this.mean = newMean;
         this.variance = newVariance;
+        this.standardDeviation = newStandardDeviation;
+        /*System.out.println(newStandardDeviation / Math.sqrt(count));*/
         this.count += 1;
     }
 
@@ -81,6 +87,7 @@ public class StatisticalValues {
         statJsonObj.put("min", Double.parseDouble(decimalFormat.format(this.min)));
         statJsonObj.put("max", Double.parseDouble(decimalFormat.format(this.max)));
         statJsonObj.put("variance", Double.parseDouble(decimalFormat.format(this.variance)));
+        statJsonObj.put("standard_deviation", Double.parseDouble(decimalFormat.format(this.standardDeviation)));
         return statJsonObj;
     }
 }
