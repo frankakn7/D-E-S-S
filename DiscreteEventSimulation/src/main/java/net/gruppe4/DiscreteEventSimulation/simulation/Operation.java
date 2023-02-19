@@ -101,6 +101,7 @@ public class Operation {
     }
 
     public Boolean rollDiceForDurVariation() {
+        this.duration = this.durationMean;
         if (Objects.equals(this.durVariationProb, 0.)) return false;
 
         if (this.durVariationProb >= this.generator.nextDouble()) {
