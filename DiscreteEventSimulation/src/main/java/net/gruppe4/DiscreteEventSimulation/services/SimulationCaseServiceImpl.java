@@ -1,5 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation.services;
 
+import jakarta.transaction.Transactional;
 import net.gruppe4.DiscreteEventSimulation.evaluation.*;
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
@@ -66,6 +67,18 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
     @Override
     public void saveSimCase(SimulationCase simCase) {
         simCaseRepo.save(simCase);
+    }
+
+    @Override
+    @Transactional
+    public long deleteSimCaseByUuid(String uuid){
+        return simCaseRepo.deleteByUuid(uuid);
+    }
+
+    @Override
+    @Transactional
+    public long deleteSimCasesByPlanId(String planId){
+        return simCaseRepo.deleteAllByPlanUuid(planId);
     }
 
     @Override

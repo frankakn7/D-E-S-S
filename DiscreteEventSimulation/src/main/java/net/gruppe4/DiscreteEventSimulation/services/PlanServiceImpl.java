@@ -1,5 +1,6 @@
 package net.gruppe4.DiscreteEventSimulation.services;
 
+import jakarta.transaction.Transactional;
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 import net.gruppe4.DiscreteEventSimulation.objects.SimulationCase;
 import net.gruppe4.DiscreteEventSimulation.repositories.PlanRepository;
@@ -34,6 +35,13 @@ public class PlanServiceImpl implements PlanService{
     @Override
     public Plan getPlanFromUuid(String uuid) {
         return planRepository.findByUuid(uuid);
+    }
+
+    @Override
+    @Transactional
+    public long deletePlanByUuid(String uuid){
+        simCaseService.deleteSimCasesByPlanId(uuid);
+        return planRepository.deleteByUuid(uuid);
     }
 
     @Override

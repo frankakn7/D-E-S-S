@@ -25,6 +25,12 @@ public class PlanServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 
+    @DeleteMapping("/plan/{planId}")
+    public ResponseEntity<String> deletePlan(@PathVariable("planId") String planId){
+        planService.deletePlanByUuid(planId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/plan/all")
     public  ResponseEntity<String> getAllPlans(){
         HttpHeaders responseHeaders = new HttpHeaders();

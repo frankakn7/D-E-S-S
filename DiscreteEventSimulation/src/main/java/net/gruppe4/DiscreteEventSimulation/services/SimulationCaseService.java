@@ -17,5 +17,6 @@ public interface SimulationCaseService {
     public abstract void setResultsAndSave(String uuid, String results);
     public abstract Status getStatus(String uuid);
     public abstract void setAndSaveStatus(String uuid, int numOfSimulations);
-    /*public long deleteSimCaseByUuid(String uuid);*/
+    public long deleteSimCaseByUuid(String uuid);
+    public long deleteSimCasesByPlanId(String planId);
 }

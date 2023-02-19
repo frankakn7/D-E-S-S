@@ -27,10 +27,12 @@ public class SimulationCaseServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 
-    /*@DeleteMapping("/sim/{simId}")
+    @DeleteMapping("/sim/{simId}")
     public ResponseEntity<String> deleteSimCase(@PathVariable("simId") String simId){
-        simCaseService.deleteByUuid(simId);
-    }*/
+        simCaseService.deleteSimCaseByUuid(simId);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        return ResponseEntity.ok("successfully deleted "+simId);
+    }
 
     @GetMapping("/sim/{simId}")
     public ResponseEntity<String> getSimCase(@PathVariable("simId") String simId) {

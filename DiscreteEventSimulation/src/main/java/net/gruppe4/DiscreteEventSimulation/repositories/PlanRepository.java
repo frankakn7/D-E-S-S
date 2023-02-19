@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface PlanRepository extends CrudRepository<Plan,String>{
     Plan findByUuid(String uuid);
 
+    long deleteByUuid(String uuid);
 }
