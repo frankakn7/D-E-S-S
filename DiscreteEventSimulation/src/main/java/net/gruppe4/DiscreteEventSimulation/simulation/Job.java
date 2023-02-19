@@ -1,5 +1,9 @@
 package net.gruppe4.DiscreteEventSimulation.simulation;
 
+/**
+ * Exclusively a data type representing a Job that is used for result evaluation
+ * and releaseDates.
+ */
 public class Job {
     public String id;
     private Integer releaseDate;

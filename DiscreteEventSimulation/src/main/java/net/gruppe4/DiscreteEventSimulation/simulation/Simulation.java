@@ -9,7 +9,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
-// TODO Comment SimulationClass
+/**
+ * Represents one simulation run, handles the simulation in a core simulation
+ * loop.
+ */
 public class Simulation {
     private EventLog eventLog;
     private Map<String, Machine> machines;
@@ -17,7 +20,6 @@ public class Simulation {
     public Simulation(Map<String, Machine> machines, ArrayList<Operation> operations) {
         this.machines = machines;
         this.eventLog = new EventLog();
-
 
         // TODO [#A] Move the sorting of elements to SimulationCaseServiceImpl so to not have to compute it 1000 times
 
@@ -90,19 +92,21 @@ public class Simulation {
                 Integer nextDate = this.findNextEventDate();
                 Machine m = entry.getValue();
 
-                //if timeslotqueue is empty then machine is done and breakdowns dont happen
+                // CHECK FOR BREAKDOWNS
                 if (!m.isTimeSlotQueueEmpty() && !this.eventLog.isMachineBreakdownOpen(m)) {
                     if (m.rollDiceForBreakdown()) {
                         m.insertBreakdownAtFront();
                     }
                 }
 
+                // CHECK IF EVENT DOABLE
+                // Checks if there might be some conditional predecessors it has to wait for
                 Event e = m.peekEventIfDate(nextDate);
                 if (e == null) continue;
                 if (e.getEventType() == EventType.OPERATION_BEGIN) {
                     if (!this.isOperationDoable(e.getOperation())) {
-                        // Retrieve all other Operations on same date and check if theyre doable
-                        // if one is doable continue
+                        // Retrieve all other Operations on same date and check if at least one is doable
+                        // if at least one is doable continue
                         // if none is doable or list is empty pushBackByTime
 
                         //if NO operation doable && operations list at date >= 2 then push back to AfterNextDate
@@ -121,6 +125,13 @@ public class Simulation {
         return true;
     }
 
+    /**
+     * Checks if the given operation can be executed based on its conditional
+     * predecessors.
+     *
+     * @param op the operation to check
+     * @return true if the operation can be executed, false otherwise
+     */
     private Boolean isOperationDoable(Operation op) {
         Boolean res = true;
 
@@ -171,6 +182,15 @@ public class Simulation {
         return dates.get(0);
     }
 
+    /**
+     * Finds the next date after the current date at which an event is
+     * scheduled to occur across all machines. Only considers the first and
+     * second event dates of each machine.
+     *
+     * @param currentDate the current date
+     * @return the next date after the current date at which an event is
+     *         scheduled to occur, or null if no such date exists
+     */
     private Integer findAfterNextEventDate(Integer currentDate) {
         ArrayList<Integer> dates = new ArrayList<Integer>();
 
@@ -187,6 +207,14 @@ public class Simulation {
         return dates.get(0);
     }
 
+    /**
+     * Returns a list of all events that are scheduled to occur on the given
+     * date.
+     *
+     * @param date the date to check for scheduled events
+     * @return an ArrayList of Event objects that are scheduled for the given
+     *         date, empty if there are no events
+     */
     // Retrieves all events from all machines that are in a certain timeslot
     private ArrayList<Event> peekAllEventsAtDate(Integer date) {
         ArrayList<Event> res = new ArrayList<Event>();
@@ -200,6 +228,15 @@ public class Simulation {
         return res;
     }
 
+    /**
+     * Checks if there is at least one event that is doable on the given date.
+     * An event is considered doable if it is an operation begin event and the
+     * operation it corresponds to is doable.
+     *
+     * @param date the date to check for doable events
+     * @return true if there is at least one doable event at the given date,
+     *         false otherwise
+     */
     private Boolean checkIfDoableEventExistsAtDate(Integer date) {
         for(Event e : this.peekAllEventsAtDate(date)) {
             if (e.getEventType() != EventType.OPERATION_BEGIN) return true;

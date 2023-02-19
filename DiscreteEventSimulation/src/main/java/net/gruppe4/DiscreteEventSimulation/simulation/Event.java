@@ -2,6 +2,10 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 
 import com.google.common.base.Strings;
 
+/**
+ * Exclusively a data type representing an Event that can be used in a
+ * {@link TimeslotQueue} or {@link EventLog} object.
+ */
 public class Event {
     private EventType eventType;
     private Machine machine;

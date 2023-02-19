@@ -103,6 +103,14 @@ public class TimeslotQueue {
         return this.timeslots.firstKey();
     }
 
+    /**
+     * Returns the second date in the list of timeslots. If the list is empty,
+     * null is returned. If the list only has one element, the first date is
+     * returned.
+     *
+     * @return the second date in the list of timeslots or the first date if
+     *         there's only one or null if the list is empty
+     */
     public Integer getSecondDate() {
         if (this.timeslots.isEmpty()) return null;
 
@@ -137,6 +145,12 @@ public class TimeslotQueue {
         return event;
     }
 
+    /**
+     * Retrieves the next Event without removing it from the queue. If the
+     * queue is empty, returns null.
+     *
+     * @return the next Event, or null if the queue is empty.
+     */
     public Event peekNextEvent() {
         if (this.timeslots.isEmpty()) return null;
         if (this.timeslots.get(this.timeslots.firstKey()).isEmpty()) return null;
@@ -166,6 +180,14 @@ public class TimeslotQueue {
         return event;
     }
 
+    /**
+     * Returns the next event if it occurs on the specified date without
+     * removing it.
+     *
+     * @param date the date to check for the next event
+     * @return the next event if it occurs on the specified date, null
+     *         otherwise
+     */
     public Event peekEventIfDate(Integer date) {
         Event event = null;
 

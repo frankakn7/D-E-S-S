@@ -3,6 +3,16 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * Stores a log of {@link Event} objects that occur during the simulation
+ * process and keeps track of them by appending them to multiple list types for
+ * ease of access in different situations (plain {@link ArrayList}, a
+ * {@link Machine} to {@link ArrayList} mapping and a {@link TimeslotQueue}.
+ *
+ * Additionally, provides methods for retrieving the log and maps, checking if
+ * a machine breakdown is currently ongoing and checking if an operation has
+ * finished.
+ */
 public class EventLog {
     private TimeslotQueue timeslots;
     private ArrayList<Event> log;
@@ -52,7 +62,14 @@ public class EventLog {
         return this.machineLogMap.get(m);
     }
 
-    // TODO Maybe write a unified interface for this
+
+    /**
+     * Iterates through current log beginning from the end to check if a
+     * machine breakdown is currently ongoing
+     *
+     * @param machine  The {@link Machine} object to check in for breakdowns.
+     * @return         true if breakdown is ongoing, false if not.
+     */
     public Boolean isMachineBreakdownOpen(Machine machine) {
         if (!this.machineLogMap.containsKey(machine)) return false;
 
@@ -67,6 +84,15 @@ public class EventLog {
         return false;
     }
 
+    /**
+     * Checks if a operation passed by an {@link Operation} object is currently
+     * ongoing.
+     *
+     * @param op  {@link Operation} object to check if finished
+     * @return    true if {@link Operation} object has not finished else false
+     */
+
+    // TODO HARIS HIER WEITERARBEITEN
     public Boolean hasOperationFinished(Operation op) {
         ListIterator<Event> i = this.log.listIterator(this.log.size());;
 

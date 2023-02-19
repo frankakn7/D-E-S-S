@@ -5,7 +5,11 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * // TODO Comment OperationClass
+ * Representing an operation taking place in a schedule.
+ * Operations are executed by {@link Machine}s and belong to a {@link Job}.
+ * They have a duration, a release date, and predecessors that must be
+ * completed before they can be executed. They can also have a probability of
+ * duration variation.
  */
 //TODO add jobId and implement JOB object for tracking and simulaton evaluation
 public class Operation {
@@ -100,6 +104,12 @@ public class Operation {
         this.job = job;
     }
 
+    /**
+     * Rolls the dice to determine if the operation duration should be varied
+     * using a gaussian distribution.
+     *
+     * @return True if the duration should be varied, false otherwise.
+     */
     public Boolean rollDiceForDurVariation() {
         this.duration = this.durationMean;
         if (Objects.equals(this.durVariationProb, 0.)) return false;
@@ -110,10 +120,15 @@ public class Operation {
         return false;
     }
 
-    // Returns full length, not only variation
+    /**
+     * Returns the full length of the operation, including any duration variation.
+     * Uses gaussian distribution.
+     *
+     * @return The full length of the operation
+     */
     // TODO rename, sounds too much like the method above
-    public Integer rollDiceForVariationDur() {
-        Integer res = Math.max((int)Math.round((generator.nextGaussian(this.durationMean, this.durStandardDeviation))),1);
+    public Integer rollDiceForVariedDurationLength() {
+        Integer res = Math.max((int)Math.round((generator.nextGaussian(this.duration, this.durStandardDeviation))),1);
         return res;
     }
 

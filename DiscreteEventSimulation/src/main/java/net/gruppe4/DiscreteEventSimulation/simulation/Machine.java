@@ -4,7 +4,12 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 import java.util.Objects;
 import java.util.Random;
 
-
+/**
+ * Machine class representing a production resource. Responsible for managing
+ * the queue of events associated with the machine and simulating machine
+ * breakdowns. Also accepts operations and converts them into corresponding
+ * events, which are added to the machines {@link TimeslotQueue} object.
+ */
 public class Machine {
     private String id;
     private TimeslotQueue timeslotQueue;
@@ -51,7 +56,7 @@ public class Machine {
 
         // Vary Operations duration
         if (operation.rollDiceForDurVariation()) {
-            operation.setDuration(operation.rollDiceForVariationDur());
+            operation.setDuration(operation.rollDiceForVariedDurationLength());
         }
 
 
@@ -87,6 +92,12 @@ public class Machine {
         return null;
     }
 
+    /**
+     * Returns the `date` of the second event in Queue/next event that is bound
+     * to be processed without doing any processing.
+     *
+     * @return   `date` of the second next {@link Event} object in Queue.
+     */
     public Integer getSecondEventDate() {
         if (!this.timeslotQueue.isEmpty()) {
             return this.timeslotQueue.getSecondDate();
@@ -108,6 +119,17 @@ public class Machine {
         return this.timeslotQueue.pollNextEventIfDate(date);
     }
 
+    /**
+     * Peek/Get a reference to an {@link Event} object from the
+     * {@link TimeslotQueue}, without taking it out of the queue. If there is
+     * one scheduled at the passed `date`. Returns null if no {@link Event}
+     * object is scheduled for that `date`.
+     *
+     * @param date  `date` to check for {@link Event} objects in the machines
+     *              queue.
+     * @return      Next scheduled {@link Event} object at `date`. null if none
+     *              is scheduled for that `date`.
+     */
     public Event peekEventIfDate(Integer date) {
         return this.timeslotQueue.peekEventIfDate(date);
     }
@@ -121,6 +143,12 @@ public class Machine {
         return this.id;
     }
 
+    /**
+     * Simulates a dice roll to determine if a breakdown occurs using gaussian
+     * distribution.
+     *
+     * @return true if a breakdown occurs, false otherwise.
+     */
     public Boolean rollDiceForBreakdown() {
         if (Objects.equals(this.brkdwnProb, 0.)) return false;
 
@@ -130,12 +158,25 @@ public class Machine {
         return false;
     }
 
+    /**
+     * Rolls a dice to determine the length of a breakdown based on the
+     * specified mean and standard deviation using gaussian distribution.
+     *
+     * @return an integer representing the length of the breakdown, with a
+     *         minimum value of 1
+     */
     public Integer rollDiceForBreakdownLength() {
         Integer res = Math.max((int)Math.round(generator.nextGaussian(this.brkdwnLengthMean, this.brkdwnLengthStandardDeviation)),1);
         //System.out.println(res);
         return res;
     }
 
+    /**
+     * Inserts a breakdown event at the front of the timeslot queue.
+     * The length of the breakdown event is determined by calling the {@link #rollDiceForBreakdownLength()} method.
+     * The breakdown event consists of a {@link EventType#MACHINE_BREAKDOWN_BEGIN} event and a corresponding
+     * {@link EventType#MACHINE_BREAKDOWN_END} event.
+     */
     public void insertBreakdownAtFront() {
         Integer length = this.rollDiceForBreakdownLength();
 
