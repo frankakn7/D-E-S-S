@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
+/**
+ * Represents an evaluator for an {@link EventLog} object resulting from a
+ * {@link Simulation} run.
+ *
+ * It contains methods to calculate various statistics related to machines, jobs, and operations.
+ */
 public class LogEvaluator {
     private EventLog log;
     private HashMap<String, Machine> machines = new HashMap<String, Machine>();
@@ -21,6 +27,16 @@ public class LogEvaluator {
         this.jobs = jobs;
     }
 
+    /**
+     * This method calculates operation statistics based on a HashMap of
+     * machines and their respective operation lengths. It returns a HashMap
+     * where each key is an Operation and the value is a HashMap containing
+     * the length of that operation.
+     *
+     * @param machines a HashMap of machines and their respective operation
+     *                 lengths
+     * @return a HashMap of operation statistics
+     */
     public HashMap<Operation, HashMap<String, Object>> calculateOperationStats(HashMap<Machine, HashMap<String, Object>> machines) {
         HashMap<Operation, HashMap<String, Object>> res = new HashMap<Operation, HashMap<String, Object>>();
 
@@ -37,6 +53,16 @@ public class LogEvaluator {
         return res;
     }
 
+    /**
+     * Calculates the general statistics for the simulation using the given
+     * machines and jobs.
+     *
+     * @param machines HashMap of Machine objects and their associated
+     *                 HashMaps of properties.
+     * @param jobs HashMap of Job objects and their associated HashMaps of
+     *             properties.
+     * @return HashMap containing the calculated statistics.
+     */
     public HashMap<String, Object> calculateGeneralStats(HashMap<Machine, HashMap<String, Object>> machines,
                                                          HashMap<Job, HashMap<String, Object>> jobs) {
 
@@ -62,6 +88,15 @@ public class LogEvaluator {
         return res;
     }
 
+
+    /**
+     * Calculates various statistics values for each machine in the system.
+     *
+     * @return HashMap<Machine, HashMap<String, Object>> A mapping of each Machine
+     *                                                   object to a HashMap of
+     *                                                   its corresponding
+     *                                                   statistics values.
+     */
     public HashMap<Machine, HashMap<String, Object>> calculateMachineStatValues() {
         HashMap<Machine, HashMap<String, Object>> res = new HashMap<Machine, HashMap<String, Object>>();
 
@@ -90,6 +125,17 @@ public class LogEvaluator {
         return res;
     }
 
+    /**
+     * This method evaluates a machine log and returns a HashMap containing
+     * information on the duration of each operation, the duration of each
+     * breakdown, and the number of breakdown occurrences for the machine.
+     *
+     * @param machineLog An ArrayList of Event objects containing information
+     *                   on the events that occurred on the machine.
+     * @return A HashMap containing information on the duration of each
+     *         operation, the duration of each breakdown, and the number
+     *         of breakdown occurrences for the machine.
+     */
     private HashMap<String, Object> evaluateMachineLog(ArrayList<Event> machineLog) {
         HashMap<Operation, Event[]> map = new HashMap<Operation, Event[]>();
         ArrayList<Integer> lengths = new ArrayList<Integer>();
@@ -132,6 +178,11 @@ public class LogEvaluator {
         return res;
     }
 
+    /**
+     * Calculates job statistics values based on the events log
+     *
+     * @return a HashMap of job to a HashMap of statistic name to value
+     */
     public HashMap<Job, HashMap<String, Object>> calculateJobStatValues() {
         HashMap<Job, HashMap<String, Object>> res = new HashMap<Job, HashMap<String, Object>>();
 
@@ -156,8 +207,15 @@ public class LogEvaluator {
         return res;
     }
 
+    /**
+     * Returns a HashMap of the finishing dates of every job passed in the
+     * arrayList for a single simulation.
+     *
+     *
+     * @return HashMap<Job, Object> A HashMap of the finishing dates of every
+     *                              job passed in the arrayList
+     */
     // For single simulation: Returns a HashMap of the finishing dates of every job passed in the arrayList
-    // TODO Doesnt work properly since Dependencies are not implemented properly yet, check if it works after implementing them
     public HashMap<Job, Object> findJobCompletionDates() {
         HashMap<Job, Object> res = new HashMap<Job, Object>();
         ListIterator<Event> i = this.log.getArrayList().listIterator(this.log.getArrayList().size());
