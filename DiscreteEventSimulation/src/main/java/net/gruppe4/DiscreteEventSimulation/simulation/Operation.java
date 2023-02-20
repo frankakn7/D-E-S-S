@@ -11,10 +11,8 @@ import java.util.Random;
  * completed before they can be executed. They can also have a probability of
  * duration variation.
  */
-//TODO add jobId and implement JOB object for tracking and simulaton evaluation
 public class Operation {
     private String id;
-    // TODO Rename to something including the word dependency
     private ArrayList<Operation> conditionalPredecessors;   // List of necessary predecessors in an AND relation
     private Operation machineQueuePredecessor = null;       // The Operation in the machine queue that this one follows
     // (null when first in queue)
@@ -23,7 +21,6 @@ public class Operation {
     private Machine machine;                                // Parent Machine
     private Job job;
 
-    // TODO Job in den Konstruktor hinzufügen
     private int durationMean;
     private Double durVariationProb = 0.;
     private Double durStandardDeviation;
@@ -126,7 +123,6 @@ public class Operation {
      *
      * @return The full length of the operation
      */
-    // TODO rename, sounds too much like the method above
     public Integer rollDiceForVariedDurationLength() {
         Integer res = Math.max((int)Math.round((generator.nextGaussian(this.duration, this.durStandardDeviation))),1);
         return res;

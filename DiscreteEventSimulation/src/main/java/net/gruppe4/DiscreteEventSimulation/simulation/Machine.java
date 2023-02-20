@@ -32,7 +32,6 @@ public class Machine {
         this.brkdwnLengthMean = brkdwnLengthMean;
         this.brkdwnLengthStandardDeviation = brkdwnLengthStandardDeviation;
 
-        // TODO Set seed for randomgenerator
         this.generator = new Random();
     }
 
@@ -49,7 +48,6 @@ public class Machine {
      *                   and inserted
      */
     public void takeIn(Operation operation) {
-        // TODO Implement releaseDate stuff
         Event begin = new Event(EventType.OPERATION_BEGIN, this, operation);
         Event end = new Event(EventType.OPERATION_END, this, operation);
 
@@ -58,13 +56,6 @@ public class Machine {
         if (operation.rollDiceForDurVariation()) {
             operation.setDuration(operation.rollDiceForVariedDurationLength());
         }
-
-
-        // TODO Check if last inserted timestamp is > than releasedate
-        //  => if so append begin event to end of queue
-        //  => else add begin event at releaseDate
-        //  (due to dependencies releaseDate not important if earliest possible moment is after releasedate)
-        //  => more of a integrity check
 
         Integer beginDate = operation.getReleaseDate();
         Integer releaseDate = operation.getReleaseDate();
@@ -179,9 +170,7 @@ public class Machine {
      */
     public void insertBreakdownAtFront() {
         Integer length = this.rollDiceForBreakdownLength();
-
-        // TODO Maybe make operations optional, also check again if operations are required by any chance and if we
-        //      can allow for operation to be null here
+        
         Event begin = new Event(EventType.MACHINE_BREAKDOWN_BEGIN, this, null);
         Event end = new Event(EventType.MACHINE_BREAKDOWN_END, this, null);
 

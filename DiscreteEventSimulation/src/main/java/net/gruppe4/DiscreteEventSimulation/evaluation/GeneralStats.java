@@ -5,19 +5,18 @@ import org.json.JSONObject;
 public class GeneralStats {
     public StatisticalValues totalCompletionTime;
     public StatisticalValues totalCost;
-    // TODO Fix typo in ressource
-    public StatisticalValues totalRessourceUtilization;
+    public StatisticalValues totalResourceUtilization;
 
-    public GeneralStats(StatisticalValues totalCompletionTime, StatisticalValues totalCost, StatisticalValues totalRessourceUtilization) {
+    public GeneralStats(StatisticalValues totalCompletionTime, StatisticalValues totalCost, StatisticalValues totalresourceUtilization) {
         this.totalCompletionTime = totalCompletionTime;
         this.totalCost = totalCost;
-        this.totalRessourceUtilization = totalRessourceUtilization;
+        this.totalResourceUtilization = totalresourceUtilization;
     }
 
     public GeneralStats() {
         this.totalCompletionTime = new StatisticalValues();
         this.totalCost = new StatisticalValues();
-        this.totalRessourceUtilization = new StatisticalValues();
+        this.totalResourceUtilization = new StatisticalValues();
     }
 
     /**
@@ -34,7 +33,7 @@ public class GeneralStats {
      * "max": 4,
      * "variance": 5
      * },
-     * "total_ressource_utilization": {
+     * "total_resource_utilization": {
      * "mean": 4,
      * "min": 3,
      * "max": 4,
@@ -47,11 +46,11 @@ public class GeneralStats {
 
         JSONObject totalCompletionTimeJson = this.totalCompletionTime.toJsonObject();
         JSONObject totalCostJson = this.totalCost.toJsonObject();
-        JSONObject totalRessourceUtilizationJson = this.totalRessourceUtilization.toJsonObject();
+        JSONObject totalResourceUtilizationJson = this.totalResourceUtilization.toJsonObject();
 
         generalStatsJson.put("total_completion_time", totalCompletionTimeJson);
         generalStatsJson.put("total_cost", totalCostJson);
-        generalStatsJson.put("total_ressource_utilization", totalRessourceUtilizationJson);
+        generalStatsJson.put("total_resource_utilization", totalResourceUtilizationJson);
 
         return generalStatsJson;
     }

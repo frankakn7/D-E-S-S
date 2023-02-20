@@ -19,7 +19,6 @@ public class EventLog {
     private HashMap<Machine, ArrayList<Event>> machineLogMap;
 
     public EventLog() {
-        // TODO consider using an ArrayList instead
         this.timeslots = new TimeslotQueue();
         this.log = new ArrayList<Event>();
         this.machineLogMap = new HashMap<Machine, ArrayList<Event>>();
@@ -92,7 +91,6 @@ public class EventLog {
      * @return    true if {@link Operation} object has not finished else false
      */
 
-    // TODO HARIS HIER WEITERARBEITEN
     public Boolean hasOperationFinished(Operation op) {
         ListIterator<Event> i = this.log.listIterator(this.log.size());;
 

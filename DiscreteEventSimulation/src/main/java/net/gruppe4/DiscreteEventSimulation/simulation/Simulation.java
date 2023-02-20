@@ -21,7 +21,6 @@ public class Simulation {
         this.machines = machines;
         this.eventLog = new EventLog();
 
-        // TODO [#A] Move the sorting of elements to SimulationCaseServiceImpl so to not have to compute it 1000 times
 
         // Sort elements into their respective Machine queues
         for (Map.Entry<String, Machine> entry : machines.entrySet()) {
@@ -71,7 +70,6 @@ public class Simulation {
                     i.remove();
                     break;
                 }
-                //TODO bug op8 gets removed without being inserted
             }
         }
 
@@ -149,13 +147,12 @@ public class Simulation {
      *
      * @return  Log of all the events that happened during simulation.
      */
-    //TODO make runSim take parameter of number of sim runs and loop many times -> prepare simulation once and run 1000 times
     public EventLog runSim() {
         Boolean wasSuccessful = this.simulationLoop();
         if (!wasSuccessful) {
             // TODO Throw error if simulation unsuccessful
         }
-        //TODO make simulationloop return eventLog
+
         return this.eventLog;
     }
 

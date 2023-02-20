@@ -3,7 +3,6 @@ package net.gruppe4.DiscreteEventSimulation.simulation;
 import net.gruppe4.DiscreteEventSimulation.evaluation.*;
 import org.junit.jupiter.api.Test;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -99,7 +98,7 @@ class SimulationTest {
 
         GeneralStats gStats = new GeneralStats();
         HashMap<String, Object> generalValues = evaluator.calculateGeneralStats(machineValues, jobValues);
-        gStats.totalRessourceUtilization.addValue((double)generalValues.get("total_ressource_utilisation"));
+        gStats.totalResourceUtilization.addValue((double)generalValues.get("total_resource_utilisation"));
         gStats.totalCost.addValue((double)generalValues.get("total_cost"));
         gStats.totalCompletionTime.addValue((double)generalValues.get("total_completion_time"));
         System.out.println(gStats.toJsonObject().toString());

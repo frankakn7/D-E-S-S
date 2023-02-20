@@ -133,9 +133,6 @@ public class TimeslotQueue {
         if (this.timeslots.get(this.timeslots.firstKey()).isEmpty()) return null;
 
         Event event = this.timeslots.get(this.getFirstDate()).get(0);
-        // TODO It should be checked out where the actual date variable of
-        // events gets set and if its really necessary for it to be set
-        // so often
         event.setDate(this.getFirstDate());
         this.timeslots.get(this.getFirstDate()).remove(0);
 

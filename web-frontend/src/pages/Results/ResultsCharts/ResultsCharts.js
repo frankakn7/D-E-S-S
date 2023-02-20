@@ -80,12 +80,12 @@ const COLOR_DATABASE = [
 //     };
 // };
 
-const TotalRessourceUtilisationPieChart = (props) => {
+const TotalResourceUtilisationPieChart = (props) => {
     const utilisationData = [
         {
             name: "utilized",
             value: parseFloat(
-                (props.allResults.general_stats.total_ressource_utilization
+                (props.allResults.general_stats.total_resource_utilization
                 .mean).toFixed(2)),
             fill: "#3C7FD0",
         },
@@ -93,7 +93,7 @@ const TotalRessourceUtilisationPieChart = (props) => {
             name: "unutilized",
             value:
                 parseFloat((1 -
-                props.allResults.general_stats.total_ressource_utilization.mean).toFixed(2)),
+                props.allResults.general_stats.total_resource_utilization.mean).toFixed(2)),
             fill: "url(#idlePattern)",
         },
     ];
@@ -138,7 +138,7 @@ const TotalRessourceUtilisationPieChart = (props) => {
     //         {`${(value * 100).toFixed(0)}%`}
     //       </text>
     //     )}
-    
+
 
     const renderUtilizationPieChart = (
         <ResponsiveContainer width="100%" height={200}>
@@ -174,7 +174,7 @@ const TotalRessourceUtilisationPieChart = (props) => {
 
     return (
         <div className={`${classes.chart} ${props.className}`}>
-            <p>Total Ressource utilization</p>
+            <p>Total Resource utilization</p>
             {renderUtilizationPieChart}
         </div>
     );
@@ -875,7 +875,7 @@ const JobsOperationsLength = (props) => {
 };
 
 export {
-    TotalRessourceUtilisationPieChart,
+    TotalResourceUtilisationPieChart,
     TotalCostPieChart,
     MachineUtilisationBarChart,
     MachineMakespanBarChart,

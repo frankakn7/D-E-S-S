@@ -74,15 +74,13 @@ public class LogEvaluator {
         Double totalCosts = 0.;
         Double machineUtilisation = 0.;
         for (Map.Entry<Machine, HashMap<String, Object>> entry : machines.entrySet()) {
-            // TODO Tidy up the camelCase snake_case whatevercase bs when passing around HashMaps
             totalCosts += (double)entry.getValue().get("operational_cost") + (double)entry.getValue().get("repair_cost");
             machineUtilisation += (double)entry.getValue().get("utilisation_percent");
         }
-        // TODO In some places its written utilisation in others its utilization
-        res.put("total_ressource_utilisation", (double)(machineUtilisation / (double)machines.size()));
+        res.put("total_resource_utilisation", (double)(machineUtilisation / (double)machines.size()));
 
         for (Map.Entry<Job, HashMap<String, Object>> entry : jobs.entrySet())
-            totalCosts += (double)entry.getValue().get("latenesscost");
+            totalCosts += (double)entry.getValue().get("lateness_cost");
 
         res.put("total_cost", (double)totalCosts);
         return res;
@@ -106,19 +104,19 @@ public class LogEvaluator {
 
             HashMap<String, Object> machineLogEval = this.evaluateMachineLog(machineLog);
 
-            Integer absoluteMachineUsage = (int)machineLogEval.get("operationDuration") - (int)machineLogEval.get("breakdownDuration");
+            Integer absoluteMachineUsage = (int)machineLogEval.get("operation_duration") - (int)machineLogEval.get("breakdown_duration");
             Double machineLogLength = (double)(int)machineLog.get(machineLog.size() - 1).getDate();
 
             map.put("utilisation_percent", (double)absoluteMachineUsage / machineLogLength);
             map.put("utilisation_time", (double)absoluteMachineUsage);
-            map.put("repair_cost", (double)entry.getValue().getRepairCostPerTime() * (double)(int)machineLogEval.get("breakdownDuration"));
+            map.put("repair_cost", (double)entry.getValue().getRepairCostPerTime() * (double)(int)machineLogEval.get("breakdown_duration"));
             map.put("operational_cost", (double)absoluteMachineUsage * entry.getValue().getCostPerTime());
-            map.put("breakdowns_downtime", (double)(int)machineLogEval.get("breakdownDuration"));
-            map.put("breakdowns_occurrence",(double)(int)machineLogEval.get("breakdownOccurence"));
+            map.put("breakdowns_downtime", (double)(int)machineLogEval.get("breakdown_duration"));
+            map.put("breakdowns_occurrence",(double)(int)machineLogEval.get("breakdown_occurrence"));
             map.put("breakdowns_percent", (double)map.get("breakdowns_downtime") / machineLogLength);
-            Double idleTime = Math.max(machineLogLength - (double)(int)machineLogEval.get("operationDuration"),0);
+            Double idleTime = Math.max(machineLogLength - (double)(int)machineLogEval.get("operation_duration"),0);
             map.put("idle_time_absolute", idleTime);
-            map.put("operation_lengths", machineLogEval.get("operationLengths"));
+            map.put("operation_lengths", machineLogEval.get("operation_lengths"));
             res.put(entry.getValue(), map);
         }
 
@@ -169,10 +167,10 @@ public class LogEvaluator {
         for (Integer l : breakdownLengths) breakdownDuration += l;
 
         HashMap<String, Object> res = new HashMap<String, Object>();
-        res.put("operationDuration", operationDuration);
-        res.put("breakdownDuration", breakdownDuration);
-        res.put("breakdownOccurence", breakdownLengths.size());
-        res.put("operationLengths", lengthMap);
+        res.put("operation_duration", operationDuration);
+        res.put("breakdown_duration", breakdownDuration);
+        res.put("breakdown_occurrence", breakdownLengths.size());
+        res.put("operation_lengths", lengthMap);
 
 
         return res;
@@ -194,11 +192,10 @@ public class LogEvaluator {
             Operation op = event.getOperation();
             if (res.containsKey(op.getJob())) continue;
 
-            // TODO Fix up this mess wtf
             HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("completiondate", (double)(int)event.getDate());
-            map.put("lateness", (double)((double)map.get("completiondate") - (double) op.getJob().getDueDate()));
-            map.put("latenesscost", (double)map.get("lateness") * op.getJob().getCostPerLatenessTime());
+            map.put("completion_date", (double)(int)event.getDate());
+            map.put("lateness", (double)((double)map.get("completion_date") - (double) op.getJob().getDueDate()));
+            map.put("lateness_cost", (double)map.get("lateness") * op.getJob().getCostPerLatenessTime());
             res.put(op.getJob(), map);
 
             if (res.size() == this.jobs.size()) break;

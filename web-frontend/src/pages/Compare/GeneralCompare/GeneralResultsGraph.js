@@ -5,7 +5,7 @@ import {
     MachineUtilisationBarChart,
     MachineMakespanBarChart,
     TotalCostPieChart,
-    TotalRessourceUtilisationPieChart,
+    TotalResourceUtilisationPieChart,
 } from "../../Results/ResultsCharts/ResultsCharts";
 import classes from "./GeneralCompareGraph.module.css";
 
@@ -18,7 +18,7 @@ const GeneralResultsGraph = (props) => {
         >
             <div className={classes.boxContent}>
                 <div className={classes.graphContainer}>
-                    <TotalRessourceUtilisationPieChart allResults={props.allResults} />
+                    <TotalResourceUtilisationPieChart allResults={props.allResults} />
                 </div>
                 <div className={classes.graphContainer}>
                     <TotalCostPieChart allResults={props.allResults} />

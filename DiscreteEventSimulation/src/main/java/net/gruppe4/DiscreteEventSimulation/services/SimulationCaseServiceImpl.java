@@ -9,8 +9,6 @@ import net.gruppe4.DiscreteEventSimulation.repositories.SimulationCaseRepository
 import net.gruppe4.DiscreteEventSimulation.simulation.*;
 /*import net.gruppe4.DiscreteEventSimulation.simulation.model.Job;
 import net.gruppe4.DiscreteEventSimulation.simulation.model.Machine;*/
-import org.apache.juli.logging.Log;
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,8 +153,8 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
             for(JobStats jStat : result.getJobStats()) {
                 jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
-                jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
-                jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completiondate"));
+                jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("lateness_cost"));
+                jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completion_date"));
             }
 
             HashMap<Machine, HashMap<String, Object>> machineValues = evaluator.calculateMachineStatValues();
@@ -178,7 +176,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
 
             HashMap<String, Object> generalValues = evaluator.calculateGeneralStats(machineValues, jobValues);
-            result.getGeneralStats().totalRessourceUtilization.addValue((double)generalValues.get("total_ressource_utilisation"));
+            result.getGeneralStats().totalResourceUtilization.addValue((double)generalValues.get("total_resource_utilisation"));
             result.getGeneralStats().totalCost.addValue((double)generalValues.get("total_cost"));
             result.getGeneralStats().totalCompletionTime.addValue((double)generalValues.get("total_completion_time"));
 

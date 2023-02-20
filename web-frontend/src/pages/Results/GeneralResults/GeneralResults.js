@@ -1,7 +1,7 @@
 import React from "react";
 import DetailsTable from "../DetailsTable/DetailsTable";
 import DetailsTableRow from "../DetailsTable/DetailsTableRow";
-import { JobCompletionTimeChart, MachineMakespanBarChart, MachineUtilisationBarChart, TotalCostPieChart, TotalRessourceUtilisationPieChart } from "../ResultsCharts/ResultsCharts";
+import { JobCompletionTimeChart, MachineMakespanBarChart, MachineUtilisationBarChart, TotalCostPieChart, TotalResourceUtilisationPieChart } from "../ResultsCharts/ResultsCharts";
 import classes from "./GeneralResults.module.css";
 
 const GeneralResults = (props) => {
@@ -24,9 +24,9 @@ const GeneralResults = (props) => {
                     />
                     <DetailsTableRow
                         stat={{
-                            name: "total ressource utilization",
+                            name: "total resource utilization",
                             ...props.allResults.general_stats
-                                .total_ressource_utilization,
+                                .total_resource_utilization,
                         }}
                         percentage={true}
                     />
@@ -34,7 +34,7 @@ const GeneralResults = (props) => {
             </div>
             <div className={classes.rightData}>
                 <div className={classes.charts}>
-                    <TotalRessourceUtilisationPieChart allResults={props.allResults}/>
+                    <TotalResourceUtilisationPieChart allResults={props.allResults}/>
                     <TotalCostPieChart allResults={props.allResults} />
                     <MachineUtilisationBarChart allResults={props.allResults} />
                 </div>
