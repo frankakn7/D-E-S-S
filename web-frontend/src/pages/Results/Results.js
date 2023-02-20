@@ -8,26 +8,34 @@ import GeneralResults from "./GeneralResults/GeneralResults";
 import MachineResults from "./MachineResults/MachineResults";
 import JobResults from "./JobResults/JobResults";
 import OperationResults from "./OperationResults/OperationResults";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import ConfirmationModal from "../../interface/Modal/ConfirmationModal/ConfirmationModal";
 
 const Tab = (props) => {
-
     const onClickHandler = () => {
-        props.setView(props.newView)
-    }
+        props.setView(props.newView);
+    };
 
     const selected = props.newView === props.view;
 
-  return (
-    <Button className={`${classes.tab} ${!selected ? classes.unselectedTab : ""}`} onClick={onClickHandler}>
-        {props.children}
-    </Button>
-  )
-}
+    return (
+        <Button
+            className={`${classes.tab} ${
+                !selected ? classes.unselectedTab : ""
+            }`}
+            onClick={onClickHandler}
+        >
+            {props.children}
+        </Button>
+    );
+};
 
 const Results = (props) => {
     const { id } = useParams();
     const [simCase, setSimCase] = useState();
     const [results, setResults] = useState();
+    const [deleting, setDeleting] = useState();
     const navigate = useNavigate();
 
     const [view, setView] = useState("general");
@@ -37,43 +45,102 @@ const Results = (props) => {
             return id === simCase.id;
         });
 
-        const results = (foundSimCase ? JSON.parse(foundSimCase.results) : {})
+        const results = foundSimCase ? JSON.parse(foundSimCase.results) : {};
 
-        if(results.general_stats){
+        if (results.general_stats) {
             results.machines = results.machines.map((machine) => {
-                return {operations: results.operations.filter((op) => op.machine_id === machine.id,), ...machine}
-            })
-            
+                return {
+                    operations: results.operations.filter(
+                        (op) => op.machine_id === machine.id
+                    ),
+                    ...machine,
+                };
+            });
+
             results.jobs = results.jobs.map((job) => {
-                return {operations: results.operations.filter((op) => op.job_id === job.id,), ...job}
-            })
+                return {
+                    operations: results.operations.filter(
+                        (op) => op.job_id === job.id
+                    ),
+                    ...job,
+                };
+            });
         }
-        
+
         setSimCase(foundSimCase);
-        setResults(results)
+        setResults(results);
     }, [props.simCases, id]);
+
+    const handleDelete = () => {
+        setDeleting(false);
+        navigate(`/simulations`);
+        props.simCaseDeleteHandler(id);
+    };
 
     return (
         <div className={classes.main}>
+            {deleting && (
+                <ConfirmationModal
+                    onClose={() => setDeleting(false)}
+                    onContinue={handleDelete}
+                >
+                    <div className={classes.confirmContent}>
+                        <p>
+                            Are you sure you want to delete the Simulation of <b>"
+                            {
+                                props.plans.find(
+                                    (plan) => simCase.planId === plan.uuid
+                                ).name
+                            }
+                            "</b> with the simulation ID ({simCase.id})?{" "}
+                        </p>
+                        <p>
+                            <span className={classes.warning}>Warning:</span>{" "}
+                            The calculated results will be <u>lost</u>
+                        </p>
+                    </div>
+                </ConfirmationModal>
+            )}
             <div className={classes.top}>
                 <GoBack />
-                {simCase && <h2>Results of Simulation: {simCase.id}</h2>}
+                {simCase && (
+                    <div className={classes.topRight}>
+                        <Button className={classes.delete} onClick={() => setDeleting(true)}>
+                            <FontAwesomeIcon icon={faTrashCan} />
+                        </Button>
+                        <h2>Results of Simulation: {simCase.id}</h2>
+                    </div>
+                )}
             </div>
             <div className={classes.tabs}>
-                <Tab setView={setView} view={view} newView={"general"}>Summary</Tab>
-                <Tab setView={setView} view={view} newView={"machines"}>Machines</Tab>
-                <Tab setView={setView} view={view} newView={"jobs"}>Jobs</Tab>
-                <Tab setView={setView} view={view} newView={"operations"}>Operations</Tab>
+                <Tab setView={setView} view={view} newView={"general"}>
+                    Summary
+                </Tab>
+                <Tab setView={setView} view={view} newView={"machines"}>
+                    Machines
+                </Tab>
+                <Tab setView={setView} view={view} newView={"jobs"}>
+                    Jobs
+                </Tab>
+                <Tab setView={setView} view={view} newView={"operations"}>
+                    Operations
+                </Tab>
             </div>
             {simCase && (
                 <Box
                     className={classes.contentBox}
                     titleClassName={classes.boxTitle}
                 >
-                    {view === "general" && <GeneralResults allResults={results} />}
-                    {view === "machines" && <MachineResults allResults={results} />}
+                    {view === "general" && (
+                        <GeneralResults allResults={results} />
+                    )}
+                    {view === "machines" && (
+                        <MachineResults allResults={results} />
+                    )}
                     {view === "jobs" && <JobResults allResults={results} />}
-                    {view === "operations" && <OperationResults allResults={results} />}
+                    {view === "operations" && (
+                        <OperationResults allResults={results} />
+                    )}
                 </Box>
             )}
         </div>

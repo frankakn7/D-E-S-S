@@ -1,0 +1,96 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    width: 6rem;
+    margin: 0.5rem;
+    transition: all 0.1s ease-in-out;
+    padding: 0.2rem;
+    border-radius: 5px;
+    user-select: none;
+    /* height: 10rem; */
+}
+
+.main:active {
+    transform: scale(0.9);
+    transition: all 0.1s ease-in-out;   
+}
+
+.main:hover,
+.selected{
+    cursor: pointer;
+    background-color: var(--carolina-blue);
+    transition: all 0.1s ease-in-out;
+    color: var(--egg-white);
+}
+
+.main:hover .fileIcon,
+.selected .fileIcon{
+    transition: all 0.1s ease-in-out;
+    color: var(--egg-white);
+}
+
+.fileIcon {
+    font-size: 5rem;
+    color: var(--carolina-blue);
+    transition: all 0.1s ease-in-out;
+
+}
+
+.created {
+    /* margin-top: 0; */
+    font-size: 0.8rem;
+    font-style: italic;
+    margin: 0;
+}
+
+.title {
+    /* margin: 0.4rem; */
+    margin: 0;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.actions {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: var(--error-red);
+    z-index: 5;
+}
+
+.relative {
+    position: relative;
+}
+
+.open {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.warning {
+    color: var(--error-red)
+}
+
+.confirmContent {
+    text-align: center;
+}

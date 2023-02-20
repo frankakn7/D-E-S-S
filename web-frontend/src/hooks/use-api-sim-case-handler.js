@@ -66,7 +66,21 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
             .catch((error) => console.log(error));
     };
 
-    return { handleGetSimCase, handleGetSimStatus, checkIfDone };
+    const handleDeleteSimCase = (simCaseId) => {
+        return new Promise((resolve, reject) => {
+            sendHttpRequest({
+                url: baseUrl + "/api/sim/" + simCaseId,
+                method: "DELETE"
+            }).then((response) => {
+                setSimCases((prevState) => prevState.filter((simCase) => simCase.id !== simCaseId))
+                resolve();
+            }).catch((error) => {
+                reject(error);
+            })
+        })
+    }
+
+    return { handleGetSimCase, handleGetSimStatus, checkIfDone, handleDeleteSimCase };
 };
 
 export default useApiSimCaseHandler;

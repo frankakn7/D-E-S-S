@@ -1,0 +1,40 @@
+.top {
+    background-color: var(--carolina-blue);
+    padding: 1rem;
+    color: white;
+}
+
+.top h2{
+    margin: 0;
+}
+
+.content {
+    border: 2px solid var(--carolina-blue);
+    background-color: var(--egg-white);
+    min-height: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1rem;
+}
+
+.content button {
+    width: 7rem;
+}
+
+.text {
+    margin: 1rem;
+    font-size: 1.2rem;
+}
+
+.cancelButton {
+    background-color: var(--error-red);
+}
+
+.actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

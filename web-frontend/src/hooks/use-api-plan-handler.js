@@ -44,7 +44,21 @@ const useApiPlanHandler = (baseUrl, setPlans) => {
         });
     };
 
-    return { handlePlanUpload, handlePlanSimulate };
+    const handlePlanDelete = (planId) => {
+        return new Promise((resolve, reject) => {
+            sendHttpRequest({
+                url: baseUrl + "/api/plan/" + planId,
+                method: "DELETE"
+            }).then((response) => {
+                setPlans((prevState) => prevState.filter((plan) => plan.uuid !== planId))
+                resolve();
+            }).catch((error) => {
+                reject(error);
+            })
+        })
+    }
+
+    return { handlePlanUpload, handlePlanSimulate, handlePlanDelete};
 };
 
 export default useApiPlanHandler;

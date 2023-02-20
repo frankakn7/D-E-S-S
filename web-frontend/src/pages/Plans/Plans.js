@@ -2,11 +2,17 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../interface/Button/Button";
 import ListButton from "../../interface/ListButton/ListButton";
+import ConfirmationModal from "../../interface/Modal/ConfirmationModal/ConfirmationModal";
+import PlanButton from "./PlanButton/PlanButton";
 
 import classes from "./Plans.module.css";
 
 const Plans = (props) => {
     const navigate = useNavigate();
+
+    // const deleteHandler = (planId) => {
+    //     console.log("deletePlan: "+planId)
+    // }
 
     return (
         <div className={classes.content}>
@@ -17,14 +23,15 @@ const Plans = (props) => {
                         (a, b) => new Date(b.createdOn) - new Date(a.createdOn)
                     )
                     .map((plan) => (
-                        <ListButton
+                        <PlanButton
                             key={plan.uuid}
-                            onClick={() => {
+                            name={plan.name}
+                            id={plan.uuid}
+                            createdOn={plan.createdOn}
+                            doubleClick={() => {
                                 navigate(`/plans/${plan.uuid}`);
                             }}
-                            id={plan.uuid}
-                            name={<b>"{plan.name}"</b>}
-                            createdOn={plan.createdOn}
+                            onDelete={() => props.planDeleteHandler(plan.uuid)}
                         />
                     ))}
             </div>

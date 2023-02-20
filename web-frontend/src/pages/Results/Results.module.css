@@ -30,7 +30,7 @@
     align-items: center;
 }
 
-.top h2 {
+.top .topRight {
     flex: 2;
     text-align: right;
 }
@@ -70,4 +70,16 @@
 
 .unselectedTab {
     background-color: rgb(var(--blue-gray));
+}
+
+.delete {
+    background-color: var(--error-red);
+}
+
+.confirmContent {
+    text-align: center;
+}
+
+.warning {
+    color: var(--error-red);
 }

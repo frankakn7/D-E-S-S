@@ -22,14 +22,14 @@ function App() {
     const [plans, setPlans] = useState([]);
     const [simCases, setSimCases] = useState([]);
 
-    const { handlePlanUpload, handlePlanSimulate } = useApiPlanHandler(
-        baseUrl,
-        setPlans
-    );
-    const { handleGetSimCase, handleGetSimStatus, checkIfDone } = useApiSimCaseHandler(
-        baseUrl,
-        setSimCases
-    );
+    const { handlePlanUpload, handlePlanSimulate, handlePlanDelete } =
+        useApiPlanHandler(baseUrl, setPlans);
+    const {
+        handleGetSimCase,
+        handleGetSimStatus,
+        checkIfDone,
+        handleDeleteSimCase,
+    } = useApiSimCaseHandler(baseUrl, setSimCases);
 
     useEffect(() => {
         const loadDataFromBackend = () => {
@@ -79,7 +79,15 @@ function App() {
                             />
                             <Route
                                 path="results/:id"
-                                element={<Results simCases={simCases} />}
+                                element={
+                                    <Results
+                                        simCases={simCases}
+                                        plans={plans}
+                                        simCaseDeleteHandler={
+                                            handleDeleteSimCase
+                                        }
+                                    />
+                                }
                             />
                             <Route
                                 path="plans"
@@ -87,6 +95,7 @@ function App() {
                                     <Plans
                                         plans={plans}
                                         planSimulateHandler={handlePlanSimulate}
+                                        planDeleteHandler={handlePlanDelete}
                                         getSimCaseStatusHandler={
                                             handleGetSimStatus
                                         }
@@ -131,11 +140,21 @@ function App() {
                             />
                             <Route
                                 path="compare"
-                                element={<CompareSelection simCases={simCases} plans={plans} />}
+                                element={
+                                    <CompareSelection
+                                        simCases={simCases}
+                                        plans={plans}
+                                    />
+                                }
                             />
                             <Route
                                 path="compare/:id1/:id2"
-                                element={<Compare simCases={simCases} plans={plans}/>}
+                                element={
+                                    <Compare
+                                        simCases={simCases}
+                                        plans={plans}
+                                    />
+                                }
                             />
                             <Route path="*" element={<FourOFour />} />
                         </Route>
