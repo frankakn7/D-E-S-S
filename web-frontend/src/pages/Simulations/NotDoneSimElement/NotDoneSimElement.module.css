@@ -1,0 +1,65 @@
+.main {
+    background-color: var(--carolina-blue);
+    border-radius: 0.3rem;
+    color: white;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.content {
+    padding: 0.7rem;
+}
+
+.progressBar {
+    margin-top: 0.5rem;
+    height: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.15rem;
+    background-color: var(--egg-white);
+}
+
+.progressFill {
+    background-color: var(--carolina-blue);
+    /* background-color: var(--egg-white); */
+    height: 100%;
+    text-align: center;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loadingCircle {
+    border: 5px solid transparent;
+  border-radius: 50%;
+  border-top: 5px solid white;
+  border-right: 5px solid white;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+.left {
+    flex: 8;
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}

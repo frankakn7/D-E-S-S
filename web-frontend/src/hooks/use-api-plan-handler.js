@@ -1,6 +1,6 @@
 import useHttp from "./use-http";
 
-const useApiPlanHandler = (baseUrl, setPlans) => {
+const useApiPlanHandler = (baseUrl, setPlans, setNotDoneSims) => {
     const { sendRequest: sendHttpRequest } = useHttp();
 
     const handlePlanUpload = (newPlan) => {
@@ -36,6 +36,11 @@ const useApiPlanHandler = (baseUrl, setPlans) => {
                 method: "GET",
             })
                 .then((response) => {
+                    const newNotDone = {
+                        planId: planId,
+                        simCaseId: response.sim_case_id 
+                    }
+                    setNotDoneSims((prevState) => [newNotDone,...prevState])
                     resolve(response.sim_case_id);
                 })
                 .catch((error) => {

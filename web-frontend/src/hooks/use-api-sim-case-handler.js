@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useHttp from "./use-http";
 
-const useApiSimCaseHandler = (baseUrl, setSimCases) => {
+const useApiSimCaseHandler = (baseUrl, setSimCases, setNotDoneSims) => {
     const { sendRequest: sendHttpRequest } = useHttp();
 
     const handleGetSimCase = (simCaseId) => {
@@ -51,12 +51,14 @@ const useApiSimCaseHandler = (baseUrl, setSimCases) => {
                 }
                 count++;
                 if (result.state === "done") {
-                    console.log("done");
                     handleGetSimCase(simId)
-                        .then((response) => executeIfDone())
+                        .then((response) => {
+                            setNotDoneSims((prevState) => prevState.filter((notDoneSim) => notDoneSim.simCaseId !== simId))
+                            //executeIfDone()
+                        })
                         .catch((error) => console.log(error));
                 } else {
-                    console.log("not done");
+                    setNotDoneSims((prevState) => prevState.map((notDoneSim) => notDoneSim.simCaseId === simId ? {...notDoneSim, ...result} : notDoneSim))
                     const timer = setTimeout(() => {
                         checkIfDone(simId,executeIfDone,count);
                         clearTimeout(timer);

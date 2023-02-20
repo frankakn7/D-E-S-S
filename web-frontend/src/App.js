@@ -21,15 +21,16 @@ function App() {
 
     const [plans, setPlans] = useState([]);
     const [simCases, setSimCases] = useState([]);
+    const [notDoneSims, setNotDoneSims] = useState([]);
 
     const { handlePlanUpload, handlePlanSimulate, handlePlanDelete } =
-        useApiPlanHandler(baseUrl, setPlans);
+        useApiPlanHandler(baseUrl, setPlans, setNotDoneSims);
     const {
         handleGetSimCase,
         handleGetSimStatus,
         checkIfDone,
         handleDeleteSimCase,
-    } = useApiSimCaseHandler(baseUrl, setSimCases);
+    } = useApiSimCaseHandler(baseUrl, setSimCases, setNotDoneSims);
 
     useEffect(() => {
         const loadDataFromBackend = () => {
@@ -128,6 +129,7 @@ function App() {
                                 element={
                                     <Simulations
                                         simCases={simCases}
+                                        notDoneSims={notDoneSims}
                                         plans={plans}
                                         planSimulateHandler={handlePlanSimulate}
                                         getSimCaseStatusHandler={

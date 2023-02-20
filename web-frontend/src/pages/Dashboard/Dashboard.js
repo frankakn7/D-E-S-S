@@ -51,14 +51,15 @@ const Dashboard = (props) => {
             name: nameRef.current.value,
             plan: JSON.parse(selectedFile.data),
         };
-        const numOfSimulations = numOfSimulationsRef.current.value
+        const numOfSimulations = numOfSimulationsRef.current.value;
         props.planUploadHandler(newPlan).then((newPlanId) =>
             props
                 .planSimulateHandler(newPlanId, numOfSimulations)
                 .then((simCaseId) =>
-                    props.checkIfDoneHandler(simCaseId, () =>
-                        navigate(`/results/${simCaseId}`)
-                    )
+                    {
+                        props.checkIfDoneHandler(simCaseId);
+                        navigate("/simulations");
+                    }
                 )
                 .catch((error) => console.log(error))
         );
@@ -84,7 +85,13 @@ const Dashboard = (props) => {
 
     return (
         <div className={classes.content}>
-            {simulate && <NumOfSimulations onClose={() => setSimulate(false)} onContinue={() => handleUploadAndSimulate()} numOfSimulationsRef={numOfSimulationsRef}/>}
+            {simulate && (
+                <NumOfSimulations
+                    onClose={() => setSimulate(false)}
+                    onContinue={() => handleUploadAndSimulate()}
+                    numOfSimulationsRef={numOfSimulationsRef}
+                />
+            )}
             {!selectedFile && (
                 <div className={classes.boxes}>
                     <Box

@@ -38,13 +38,24 @@ const PlanDetails = (props) => {
         const numOfSimulations = numOfSimulationsRef.current.value;
         props
             .planSimulateHandler(planId, numOfSimulations)
-            .then((simCaseId) => props.checkIfDoneHandler(simCaseId, () => navigate(`/results/${simCaseId}`)))
-            .catch((error) => {throw Error(error)});
+            .then((simCaseId) => {
+                props.checkIfDoneHandler(simCaseId);
+                navigate('/simulations')
+            })
+            .catch((error) => {
+                throw Error(error);
+            });
     };
 
     return (
         <div className={classes.content}>
-            {simulate && <NumOfSimulations onClose={() => setSimulate(false)} onContinue={() => handleSimulate(plan.uuid)} numOfSimulationsRef={numOfSimulationsRef}/>}
+            {simulate && (
+                <NumOfSimulations
+                    onClose={() => setSimulate(false)}
+                    onContinue={() => handleSimulate(plan.uuid)}
+                    numOfSimulationsRef={numOfSimulationsRef}
+                />
+            )}
             <GoBack />
             <div className={classes.planTitle}>
                 <p className={classes.titleInput}>
@@ -61,9 +72,7 @@ const PlanDetails = (props) => {
                         </div>
                     </Box>
                     <div className={classes.buttons}>
-                        <Button
-                            onClick={() => setSimulate(true)}
-                        >
+                        <Button onClick={() => setSimulate(true)}>
                             Simulate
                         </Button>
                     </div>
@@ -96,7 +105,9 @@ const PlanDetails = (props) => {
                                         key={simCase.id}
                                         id={simCase.id}
                                         name="Simulation"
-                                        onClick={() => navigate("/results/"+simCase.id)}
+                                        onClick={() =>
+                                            navigate("/results/" + simCase.id)
+                                        }
                                         createdOn={simCase.createdOn}
                                     />
                                 ))}

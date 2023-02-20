@@ -3,6 +3,7 @@ import React, { Fragment } from "react";
 import classes from "./Simulations.module.css";
 import ListButton from "../../interface/ListButton/ListButton";
 import { useNavigate } from "react-router-dom";
+import NotDoneSimElement from "./NotDoneSimElement/NotDoneSimElement";
 
 const Simulations = (props) => {
 
@@ -12,6 +13,9 @@ const Simulations = (props) => {
         <div className={classes.content}>
             <h2>All Simulations</h2>
             <div className={classes.plans}>
+                {props.notDoneSims.map((notDoneSim) => (
+                    <NotDoneSimElement notDoneSim={notDoneSim} planName={props.plans.find((plan) => notDoneSim.planId === plan.uuid).name}/>
+                ))}
                 {props.simCases.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).map((simCase) => (
                     <ListButton
                         key={simCase.id}
