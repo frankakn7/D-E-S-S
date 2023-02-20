@@ -42,9 +42,9 @@ public class PlanServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 
-    @GetMapping("/plan/{planId}/simulate")
+    @GetMapping("/plan/{planId}/simulate/{numOfSimulations}")
     //public ResponseEntity<String> startSimulationUsingPlan(@PathVariable("planId") String planId) {
-    public ResponseEntity<String> startSimulationUsingPlan(@PathVariable("planId") String planId) {
+    public ResponseEntity<String> startSimulationUsingPlan(@PathVariable("planId") String planId, @PathVariable("numOfSimulations") Integer numOfSimulations) {
 		/*Simulation sim = new Simulation(planID);
 		return sim.getId(); */
 		/*Plan plan = planRepository.findByUuid(planId);
@@ -54,7 +54,7 @@ public class PlanServiceController {
         responseHeaders.set("content-type", "application/json");
         JSONObject resultObj = new JSONObject();
 
-        String simCaseId = planService.createSimCase(planService.getPlanFromUuid(planId));
+        String simCaseId = planService.createSimCase(planService.getPlanFromUuid(planId), numOfSimulations);
         planService.startSimCase(simCaseId);
 
         resultObj.put("sim_case_id",simCaseId);

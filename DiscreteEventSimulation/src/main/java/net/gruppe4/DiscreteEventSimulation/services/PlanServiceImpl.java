@@ -45,10 +45,10 @@ public class PlanServiceImpl implements PlanService{
     }
 
     @Override
-    public String createSimCase(Plan plan) {
+    public String createSimCase(Plan plan, Integer numOfSimulations) {
         SimulationCase simCase = simCaseService.createSimCase(plan);
         simCaseService.saveSimCase(simCase);
-        simCaseService.setAndSaveStatus(simCase.getUuid(), 100000);
+        simCaseService.setAndSaveStatus(simCase.getUuid(), numOfSimulations);
         return simCase.getUuid();
     }
 

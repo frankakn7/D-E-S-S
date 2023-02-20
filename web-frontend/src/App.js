@@ -67,6 +67,7 @@ function App() {
                                         simCases={simCases}
                                         planUploadHandler={handlePlanUpload}
                                         planSimulateHandler={handlePlanSimulate}
+                                        planDeleteHandler={handlePlanDelete}
                                         getSimCaseStatusHandler={
                                             handleGetSimStatus
                                         }

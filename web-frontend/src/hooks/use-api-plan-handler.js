@@ -29,10 +29,10 @@ const useApiPlanHandler = (baseUrl, setPlans) => {
         });
     };
 
-    const handlePlanSimulate = (planId) => {
+    const handlePlanSimulate = (planId, numOfSimulations) => {
         return new Promise((resolve, reject) => {
             sendHttpRequest({
-                url: baseUrl + "/api/plan/" + planId + "/simulate",
+                url: baseUrl + "/api/plan/" + planId + "/simulate/"+numOfSimulations,
                 method: "GET",
             })
                 .then((response) => {

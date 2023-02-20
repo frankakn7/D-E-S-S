@@ -6,7 +6,9 @@ import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
 import ListButton from "../../interface/ListButton/ListButton";
 import Modal from "../../interface/Modal/Modal";
+import NumOfSimulations from "../../interface/Modal/NumOfSimulations/NumOfSimulations";
 import FileDetails from "../FileDetails/FileDetails";
+import PlanButton from "../Plans/PlanButton/PlanButton";
 
 import classes from "./Dashboard.module.css";
 
@@ -16,6 +18,9 @@ const Dashboard = (props) => {
     const fileInputRef = useRef();
     const nameRef = useRef();
     const navigate = useNavigate();
+
+    const [simulate, setSimulate] = useState(false);
+    const numOfSimulationsRef = useRef();
 
     const onFileChange = (event) => {
         const reader = new FileReader();
@@ -46,10 +51,15 @@ const Dashboard = (props) => {
             name: nameRef.current.value,
             plan: JSON.parse(selectedFile.data),
         };
+        const numOfSimulations = numOfSimulationsRef.current.value
         props.planUploadHandler(newPlan).then((newPlanId) =>
             props
-                .planSimulateHandler(newPlanId)
-                .then((simCaseId) => props.checkIfDoneHandler(simCaseId, () => navigate(`/results/${simCaseId}`)))
+                .planSimulateHandler(newPlanId, numOfSimulations)
+                .then((simCaseId) =>
+                    props.checkIfDoneHandler(simCaseId, () =>
+                        navigate(`/results/${simCaseId}`)
+                    )
+                )
                 .catch((error) => console.log(error))
         );
     };
@@ -74,49 +84,85 @@ const Dashboard = (props) => {
 
     return (
         <div className={classes.content}>
+            {simulate && <NumOfSimulations onClose={() => setSimulate(false)} onContinue={() => handleUploadAndSimulate()} numOfSimulationsRef={numOfSimulationsRef}/>}
             {!selectedFile && (
                 <div className={classes.boxes}>
                     <Box
                         titleText={<p>Last 4 uploaded plans</p>}
                         className={classes.box}
                     >
-                        {props.plans.length > 0 &&
-                            props.plans.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 4).map((plan) => (
-                                <ListButton
-                                    key={plan.uuid}
-                                    onClick={() => {
-                                        navigate(`/plans/${plan.uuid}`);
-                                    }}
-                                    id={plan.uuid}
-                                    name={<b>"{plan.name}"</b>}
-                                    createdOn={plan.createdOn}
-                                />
-                            ))}
-                        {!props.plans.length && <p>No plans uploaded yet</p>}
+                        <div className={classes.planBoxContent}>
+                            {props.plans.length > 0 &&
+                                props.plans
+                                    .sort(
+                                        (a, b) =>
+                                            new Date(b.createdOn) -
+                                            new Date(a.createdOn)
+                                    )
+                                    .slice(0, 4)
+                                    .map((plan) => (
+                                        <PlanButton
+                                            key={plan.uuid}
+                                            name={plan.name}
+                                            id={plan.uuid}
+                                            createdOn={plan.createdOn}
+                                            doubleClick={() => {
+                                                navigate(`/plans/${plan.uuid}`);
+                                            }}
+                                            onDelete={() =>
+                                                props.planDeleteHandler(
+                                                    plan.uuid
+                                                )
+                                            }
+                                        />
+                                    ))}
+                            {!props.plans.length && (
+                                <p>No plans uploaded yet</p>
+                            )}
+                        </div>
                     </Box>
                     <Box
                         titleText={<p>Last 4 simulations</p>}
                         className={classes.box}
                     >
-                        {props.simCases.length > 0 && props.plans.length > 0 &&
-                            props.simCases.sort((a,b) => new Date(b.createdOn) - new Date(a.createdOn)).slice(0, 4).map((simCase) => {
-                                const plan = props.plans.find(
-                                    (plan) => simCase.planId === plan.uuid
-                                );
-                                return (
-                                    <ListButton
-                                        key={simCase.id}
-                                        onClick={() => {
-                                            navigate(`/results/${simCase.id}`);
-                                        }}
-                                        id={simCase.id}
-                                        name={
-                                            <Fragment>Simulation of <b>"{plan ? plan.name : "[No Plan]"}"</b></Fragment>
-                                        }
-                                        createdOn={simCase.createdOn}
-                                    />
-                                );
-                            })}
+                        {props.simCases.length > 0 &&
+                            props.plans.length > 0 &&
+                            props.simCases
+                                .sort(
+                                    (a, b) =>
+                                        new Date(b.createdOn) -
+                                        new Date(a.createdOn)
+                                )
+                                .slice(0, 4)
+                                .map((simCase) => {
+                                    const plan = props.plans.find(
+                                        (plan) => simCase.planId === plan.uuid
+                                    );
+                                    return (
+                                        <ListButton
+                                            key={simCase.id}
+                                            onClick={() => {
+                                                navigate(
+                                                    `/results/${simCase.id}`
+                                                );
+                                            }}
+                                            id={simCase.id}
+                                            name={
+                                                <Fragment>
+                                                    Simulation of{" "}
+                                                    <b>
+                                                        "
+                                                        {plan
+                                                            ? plan.name
+                                                            : "[No Plan]"}
+                                                        "
+                                                    </b>
+                                                </Fragment>
+                                            }
+                                            createdOn={simCase.createdOn}
+                                        />
+                                    );
+                                })}
                         {!props.simCases.length && (
                             <p>No simulations run yet</p>
                         )}
@@ -162,7 +208,7 @@ const Dashboard = (props) => {
                     buttons={
                         <Fragment>
                             <Button onClick={handleSavePlan}>Save Plan</Button>
-                            <Button onClick={handleUploadAndSimulate}>
+                            <Button onClick={() => setSimulate(true)}>
                                 Save and Simulate
                             </Button>
                             <div>

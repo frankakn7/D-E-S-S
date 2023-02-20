@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "../../interface/Box/Box";
 import Button from "../../interface/Button/Button";
 import CollapsableBox from "../../interface/CollapsableBox/CollapsableBox";
 import GoBack from "../../interface/GoBack/GoBack";
 import ListButton from "../../interface/ListButton/ListButton";
+import NumOfSimulations from "../../interface/Modal/NumOfSimulations/NumOfSimulations";
 import FileDetails from "../FileDetails/FileDetails";
 import JobsTable from "../FileDetails/tables/JobsTable";
 import MachinesTable from "../FileDetails/tables/MachinesTable";
@@ -17,6 +18,9 @@ const PlanDetails = (props) => {
     const [simCases, setSimCases] = useState([]);
     const interpretedJson = JSON.parse(plan.planJson);
     const navigate = useNavigate();
+
+    const [simulate, setSimulate] = useState(false);
+    const numOfSimulationsRef = useRef();
 
     useEffect(() => {
         const foundPlan = props.plans.find((plan) => {
@@ -31,14 +35,16 @@ const PlanDetails = (props) => {
     }, [props.plans, props.simCases, id]);
 
     const handleSimulate = (planId) => {
+        const numOfSimulations = numOfSimulationsRef.current.value;
         props
-            .planSimulateHandler(planId)
+            .planSimulateHandler(planId, numOfSimulations)
             .then((simCaseId) => props.checkIfDoneHandler(simCaseId, () => navigate(`/results/${simCaseId}`)))
             .catch((error) => {throw Error(error)});
     };
 
     return (
         <div className={classes.content}>
+            {simulate && <NumOfSimulations onClose={() => setSimulate(false)} onContinue={() => handleSimulate(plan.uuid)} numOfSimulationsRef={numOfSimulationsRef}/>}
             <GoBack />
             <div className={classes.planTitle}>
                 <p className={classes.titleInput}>
@@ -56,7 +62,7 @@ const PlanDetails = (props) => {
                     </Box>
                     <div className={classes.buttons}>
                         <Button
-                            onClick={() => handleSimulate(plan.uuid)}
+                            onClick={() => setSimulate(true)}
                         >
                             Simulate
                         </Button>

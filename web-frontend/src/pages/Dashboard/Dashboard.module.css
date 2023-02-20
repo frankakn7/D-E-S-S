@@ -12,6 +12,12 @@
     max-height: 30rem;
 }
 
+.planBoxContent{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: start;
+}
+
 
 .upload {
     display: flex;

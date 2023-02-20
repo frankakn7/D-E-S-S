@@ -220,6 +220,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             //TODO add release time
             Job job = new Job(
                     jobObj.getString("id"),
+                    jobObj.getInt("release_date"),
                     jobObj.getInt("due_date"),
                     jobObj.getDouble("cost_per_lateness_time")
             );

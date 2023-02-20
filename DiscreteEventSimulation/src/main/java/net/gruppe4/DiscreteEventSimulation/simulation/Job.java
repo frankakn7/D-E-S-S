@@ -10,8 +10,9 @@ public class Job {
     private Integer dueDate;
      Double costPerLatenessTime;
 
-    public Job(String id, Integer dueDate, Double costPerLatenessTime) {
+    public Job(String id, Integer releaseDate, Integer dueDate, Double costPerLatenessTime) {
         this.id = id;
+        this.releaseDate = releaseDate;
         this.dueDate = dueDate;
         this.costPerLatenessTime = costPerLatenessTime;
     }
@@ -34,6 +35,6 @@ public class Job {
     }
 
     public Integer getReleaseDate() {
-        return releaseDate;
+        return this.releaseDate;
     }
 }
