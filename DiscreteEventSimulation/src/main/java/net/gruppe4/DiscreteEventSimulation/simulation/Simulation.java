@@ -102,7 +102,7 @@ public class Simulation {
                 Event e = m.peekEventIfDate(nextDate);
                 if (e == null) continue;
                 if (e.getEventType() == EventType.OPERATION_BEGIN) {
-                    if (!this.isOperationDoable(e.getOperation())) {
+                    if (!this.isOperationDoable(e.getOperation(), nextDate)) {
                         // Retrieve all other Operations on same date and check if at least one is doable
                         // if at least one is doable continue
                         // if none is doable or list is empty pushBackByTime
@@ -125,13 +125,16 @@ public class Simulation {
 
     /**
      * Checks if the given operation can be executed based on its conditional
-     * predecessors.
+     * predecessors and releaseDate.
      *
      * @param op the operation to check
      * @return true if the operation can be executed, false otherwise
      */
-    private Boolean isOperationDoable(Operation op) {
+    private Boolean isOperationDoable(Operation op, int date) {
         Boolean res = true;
+
+        if (op.getReleaseDate() > date) return false;
+        if (op.getJob().getReleaseDate() > date) return false;
 
         if (op.getConditionalPredecessors() == null) return true;
         for (Operation pred : op.getConditionalPredecessors()) {
@@ -237,7 +240,7 @@ public class Simulation {
     private Boolean checkIfDoableEventExistsAtDate(Integer date) {
         for(Event e : this.peekAllEventsAtDate(date)) {
             if (e.getEventType() != EventType.OPERATION_BEGIN) return true;
-            if (this.isOperationDoable(e.getOperation())) return true;
+            if (this.isOperationDoable(e.getOperation(), date)) return true;
         }
 
         return false;

@@ -10,14 +10,13 @@ import java.util.Map;
 /**
  * Represents an evaluator for an {@link EventLog} object resulting from a
  * {@link Simulation} run.
- *
  * It contains methods to calculate various statistics related to machines, jobs, and operations.
  */
 public class LogEvaluator {
     private EventLog log;
-    private HashMap<String, Machine> machines = new HashMap<String, Machine>();
-    private ArrayList<Job> jobs = new ArrayList<Job>();
-    private ArrayList<Operation> operations = new ArrayList<Operation>();
+    private HashMap<String, Machine> machines;
+    private ArrayList<Job> jobs;
+    private ArrayList<Operation> operations;
 
 
     public LogEvaluator(EventLog log, HashMap<String, Machine> machines, ArrayList<Operation> operations, ArrayList<Job> jobs) {

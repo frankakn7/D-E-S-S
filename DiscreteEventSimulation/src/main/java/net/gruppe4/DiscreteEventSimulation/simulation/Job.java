@@ -32,4 +32,8 @@ public class Job {
     public Double getCostPerLatenessTime() {
         return costPerLatenessTime;
     }
+
+    public Integer getReleaseDate() {
+        return releaseDate;
+    }
 }

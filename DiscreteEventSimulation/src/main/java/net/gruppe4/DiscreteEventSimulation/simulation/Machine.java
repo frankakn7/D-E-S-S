@@ -59,12 +59,8 @@ public class Machine {
 
         Integer beginDate = operation.getReleaseDate();
         Integer releaseDate = operation.getReleaseDate();
-        if (releaseDate != 0) { //TODO Append if release date lower than last machine date
-            this.timeslotQueue.insert(releaseDate, begin);
-        }
-        else {
-            beginDate = this.timeslotQueue.append(begin);
-        }
+
+        beginDate = this.timeslotQueue.append(begin);
 
         this.timeslotQueue.insert(beginDate + operation.getDuration(), end);
     }
@@ -170,7 +166,7 @@ public class Machine {
      */
     public void insertBreakdownAtFront() {
         Integer length = this.rollDiceForBreakdownLength();
-        
+
         Event begin = new Event(EventType.MACHINE_BREAKDOWN_BEGIN, this, null);
         Event end = new Event(EventType.MACHINE_BREAKDOWN_END, this, null);
 
