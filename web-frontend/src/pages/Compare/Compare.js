@@ -9,6 +9,11 @@ import JobCompare from "./JobCompare/JobCompare";
 import MachineCompare from "./MachineCompare/MachineCompare";
 import OperationCompare from "./OperationCompare/OperationCompare";
 
+/**
+ * Button as tab element for the comparison page
+ * @param {*} props 
+ * @returns 
+ */
 const Tab = (props) => {
     const onClickHandler = () => {
         props.setView(props.newView);

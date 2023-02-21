@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implements all the functions connected to simulation cases
+ */
 @Service
 public class SimulationCaseServiceImpl implements SimulationCaseService {
     @Autowired
@@ -35,6 +38,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return simCaseRepo.findByUuid(uuid);
     }
 
+    /**
+     * gets all sim cases that were saved inside the database in a JSON format
+     * @return - returns a JSON array containing all simCases
+     */
     @Override
     public JSONArray getSimCasesJson() {
         Iterable<SimulationCase> simCases = simCaseRepo.findAll();
@@ -85,6 +92,11 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return simCase.getResultJson();
     }
 
+    /**
+     * Sets the results of a simCase and saves these to the database
+     * @param uuid - uuid of the simulation the results belong to
+     * @param results - the results in a JSON String format
+     */
     @Override
     public void setResultsAndSave(String uuid, String results) {
         SimulationCase simCase = simCaseRepo.findByUuid(uuid);
@@ -105,6 +117,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         runningSimCaseStatus.put(simCaseUuid, simStatus);
     }
 
+    /**
+     * runs the actual simulation loop
+     * @param simCaseUuid
+     */
     @Override
     public void runSimulation(String simCaseUuid) {
         SimulationCase simCase = simCaseRepo.findByUuid(simCaseUuid);
@@ -112,7 +128,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         int numOfSimulations = simStatus.getTotal();
 
-        //TODO Get Machines in Hashmap from JSON
+        //Extract all the objects from the plan JSON
         JSONObject planJsonObj = new JSONObject(simCase.getPlan().getPlanJson());
         HashMap<String, Machine> machines = extractMachines(planJsonObj.getJSONArray("machines"));
         HashMap<String, Job> jobs = extractJobs(planJsonObj.getJSONArray("jobs"));
@@ -122,27 +138,21 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         long startingTime = System.currentTimeMillis();
 
-        //TODO Implement test Results
-        //ArrayList<MachineStats> machineStats = new ArrayList<>();
+        //Prepare all statistical objects needed for calculating statistics
         ArrayList<OperationStats> operationStats = new ArrayList<>();
         for(Operation op : operations) operationStats.add(new OperationStats(op));
-
 
         GeneralStats generalStats = new GeneralStats();
         ArrayList<MachineStats> machineStats = new ArrayList<>();
         for (Map.Entry<String, Machine> entry : machines.entrySet()) machineStats.add(new MachineStats(entry.getValue()));
         ArrayList<JobStats> jobStats = new ArrayList<>();
         for (Map.Entry<String, Job> entry : jobs.entrySet()) jobStats.add(new JobStats(entry.getValue()));
-        //ArrayList<OperationStats> operationStats = new ArrayList<>();
 
-        //TODO Here results are instantiated
         Result result = new Result(machineStats, jobStats, operationStats, generalStats);
 
-        //TODO instantiate statistical values for all elements
-
-
-
+        //Run simulation numOfSimulations times
         for (int i = 1; i < numOfSimulations; i++) {
+            //Run Simulation and get resulting log
             Simulation sim = new Simulation(machines, operations);
             EventLog log = sim.runSim();
             if (log == null) {
@@ -153,8 +163,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             ArrayList<Job> jobList = new ArrayList<Job>(jobs.values());
             LogEvaluator evaluator = new LogEvaluator(log, machines, operations, jobList);
 
-            //TODO example
-
+            //Add calculated results for jobs to statistical objects
             HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
             for(JobStats jStat : result.getJobStats()) {
                 jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
@@ -162,6 +171,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                 jStat.completionTime.addValue((double)jobValues.get(jStat.getJob()).get("completion_date"));
             }
 
+            //Add calculated results for Machines to statistical objects
             HashMap<Machine, HashMap<String, Object>> machineValues = evaluator.calculateMachineStatValues();
             for(MachineStats mStat : result.getMachineStats()) {
                 mStat.utilisationPercent.addValue((double)machineValues.get(mStat.getMachine()).get("utilisation_percent"));
@@ -174,49 +184,34 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
                 mStat.idleTime.addValue((double)machineValues.get(mStat.getMachine()).get("idle_time_absolute"));
             }
 
+            //Add calculated results for Operations to statistical objects
             HashMap<Operation, HashMap<String, Object>> operationValues = evaluator.calculateOperationStats(machineValues);
             for (OperationStats opStat : result.getOperationStats()) {
                 opStat.length.addValue((double)(int) operationValues.get(opStat.getOperation()).get("length"));
             }
 
-
+            //Add calculated results for General statistics to statistical objects
             HashMap<String, Object> generalValues = evaluator.calculateGeneralStats(machineValues, jobValues);
             result.getGeneralStats().totalResourceUtilization.addValue((double)generalValues.get("total_resource_utilisation"));
             result.getGeneralStats().totalCost.addValue((double)generalValues.get("total_cost"));
             result.getGeneralStats().totalCompletionTime.addValue((double)generalValues.get("total_completion_time"));
 
 
-            //result = sim.runSim();
             simStatus.setProgress(i);
-            /*try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }*/
+
             long estimatedTime = ((System.currentTimeMillis() - startingTime) / i) * (numOfSimulations - i);
             simStatus.setEstimatedMillisRemaining(estimatedTime);
-            //TODO LogEvaluator call => Take logEvaluator data and pass it to results
-            //System.out.println(result);
         }
-        //TODO return results
         simStatus.setState("done");
         simStatus.setEstimatedMillisRemaining(0);
-        System.out.println(result);
-
         setResultsAndSave(simCaseUuid, result.toString());
     }
 
-    //TODO implement Jobs for tracking of job status etc
-    /*private Map<String, Job> extractJobs(JSONArray jobsJson) {
-        Map<String, Job> jobs = new HashMap<>();
-        for (int i = 0; i < jobsJson.length(); i++) {
-            JSONObject jobObj = jobsJson.getJSONObject(i);
-            Job job = new Job(jobObj.getString("id"), jobObj.getInt("releaseTime"));
-            jobs.put(jobObj.getString("id"), job);
-        }
-        return jobs;
-    }*/
-
+    /**
+     * Destructures JSON Array to extract Job objects from given JSON
+     * @param jobsJson - a JSON array from the plan json containing all jobs
+     * @return Hashmap containing job ids and jobs
+     */
     private HashMap<String, Job> extractJobs(JSONArray jobsJson){
         HashMap<String, Job> jobs = new HashMap<>();
         for(int i = 0; i < jobsJson.length(); i++){
@@ -234,6 +229,11 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return jobs;
     }
 
+    /**
+     * Destructures JSON Array to extract Machine objects from given JSON
+     * @param machinesJson - a JSON array from the plan json containing all machines
+     * @return hashmap contianing machine ids and machines
+     */
     private HashMap<String, Machine> extractMachines(JSONArray machinesJson) {
         HashMap<String, Machine> machines = new HashMap<>();
         for (int i = 0; i < machinesJson.length(); i++) {
@@ -251,7 +251,19 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return machines;
     }
 
-    //private Map<String, Operation> extractOperations(JSONArray operationsJson, Map<String, Job> jobs, Map<String, Machine> machines) {
+    /**
+     * Destructures JSON Array to extract Operation objects from given JSON and binds machines and jobs to Operation
+     * @param operationsJson - a JSON array from the plan json containing all machines
+     *
+     * @return hashmap contianing machine ids and machines
+     */
+    /**
+     * Destructures JSON Array to extract Operation objects from given JSON and binds machines and jobs to Operation
+     * @param operationsJson - a JSON array from the plan json containing all machines
+     * @param machines - map of machine objects
+     * @param jobs - map of job objects
+     * @return arraylist of operations
+     */
     private ArrayList<Operation> extractOperations(JSONArray operationsJson, Map<String, Machine> machines, Map<String, Job> jobs) {
         //<Operation ID, Operation>
         Map<String, Operation> operations = new HashMap<>();
@@ -294,6 +306,13 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         return new ArrayList<Operation>(operations.values());
     }
 
+    /**
+     * get the conditional predeccors of a operation
+     * @param operationId - id of the operation
+     * @param conditionalPreds - map of all conditional predecessors mapped to the id
+     * @param operations - map of all operations
+     * @return - returns arraylist of conditional predecessors operations
+     */
     private ArrayList<Operation> getConditionalPreds(String operationId, Map<String, JSONArray> conditionalPreds, Map<String, Operation> operations) {
         JSONArray operationIds = conditionalPreds.get(operationId);
         ArrayList<Operation> conditionalPredsOperations = new ArrayList<>();

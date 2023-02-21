@@ -5,6 +5,10 @@ import org.json.JSONObject;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Represents the status of a currently running simulation.
+ * Displays the total number of simulation runs, the progress in number of runs completed, the estimatedMillisRemaining and the state
+ */
 public class Status {
     private String state;
     private int total;  //Simulation Runs that need to be done

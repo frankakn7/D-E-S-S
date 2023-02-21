@@ -3,6 +3,9 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 import net.gruppe4.DiscreteEventSimulation.simulation.Job;
 import org.json.JSONObject;
 
+/**
+ * Represents the Job statistical values of the simulation results
+ */
 public class JobStats {
 
     private Job job;

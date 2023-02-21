@@ -7,6 +7,9 @@ import org.json.JSONObject;
 
 import java.sql.Timestamp;
 
+/**
+ * Represents the Uploaded plan objects. Contains a name, the plan JSON and a Timestamp for when it was created
+ */
 @Entity
 public class Plan {
 

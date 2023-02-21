@@ -3,6 +3,9 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import org.json.JSONObject;
 
+/**
+ * Represents the Machine statistical values of the simulation results
+ */
 public class MachineStats {
     Machine machine;
     public StatisticalValues utilisationPercent;
@@ -29,57 +32,6 @@ public class MachineStats {
         this.breakdownsTotalDowntime = new StatisticalValues();
     }
 
-    /**
-     * @return {
-     * "id": "A",
-     * "utilisation": {
-     * "percent": {
-     * "mean": 0.4,
-     * "min": 0.3,
-     * "max": 0.4,
-     * "variance": 0.2
-     * },
-     * "time": {
-     * "mean": 4,
-     * "min": 3,
-     * "max": 4,
-     * "variance": 5
-     * }
-     * },
-     * "breakdowns": {
-     * "downtime" : {
-     * "mean": 0.4,
-     * "min": 0.3,
-     * "max": 0.4,
-     * "variance": 0.2
-     * },
-     * "occurrence": {
-     * "mean": 0.4,
-     * "min": 0.3,
-     * "max": 0.4,
-     * "variance": 0.2
-     * },
-     * "percent":{
-     * "mean": 0.4,
-     * "min": 0.3,
-     * "max": 0.4,
-     * "variance": 0.2
-     * }
-     * },
-     * "operational_cost": {
-     * "mean": 4,
-     * "min": 3,
-     * "max": 4,
-     * "variance": 5
-     * },
-     * "repair_cost": {
-     * "mean": 4,
-     * "min": 3,
-     * "max": 4,
-     * "variance": 5
-     * }
-     * }
-     */
     public JSONObject toJsonObject() {
         JSONObject machineJson = new JSONObject();
 

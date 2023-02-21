@@ -5,6 +5,14 @@ import Button from "../../Button/Button";
 import Modal from "../Modal";
 import classes from './ConfirmationModal.module.css'
 
+/**
+ * A modal to confirm actions with cancel and continue buttons
+ * @param {Object} props - All props passed to this element
+ * @param {Function} props.onClose - function to be executed when the modal cancel button or background is clicked (usually a function hiding the modal)
+ * @param {Function} props.onContinue - function to be exectued when the continue button is pressed (action for which confirmation was needed e.g. delete)
+ * @param {JSX.Element} props.children - Content to be placed above the buttons inside the modal (usually text asking if a certain action should be performed) 
+ * @returns 
+ */
 const ConfirmationModal = (props) => {
     return (
         <Modal onClose={props.onClose}>

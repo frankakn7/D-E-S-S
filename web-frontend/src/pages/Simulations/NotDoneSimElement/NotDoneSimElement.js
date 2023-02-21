@@ -1,3 +1,5 @@
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import classes from "./NotDoneSimElement.module.css";
 
@@ -32,7 +34,8 @@ const NotDoneSimElement = (props) => {
                         </div>
                     </div>
                 <div className={classes.right}>
-                    <div className={classes.loadingCircle}></div>
+                    {!(props.notDoneSim.state === "logical_error") && <div className={classes.loadingCircle}></div>}
+                    {props.notDoneSim.state === "logical_error" && <div className={classes.errorSign} title={"Logical Error in Simulated Plan"}><FontAwesomeIcon icon={faTriangleExclamation}/></div>}
                 </div>
                 </div>
             </div>

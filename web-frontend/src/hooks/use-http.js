@@ -1,6 +1,14 @@
 import { useCallback } from "react";
 
+/**
+ * Hook for easy requesting of urls
+ * @returns 
+ */
 const useHttp = () => {
+    /**
+     * sends the request using the given request config
+     * @param {Object} requestConfig - takes a request config object which includes the method, headers, body, and url of the request
+     */
     const sendRequest = useCallback((requestConfig) => {
         return new Promise((resolve, reject) => {
             const requestData = {

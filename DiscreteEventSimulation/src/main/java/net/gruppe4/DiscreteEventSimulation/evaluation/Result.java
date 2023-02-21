@@ -5,6 +5,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the Results of the simulation as a Combination of all statistical values
+ */
 public class Result {
     private ArrayList<MachineStats> machineStats;
     private ArrayList<JobStats> jobStats;

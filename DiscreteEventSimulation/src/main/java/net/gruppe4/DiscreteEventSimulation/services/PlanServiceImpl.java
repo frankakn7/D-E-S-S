@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service functions for everything to do with plans
+ */
 @Service
 public class PlanServiceImpl implements PlanService{
     @Autowired
@@ -21,6 +24,11 @@ public class PlanServiceImpl implements PlanService{
         planRepository.save(plan);
     }
 
+    /**
+     * Creates a new plan object
+     * @param json - the plan in a JSON string format
+     * @return - returns the newly created {@link Plan}
+     */
     @Override
     public Plan createPlanFromJson(String json) {
         JSONObject obj = new JSONObject(json);
@@ -44,6 +52,12 @@ public class PlanServiceImpl implements PlanService{
         return planRepository.deleteByUuid(uuid);
     }
 
+    /**
+     * Creates a new Simulation Case from a plan
+     * @param plan - the plan to be used for the simulation
+     * @param numOfSimulations - number of simulation runs that should be executed
+     * @return - the uuid of the simCase
+     */
     @Override
     public String createSimCase(Plan plan, Integer numOfSimulations) {
         SimulationCase simCase = simCaseService.createSimCase(plan);
@@ -52,14 +66,13 @@ public class PlanServiceImpl implements PlanService{
         return simCase.getUuid();
     }
 
+    /**
+     * Starts a simulation
+     * @param simCaseUuid - the uuid of the simulation to be started
+     */
     @Override
     @Async
     public void startSimCase(String simCaseUuid){
-        /*try {
-            Thread.sleep(15000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
         simCaseService.runSimulation(simCaseUuid);
     }
 }
