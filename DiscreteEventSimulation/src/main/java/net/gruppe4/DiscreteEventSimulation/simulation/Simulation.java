@@ -163,7 +163,7 @@ public class Simulation {
     public EventLog runSim() {
         Boolean wasSuccessful = this.simulationLoop();
         if (!wasSuccessful) {
-            // TODO Throw error if simulation unsuccessful
+            return null;
         }
 
         return this.eventLog;

@@ -145,6 +145,10 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         for (int i = 1; i < numOfSimulations; i++) {
             Simulation sim = new Simulation(machines, operations);
             EventLog log = sim.runSim();
+            if (log == null) {
+                simStatus.setState("logical_error");
+                break;
+            }
             ArrayList<Job> jobList = new ArrayList<Job>(jobs.values());
             LogEvaluator evaluator = new LogEvaluator(log, machines, operations, jobList);
 
