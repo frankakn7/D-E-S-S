@@ -32,6 +32,11 @@ const Tab = (props) => {
     );
 };
 
+/**
+ * Displays all the Results of a simulation
+ * @param {*} props 
+ * @returns 
+ */
 const Results = (props) => {
     const { id } = useParams();
     const [simCase, setSimCase] = useState();

@@ -23,8 +23,6 @@ for Industrial Scheduling Plans
 3. `cd` into `web-frontend`
 4. Run `npm run build`
 
-## Frontend
-
 # Running
 1. Start the backend with `java -jar DiscreteEventSimulation/target/DiscreteEventSimulation-0.0.1-SNAPSHOT.jar`
 2. Start the frontend with `serve -s build` from `web-frontend/`

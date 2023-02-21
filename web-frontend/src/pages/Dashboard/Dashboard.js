@@ -12,6 +12,11 @@ import PlanButton from "../Plans/PlanButton/PlanButton";
 
 import classes from "./Dashboard.module.css";
 
+/**
+ * The main dashboard page. Contains 2 lists of the last 4 simulations and plans. Also handles the JSON upload
+ * @param {*} props 
+ * @returns 
+ */
 const Dashboard = (props) => {
     const [selectedFile, setSelectedFile] = useState();
     const [dragActive, setDragActive] = useState(false);

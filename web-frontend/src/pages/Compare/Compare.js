@@ -11,7 +11,7 @@ import OperationCompare from "./OperationCompare/OperationCompare";
 
 /**
  * Button as tab element for the comparison page
- * @param {*} props 
+ * @param {Object} props - all props passed to Tab
  * @returns 
  */
 const Tab = (props) => {
@@ -33,6 +33,13 @@ const Tab = (props) => {
     );
 };
 
+/**
+ * Main Compare page implementing all other compare pages. Takes the simulaiont id1 and id2 out of the url 
+ * @param {Object} props - all props passed to page
+ * @param {Array<Object>} props.simCases - all simulation cases
+ * @param {Array<Object>} props.plans - all plan objects
+ * @returns 
+ */
 const Compare = (props) => {
     const { id1, id2 } = useParams();
     const [simCase1, setSimCase1] = useState();
