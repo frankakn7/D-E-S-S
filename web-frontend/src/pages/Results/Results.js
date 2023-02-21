@@ -101,7 +101,7 @@ const Results = (props) => {
                 <ErrorModal>
                     <div className={classes.errorModal}>
                         <p>
-                            Logical Errror in the simulation. Delete this
+                            This simulation does not contain any results. Delete this
                             simulation case here:
                         </p>
                         <Button
