@@ -4,10 +4,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.base.Predicate;
 import io.hypersistence.utils.hibernate.type.basic.Inet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represents one simulation run, handles the simulation in a core simulation
@@ -15,9 +12,11 @@ import java.util.Map;
  */
 public class Simulation {
     private EventLog eventLog;
-    private Map<String, Machine> machines;
+    private HashMap<String, Machine> machines;
+    private HashMap<Machine, Event> prevState = new HashMap<Machine, Event>();
+    private HashMap<Machine, Event> currentState = new HashMap<Machine, Event>();
 
-    public Simulation(Map<String, Machine> machines, ArrayList<Operation> operations) {
+    public Simulation(HashMap<String, Machine> machines, ArrayList<Operation> operations) {
         this.machines = machines;
         this.eventLog = new EventLog();
 
@@ -100,6 +99,17 @@ public class Simulation {
                 // CHECK IF EVENT DOABLE
                 // Checks if there might be some conditional predecessors it has to wait for
                 Event e = m.peekEventIfDate(nextDate);
+
+                if (Objects.equals(currentState.size(), this.machines.size())) {
+                    if (!this.prevState.isEmpty()) {
+                        if(currentState.equals(prevState)) {
+                            return false;
+                        }
+                        prevState = currentState;
+                        currentState.clear();
+                    }
+                }
+                currentState.put(m, e);
                 if (e == null) continue;
                 if (e.getEventType() == EventType.OPERATION_BEGIN) {
                     if (!this.isOperationDoable(e.getOperation(), nextDate)) {
