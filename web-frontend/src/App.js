@@ -24,7 +24,7 @@ function App() {
     const [notDoneSims, setNotDoneSims] = useState([]);
 
     const { handlePlanUpload, handlePlanSimulate, handlePlanDelete } =
-        useApiPlanHandler(baseUrl, setPlans, setNotDoneSims);
+        useApiPlanHandler(baseUrl, setPlans, setSimCases, setNotDoneSims);
     const {
         handleGetSimCase,
         handleGetSimStatus,

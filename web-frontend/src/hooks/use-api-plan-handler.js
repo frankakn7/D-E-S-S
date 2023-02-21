@@ -1,6 +1,6 @@
 import useHttp from "./use-http";
 
-const useApiPlanHandler = (baseUrl, setPlans, setNotDoneSims) => {
+const useApiPlanHandler = (baseUrl, setPlans, setSimCases, setNotDoneSims) => {
     const { sendRequest: sendHttpRequest } = useHttp();
 
     const handlePlanUpload = (newPlan) => {
@@ -56,6 +56,7 @@ const useApiPlanHandler = (baseUrl, setPlans, setNotDoneSims) => {
                 method: "DELETE"
             }).then((response) => {
                 setPlans((prevState) => prevState.filter((plan) => plan.uuid !== planId))
+                setSimCases((prevState) => prevState.filter((simCase) => simCase.planId  !== planId))
                 resolve();
             }).catch((error) => {
                 reject(error);
