@@ -147,6 +147,7 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
             EventLog log = sim.runSim();
             if (log == null) {
                 simStatus.setState("logical_error");
+                setResultsAndSave(simCaseUuid, "{}");
                 break;
             }
             ArrayList<Job> jobList = new ArrayList<Job>(jobs.values());
