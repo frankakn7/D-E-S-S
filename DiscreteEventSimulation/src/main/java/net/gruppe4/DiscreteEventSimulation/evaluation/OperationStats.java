@@ -5,6 +5,9 @@ import net.gruppe4.DiscreteEventSimulation.simulation.Machine;
 import net.gruppe4.DiscreteEventSimulation.simulation.Operation;
 import org.json.JSONObject;
 
+/**
+ * Represents the Operation statistical values of the simulation results
+ */
 public class OperationStats {
     private Operation operation;
     public StatisticalValues length;

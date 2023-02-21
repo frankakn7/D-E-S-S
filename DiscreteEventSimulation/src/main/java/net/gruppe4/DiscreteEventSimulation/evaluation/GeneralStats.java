@@ -2,6 +2,9 @@ package net.gruppe4.DiscreteEventSimulation.evaluation;
 
 import org.json.JSONObject;
 
+/**
+ * Represents the General statistical values of the simulation results
+ */
 public class GeneralStats {
     public StatisticalValues totalCompletionTime;
     public StatisticalValues totalCost;

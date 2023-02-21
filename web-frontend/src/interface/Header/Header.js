@@ -4,6 +4,10 @@ import classes from "./Header.module.css";
 import NavBar from "./NavBar/NavBar";
 import { ReactComponent as Logo } from "../../Images/logo.svg";
 
+/**
+ * Header element containing the Logo on the left and the navigation bar on the right
+ * @returns 
+ */
 const Header = () => {
     return (
         <div className={classes.main}>

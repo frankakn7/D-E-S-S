@@ -5,6 +5,14 @@ import Button from "../../Button/Button";
 import Modal from "../Modal";
 import classes from "./NumOfSimulations.module.css";
 
+/**
+ * Modal for inputting the number of simulations that should be run when a plan is simulated.
+ * Contains cancel and continue buttons as well as an input field for the number of simulations
+ * @param {Object} props - All props passed to this element 
+ * @param {Function} props.onClose - function to be executed when the close button or background is clicked (usually a function hiding the modal)
+ * @param {Function} props.onContinue - function to be executed when continue button is pressed (usually function starting the simulation)
+ * @returns 
+ */
 const NumOfSimulations = (props) => {
     return (
         <Modal onClose={props.onClose}>

@@ -4,6 +4,10 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
+/**
+ * Represents the singular statistical values of each calculated metric.
+ * Also used to calculate those metrics by adding values to them
+ */
 public class StatisticalValues {
     private double mean;
     private double min;
@@ -22,6 +26,10 @@ public class StatisticalValues {
         this.standardDeviation =  standardDeviation;
     }
 
+    /**
+     * Takes a value and calculates mean,min,max,variance and standard deviation over all Values
+     * @param value - the new value to be added to all the metrics
+     */
     public void addValue(double value) {
         if (this.count == 0){
             this.mean = value;

@@ -8,6 +8,15 @@ import classes from "./MachineCompare.module.css";
 import MachineCompareSelector from "./MachineCompareSelector/MachineCompareSelector";
 import MachineSummaryCompareHalf from "./MachineSummaryCompareHalf/MachineSummaryCompareHalf";
 
+/**
+ * Machine compare tab for comparing simulation results of 2 simulations focused on the machine results
+ * @param {Object} props - all props passed to the element 
+ * @param {Object} props.resultsOne - all the results of simulation number 1 of 2 
+ * @param {Object} props.resultsTow - all the results of simulation number 2 of 2 
+ * @param {String} props.simName1 - the name of the simulation number 1 of 2 
+ * @param {String} props.simName2 - the name of the simulation number 2 of 2 
+ * @returns 
+ */
 const MachineCompare = (props) => {
     return (
         <div>

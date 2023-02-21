@@ -5,6 +5,13 @@ import Button from "../../../../interface/Button/Button";
 import MachineResultsBox from "../../../Results/MachineResults/MachineResultsBox/MachineResultsBox";
 import classes from "./MachineCompareSelector.module.css"
 
+/**
+ * A selector for cycling through Machine result boxes for comparison purposes
+ * @param {Object} props - all props passed to the element
+ * @param {String} props.simName - name of the simulation the machines belong to
+ * @param {Array<Object>} props.machines - list of all the machines and their results of the simulation
+ * @returns 
+ */
 const MachineCompareSelector = (props) => {
 
     const [selected, setSelected] = useState(0)

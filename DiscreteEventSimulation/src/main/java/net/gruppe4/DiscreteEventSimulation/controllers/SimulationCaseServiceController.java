@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * All endpoints that are connected to simulation cases
+ */
 @RestController
 public class SimulationCaseServiceController {
     @Autowired
@@ -42,6 +45,11 @@ public class SimulationCaseServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(simCaseJson.toString());
     }
 
+    /**
+     * Gets the status of a running simulation
+     * @param simId - simulation uuid of the simulation case to be checked
+     * @return 
+     */
     @GetMapping("/sim/{simId}/status")
     public ResponseEntity<String> simulationStatusCheck(@PathVariable("simId") String simId) {
         HttpHeaders responseHeaders = new HttpHeaders();

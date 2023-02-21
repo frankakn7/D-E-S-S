@@ -83,3 +83,10 @@
 .warning {
     color: var(--error-red);
 }
+
+.errorModal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

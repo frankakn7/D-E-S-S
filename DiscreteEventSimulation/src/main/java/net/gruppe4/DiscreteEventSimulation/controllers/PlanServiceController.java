@@ -8,11 +8,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Defines all endpoints that are connected to plan objects
+ */
 @RestController
 public class PlanServiceController {
     @Autowired
     PlanService planService;
 
+    /**
+     * Upload a new plan
+     * @param json - takes the request body including name and json file
+     * @return a response containing the plan object as json
+     */
     @PostMapping("/plan")
     public ResponseEntity<String> upload(@RequestBody String json) {
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -42,14 +50,15 @@ public class PlanServiceController {
         return ResponseEntity.ok().headers(responseHeaders).body(resultObj.toString());
     }
 
+    /**
+     * Start a simulation of the plan => automatically creates a simCase object
+     * @param planId - plan id to be simulated
+     * @param numOfSimulations - number of simulation runs to do
+     * @return the id of the newly created simulation case
+     */
     @GetMapping("/plan/{planId}/simulate/{numOfSimulations}")
-    //public ResponseEntity<String> startSimulationUsingPlan(@PathVariable("planId") String planId) {
     public ResponseEntity<String> startSimulationUsingPlan(@PathVariable("planId") String planId, @PathVariable("numOfSimulations") Integer numOfSimulations) {
-		/*Simulation sim = new Simulation(planID);
-		return sim.getId(); */
-		/*Plan plan = planRepository.findByUuid(planId);
-		JSONObject obj = new JSONObject(plan.getPlanJson());
-		return ResponseEntity.ok().headers(responseHeaders).body(obj.getJSONObject("plan").toString());*/
+
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("content-type", "application/json");
         JSONObject resultObj = new JSONObject();

@@ -6,9 +6,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
+import org.json.JSONObject;
 
 import java.sql.Timestamp;
 
+/**
+ * Represents the simulation cases that were executed.
+ * Contains a uuid, the plan (plan uuid in Database), the results as JSON and a timestamp when it was created
+ */
 @Entity
 public class SimulationCase {
 
@@ -46,6 +51,9 @@ public class SimulationCase {
 
     public SimulationCase(Plan plan) {
         this.plan = plan;
+/*        JSONObject resultsJson = new JSONObject();
+        this.resultJson = new JSONObject().put("results",resultsJson.toString()).toString();*/
+
     }
 
     public String getUuid() {
