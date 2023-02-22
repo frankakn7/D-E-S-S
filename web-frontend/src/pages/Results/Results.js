@@ -34,8 +34,8 @@ const Tab = (props) => {
 
 /**
  * Displays all the Results of a simulation
- * @param {*} props 
- * @returns 
+ * @param {*} props
+ * @returns
  */
 const Results = (props) => {
     const { id } = useParams();
@@ -53,36 +53,34 @@ const Results = (props) => {
             return id === simCase.id;
         });
 
+        const results = foundSimCase ? JSON.parse(foundSimCase.results) : {};
+
         try {
-            const results = foundSimCase
-                ? JSON.parse(foundSimCase.results)
-                : {};
-
-            if (!results.general_stats) {
+            if (foundSimCase && !results.general_stats) {
                 throw new Error("No Results");
-            }
-
-            if (results.general_stats) {
-                results.machines = results.machines.map((machine) => {
-                    return {
-                        operations: results.operations.filter(
-                            (op) => op.machine_id === machine.id
-                        ),
-                        ...machine,
-                    };
-                });
-
-                results.jobs = results.jobs.map((job) => {
-                    return {
-                        operations: results.operations.filter(
-                            (op) => op.job_id === job.id
-                        ),
-                        ...job,
-                    };
-                });
             }
         } catch (e) {
             setResultError(true);
+        }
+        console.log(results);
+        if (results.general_stats) {
+            results.machines = results.machines.map((machine) => {
+                return {
+                    operations: results.operations.filter(
+                        (op) => op.machine_id === machine.id
+                    ),
+                    ...machine,
+                };
+            });
+
+            results.jobs = results.jobs.map((job) => {
+                return {
+                    operations: results.operations.filter(
+                        (op) => op.job_id === job.id
+                    ),
+                    ...job,
+                };
+            });
         }
 
         setSimCase(foundSimCase);
@@ -101,8 +99,8 @@ const Results = (props) => {
                 <ErrorModal>
                     <div className={classes.errorModal}>
                         <p>
-                            This simulation does not contain any results. Delete this
-                            simulation case here:
+                            This simulation does not contain any results. Delete
+                            this simulation case here:
                         </p>
                         <Button
                             className={classes.delete}

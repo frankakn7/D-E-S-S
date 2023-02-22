@@ -151,14 +151,14 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         Result result = new Result(machineStats, jobStats, operationStats, generalStats);
 
         //Run simulation numOfSimulations times
+        setResultsAndSave(simCaseUuid, "{}");
         for (int i = 1; i < numOfSimulations; i++) {
             //Run Simulation and get resulting log
             Simulation sim = new Simulation(machines, operations);
             EventLog log = sim.runSim();
             if (log == null) {
                 simStatus.setState("logical_error");
-                setResultsAndSave(simCaseUuid, "{}");
-                break;
+                throw new Error("Logical Error in Simulated Plan");
             }
             ArrayList<Job> jobList = new ArrayList<Job>(jobs.values());
             LogEvaluator evaluator = new LogEvaluator(log, machines, operations, jobList);
