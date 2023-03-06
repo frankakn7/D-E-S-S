@@ -8,7 +8,7 @@ const JobsTable = (props) => {
             {props.jobs.map((job) => (
                 <tr key={job.id}>
                     <td>{job.id}</td>
-                    <td>{job.release_time}</td>
+                    <td>{job.release_date}</td>
                     <td>{job.due_date}</td>
                 </tr>
             ))}

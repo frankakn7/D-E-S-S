@@ -698,6 +698,7 @@ const JobCostChart = (props) => {
                 }}
             >
                 <XAxis dataKey="name" />
+                <ReferenceLine y={0} stroke="#000" />
                 <YAxis />
                 <Tooltip labelFormatter={(name) => "job " + name} />
                 {/* <Legend /> */}

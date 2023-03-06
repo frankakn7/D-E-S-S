@@ -10,7 +10,7 @@ const JobResultsBox = (props) => {
         <Box
             key={props.job.id}
             className={`${classes.jobBox} ${props.className}`}
-            titleText={<p>{`Job "${props.job.id}" ${props.extraTitleText}`}</p>}
+            titleText={<p>{`Job "${props.job.id}" ${props.extraTitleText ? props.extraTitleText : ""}`}</p>}
         >
             <div className={classes.jobBoxContent}>
                 <div>
