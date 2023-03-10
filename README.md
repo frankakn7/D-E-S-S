@@ -59,7 +59,7 @@ These are displayed in the frontend in the form of graphs, as well as numerical 
 3. run `docker build -t gruppe4/sim-rest-logic-v4 .` in `web-app/DiscreteEventSimulation/`
 4. run `docker build -t gruppe4/sim-frontend .` in `web-app/web-frontend/`
 
-## 2. Run dokcer images
+## 2. Run docker images
 1. run `docker-compose up` in `web-app/`
 
 # REST API
