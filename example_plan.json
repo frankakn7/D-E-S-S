@@ -1,0 +1,203 @@
+{
+    "jobs": [
+        {
+            "id": "1",
+            "release_date": 0,
+            "due_date": 80,
+            "cost_per_lateness_time": 2
+        },
+        {
+            "id": "2",
+            "release_date": 0,
+            "due_date": 90,
+            "cost_per_lateness_time": 2
+        },
+
+        {
+            "id": "3",
+            "release_date": 0,
+            "due_date": 100,
+            "cost_per_lateness_time": 2
+        },
+
+        {
+            "id": "4",
+            "release_date": 0,
+            "due_date": 40,
+            "cost_per_lateness_time": 2
+        },
+
+        {
+            "id": "5",
+            "release_date": 0,
+            "due_date": 60,
+            "cost_per_lateness_time": 2
+        }
+    ],
+    "machines": [
+        {
+            "id": "A",
+            "cost_per_time": 3,
+            "repair_cost_per_time": 10,
+            "breakdown_probability": 0.05,
+            "mean": 5,
+            "standard_deviation": 0
+        },
+        {
+            "id": "B",
+            "cost_per_time": 3,
+            "repair_cost_per_time": 10,
+            "breakdown_probability": 0.1,
+            "mean": 5,
+            "standard_deviation": 0
+        },
+        {
+            "id": "C",
+            "cost_per_time": 3,
+            "repair_cost_per_time": 10,
+            "breakdown_probability": 0.13,
+            "mean": 5,
+            "standard_deviation": 0
+        },
+
+        {
+            "id": "D",
+            "cost_per_time": 3,
+            "repair_cost_per_time": 10,
+            "breakdown_probability": 0.05,
+            "mean": 5,
+            "standard_deviation": 0
+        }
+    ],
+    "operations": [
+        {
+            "id": "op1",
+            "machine_id": "A",
+            "job_id": "1",
+            "machine_pred": "op2",
+            "conditional_preds": null,
+            "duration": 50,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+        {
+            "id": "op2",
+            "machine_id": "A",
+            "job_id": "2",
+            "machine_pred": null,
+            "conditional_preds": null,
+            "duration": 20,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+        {
+            "id": "op3",
+            "machine_id": "A",
+            "job_id": "5",
+            "machine_pred":"op1",
+            "conditional_preds": ["op8"],
+            "duration": 40,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+
+        },
+        
+        {
+            "id": "op4",
+            "machine_id": "B",
+            "job_id": "1",
+            "machine_pred": "op5",
+            "conditional_preds": ["op1"],
+            "duration": 20,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+        {
+            "id": "op5",
+            "machine_id": "B",
+            "job_id": "2",
+            "machine_pred": null,
+            "conditional_preds": ["op2"],
+            "duration": 50,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+
+        {
+            "id": "op6",
+            "machine_id": "C",
+            "job_id": "3",
+            "machine_pred": "op7",
+            "conditional_preds": null,
+            "duration": 20,
+            "release_date": 30,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+
+        {
+            "id": "op7",
+            "machine_id": "C",
+            "job_id": "4",
+            "machine_pred": null,
+            "conditional_preds": null,
+            "duration": 20,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+
+        {
+            "id": "op8",
+            "machine_id": "C",
+            "job_id": "5",
+            "machine_pred": "op6",
+            "conditional_preds": null,
+            "duration": 20,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+
+        {
+            "id": "op9",
+            "machine_id": "C",
+            "job_id": "2",
+            "machine_pred": "op8",
+            "conditional_preds": ["op5"],
+            "duration": 20,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+
+        {
+            "id": "op10",
+            "machine_id": "D",
+            "job_id": "3",
+            "machine_pred": "op11",
+            "conditional_preds": ["op6"],
+            "duration": 50,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        },
+
+        {
+            "id": "op11",
+            "machine_id": "D",
+            "job_id": "4",
+            "machine_pred": null,
+            "conditional_preds": ["op7"],
+            "duration": 20,
+            "release_date": 0,
+            "duration_variation_probability": 0.1,
+            "duration_standard_deviation": 1
+        }
+    ]
+}

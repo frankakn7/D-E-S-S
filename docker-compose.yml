@@ -1,0 +1,36 @@
+version: '3'
+services:
+  simulation_frontend:
+    image: gruppe4/sim-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - simulation_backend
+
+  simulation_backend:
+    image: gruppe4/sim-rest-logic-v4
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - simulation-backend-network
+    environment:
+      - MYSQL_HOST=simulation_mysql
+      - DB_NAME=db_event_simulation
+      - DB_USER=springuser
+      - DB_PASSWORD=ThePassword
+    depends_on:
+      - simulation_mysql
+  
+  simulation_mysql:
+    image: mysql:8
+    networks:
+      - simulation-backend-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=springuser 
+      - MYSQL_PASSWORD=ThePassword 
+      - MYSQL_DATABASE=db_event_simulation
+
+networks:
+  simulation-backend-network: {}
