@@ -6,10 +6,12 @@ for Industrial Scheduling Plans
 # Short Description
 
 This application can be used to analyse and simulate industrial scheduling plans. These are uploaded to the web application via the frontend or over the available REST-API in form of a `.json` file. The backend uses a discrete event simulation logic to simulate the plans and returns a multitude of different metrics in the categories
+
 - General simulation 
 - Machines
 - Jobs
 - Operations
+
 These are displayed in the frontend in the form of graphs, as well as numerical values. The metrics of two different simulations can be compared to better evaluate these. 
 
 # Manual Installation / Setup
@@ -52,8 +54,8 @@ These are displayed in the frontend in the form of graphs, as well as numerical 
 - npm 
 
 ## 1. Setup docker Images
-1. Follow [link](#2-building-the-backend)
-2. Follow [link](#3-building-the-frontend)
+1. Follow [Building the Backend](#2-building-the-backend)
+2. Follow [Building the Frontend](#3-building-the-frontend)
 3. run `docker build -t gruppe4/sim-rest-logic-v4 .` in `web-app/DiscreteEventSimulation/`
 4. run `docker build -t gruppe4/sim-frontend .` in `web-app/web-frontend/`
 
@@ -77,7 +79,7 @@ These are displayed in the frontend in the form of graphs, as well as numerical 
 |    get a single simulation case     |     `GET`      |                `/sim/{simId}`                 |                             gets a simulation case by its ID                             |                   returns a simulation case in JSON format                    |
 | get the status of a simulation case |     `GET`      |             `/sim/{simId}/status`             |                      gets the status of a simulation case by its ID                      | returns a JSON object containing status information about the simulation case |
 
-## recommended REST API workflow
+## Recommended REST API workflow
 
 1. upload a JSON plan
 2. start simulation case using the `plan ID` from the upload plan response
