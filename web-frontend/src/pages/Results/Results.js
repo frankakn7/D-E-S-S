@@ -44,8 +44,6 @@ const Results = (props) => {
     const [deleting, setDeleting] = useState();
     const navigate = useNavigate();
 
-    const [planName, setPlanName] = useState("Plan");
-
     const [view, setView] = useState("general");
 
     const [resultError, setResultError] = useState(false);
@@ -84,10 +82,6 @@ const Results = (props) => {
                 };
             });
         }
-
-        setPlanName(
-            props.plans.find((plan) => foundSimCase.planId === plan.uuid).name
-        );
 
         setSimCase(foundSimCase);
         setResults(results);
@@ -156,7 +150,9 @@ const Results = (props) => {
                                     <FontAwesomeIcon icon={faTrashCan} />
                                 </Button>
                                 <h2>
-                                    Results for the Simulation of ”{planName}"{" "}
+                                    Results for the Simulation of ”{props.plans.find(
+                                        (plan) => simCase.planId === plan.uuid
+                                    ).name}"
                                 </h2>
                                 <p>
                                     with id ({simCase.id})

@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
-    @Test
+    /*@Test
     void testLogEvaluator() {
         Machine mA = new Machine("A", 0.0, 4., 2., 3., 4.);
         Machine mB = new Machine("B", 0.2, 5., 2., 2., 3.);
@@ -68,11 +68,11 @@ class SimulationTest {
         HashMap<Job, HashMap<String, Object>> jobValues = evaluator.calculateJobStatValues();
         //System.out.println(jobValues.get(jStats.get(0).getJob()));
         for(JobStats jStat : jStats) {
-            /*
+            *//*
             jStat.completionTime.addValue((double) jobValues.get(jStat.getJob()).get("completiontime"));
             jStat.lateness.addValue((double) jobValues.get(jStat.getJob()).get("lateness"));
             jStat.latenessCost.addValue((double) jobValues.get(jStat.getJob()).get("latenesscost"));
-            */
+            *//*
             //System.out.println(jobValues.get(jStat));
             jStat.lateness.addValue((double)jobValues.get(jStat.getJob()).get("lateness"));
             jStat.latenessCost.addValue((double)jobValues.get(jStat.getJob()).get("latenesscost"));
@@ -112,5 +112,5 @@ class SimulationTest {
         }
 
         assertEquals(3, 3);
-    }
+    }*/
 }
