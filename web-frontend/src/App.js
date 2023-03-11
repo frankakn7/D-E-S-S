@@ -15,7 +15,7 @@ import CompareSelection from "./pages/Compare/CompareSelection";
 import Compare from "./pages/Compare/Compare";
 
 function App() {
-    const baseUrl = "http://localhost:8080";
+    const baseUrl = process.env.REACT_APP_BACKEND_SERVER_URL;
 
     const { sendRequest: sendHttpRequest } = useHttp();
 
