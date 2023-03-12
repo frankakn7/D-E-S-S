@@ -6,6 +6,15 @@ import JobsTable from "./tables/JobsTable";
 import MachinesTable from "./tables/MachinesTable";
 import OperationsTable from "./tables/OperationsTable";
 
+/**
+ * A page displaying the information that was read out of a newly uploaded JSON file.
+ * Contains JSON file on the left and table details on the right as well as actions at the bottom of the page
+ * @param {Object} props all values passed to this object
+ * @param {File} props.file the file that was uploaded
+ * @param {JSX.Element} props.buttons a JSX element containing all the action buttons used on this page
+ * @param {ref} props.nameRef a reference to the file name input field
+ * @returns 
+ */
 const FileDetails = (props) => {
     const interpretedJson = JSON.parse(props.file.data);
     return (

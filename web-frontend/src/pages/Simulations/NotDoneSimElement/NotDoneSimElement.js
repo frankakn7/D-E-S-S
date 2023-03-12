@@ -3,8 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import classes from "./NotDoneSimElement.module.css";
 
+/**
+ * An element displaying the loading signal and bar for a currently running simulation case
+ * @param {Object} props all values passed to the element
+ * @param {String} props.planName name of the plan the simulation case belongs to
+ * @param {Object} props.notDoneSim an object containing information for the currently running simulation case
+ * @returns 
+ */
 const NotDoneSimElement = (props) => {
-    console.log(props.notDoneSim);
+    // console.log(props.notDoneSim);
     return (
         <div className={classes.main}>
             <div className={classes.content}>

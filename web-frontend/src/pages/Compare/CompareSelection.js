@@ -7,6 +7,13 @@ import Button from "../../interface/Button/Button";
 import ListButton from "../../interface/ListButton/ListButton";
 import classes from "./CompareButton.module.css";
 
+/**
+ * A page displaying 2 boxes one with all simulations and one with max 2 selected simulation for comparing
+ * @param {Object} props props passed to this object
+ * @param {Array<Object>} props.simCases a list of all simulation cases
+ * @param {Array<Object>} props.plans a list of all plans
+ * @returns 
+ */
 const CompareSelection = (props) => {
     const [notSelectedIds, setNotSelectedIds] = React.useState([]);
     const [selectedIds, setSelectedIds] = React.useState([]);

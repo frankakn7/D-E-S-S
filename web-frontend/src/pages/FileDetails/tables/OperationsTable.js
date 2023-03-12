@@ -1,6 +1,12 @@
 import React from 'react'
 import Table from '../../../interface/Table/Table'
 
+/**
+ * displaying information about all operations in a table format
+ * @param {Object} props all values passed to the object
+ * @param {Array<Object>} props.operations a list of all operations
+ * @returns 
+ */
 const OperationsTable = (props) => {
   return (
     <div>

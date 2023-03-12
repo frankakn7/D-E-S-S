@@ -80,6 +80,13 @@ const COLOR_DATABASE = [
 //     };
 // };
 
+/**
+ * Pie chart displaying the total ressource utilisation of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const TotalResourceUtilisationPieChart = (props) => {
     const utilisationData = [
         {
@@ -180,6 +187,13 @@ const TotalResourceUtilisationPieChart = (props) => {
     );
 };
 
+/**
+ * Pie chart displaying the total cost of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const TotalCostPieChart = (props) => {
     const costData = [
         {
@@ -234,6 +248,13 @@ const TotalCostPieChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the machine utilisation of all machines of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const MachineUtilisationBarChart = (props) => {
     const machineUtilisationData = props.allResults.machines.map((machine) => ({
         name: `${machine.id}`,
@@ -269,6 +290,13 @@ const MachineUtilisationBarChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the makespan of all machines of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const MachineMakespanBarChart = (props) => {
     const JOB_COLORS = Object.fromEntries(
         props.allResults.jobs.map((job, index) => [
@@ -407,6 +435,13 @@ const MachineMakespanBarChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the breakdown and idle times of all machines of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const MachineBreakdownIdleChart = (props) => {
     const machineBreakdownIdleData = props.allResults.machines.map(
         (machine) => {
@@ -535,6 +570,13 @@ const MachineBreakdownIdleChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the cost of all machines of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const MachineCostBarChart = (props) => {
     const machineCostData = props.allResults.machines.map((machine) => ({
         name: `${machine.id}`,
@@ -581,6 +623,13 @@ const MachineCostBarChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the completion time for all jobs of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const JobCompletionTimeChart = (props) => {
     const JOB_COLORS = Object.fromEntries(
         props.allResults.jobs.map((job, index) => [
@@ -633,6 +682,13 @@ const JobCompletionTimeChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the lateness for all jobs of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const JobLatenessChart = (props) => {
     const jobLatenessData = props.allResults.jobs.map((job) => ({
         name: `${job.id}`,
@@ -680,6 +736,13 @@ const JobLatenessChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the cost for all jobs of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const JobCostChart = (props) => {
     const jobCostData = props.allResults.jobs.map((job) => ({
         name: `${job.id}`,
@@ -727,6 +790,13 @@ const JobCostChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the length for all operations of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const OperationsLengthChart = (props) => {
     const operationLengthData = props.allResults.operations.map(
         (operation) => ({
@@ -775,6 +845,13 @@ const OperationsLengthChart = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the length for all operations of a specific machine
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const MachinesOperationsLength = (props) => {
     const machineOperationLengthData = props.machine.operations.map(
         (operation) => ({
@@ -826,6 +903,13 @@ const MachinesOperationsLength = (props) => {
     );
 };
 
+/**
+ * Bar chart displaying the length for all operations of a specific job
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @param {String} props.className css classes passed to the top div of this element
+ * @returns 
+ */
 const JobsOperationsLength = (props) => {
     const jobOperationLengthData = props.job.operations.map((operation) => ({
         name: `${operation.id}`,

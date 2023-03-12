@@ -12,6 +12,12 @@ import {
 import classes from "./JobResults.module.css";
 import JobResultsBox from "./JobResultsBox/JobResultsBox";
 
+/**
+ * Box displaying all the job results of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of the simulation case
+ * @returns 
+ */
 const JobResults = (props) => {
     return (
         <div className={classes.content}>

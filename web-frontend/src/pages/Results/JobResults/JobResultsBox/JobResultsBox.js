@@ -5,6 +5,13 @@ import DetailsTableRow from "../../DetailsTable/DetailsTableRow";
 import { JobsOperationsLength } from "../../ResultsCharts/ResultsCharts";
 import classes from "./JobResultsBox.module.css";
 
+/**
+ * A box displaying the detailed results of a specific job of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.job object containing all results for a job
+ * @param {String} props.className classes passed to the top box element
+ * @returns 
+ */
 const JobResultsBox = (props) => {
     return (
         <Box

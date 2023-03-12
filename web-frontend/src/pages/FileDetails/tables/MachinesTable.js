@@ -1,6 +1,12 @@
 import React from 'react'
 import Table from '../../../interface/Table/Table'
 
+/**
+ * displaying information about all machines in a table format
+ * @param {Object} props all values passed to the object
+ * @param {Array<Object>} props.machines a list of all machines
+ * @returns 
+ */
 const MachinesTable = (props) => {
   return (
     <div>

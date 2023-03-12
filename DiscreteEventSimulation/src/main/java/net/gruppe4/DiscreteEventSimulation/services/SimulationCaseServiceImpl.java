@@ -217,7 +217,6 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         for(int i = 0; i < jobsJson.length(); i++){
             JSONObject jobObj = jobsJson.getJSONObject(i);
 
-            //TODO add release time
             Job job = new Job(
                     jobObj.getString("id"),
                     jobObj.getInt("release_date"),
@@ -238,7 +237,6 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
         HashMap<String, Machine> machines = new HashMap<>();
         for (int i = 0; i < machinesJson.length(); i++) {
             JSONObject machineObj = machinesJson.getJSONObject(i);
-            //TODO add statistical values from json
             Machine machine = new Machine(
                     machineObj.getString("id"),
                     machineObj.getDouble("breakdown_probability"),
@@ -274,7 +272,6 @@ public class SimulationCaseServiceImpl implements SimulationCaseService {
 
         for (int i = 0; i < operationsJson.length(); i++) {
             JSONObject operationObj = operationsJson.getJSONObject(i);
-            //TODO Fix this deserialization of operation objects
             Operation operation = new Operation(
                     operationObj.getString("id"),
                     null,

@@ -29,6 +29,10 @@ public class Result {
         return generalStats;
     }
 
+    /**
+     * creates a {@link JSONObject} containing all the result information for all objects of the simulation case
+     * @return
+     */
     public JSONObject toJsonObject(){
         JSONObject resultsJson = new JSONObject();
         JSONArray machinesJson = new JSONArray();

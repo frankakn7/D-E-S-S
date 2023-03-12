@@ -14,7 +14,11 @@ import classes from "./Dashboard.module.css";
 
 /**
  * The main dashboard page. Contains 2 lists of the last 4 simulations and plans. Also handles the JSON upload
- * @param {*} props 
+ * @param {Object} props all props passed to this object
+ * @param {Function} props.planUploadHandler function handling the upload of a new plan
+ * @param {Function} props.planSimulateHandler function that handles creating and starting a simulation case for a plan
+ * @param {Array<Object>} props.plans a list of all plans
+ * @param {Array<Object>} props.simCases a list of all simulation cases
  * @returns 
  */
 const Dashboard = (props) => {

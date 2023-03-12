@@ -9,6 +9,16 @@ import Button from "../../../interface/Button/Button";
 import ConfirmationModal from "../../../interface/Modal/ConfirmationModal/ConfirmationModal";
 import classes from "./PlanButton.module.css";
 
+/**
+ * A button element looking like a file contianing opening and deleting functionalities
+ * @param {Object} props all values passed to this element
+ * @param {Function} props.onDelete function handling the deletion of a plan
+ * @param {String} props.name name of the plan the button belongs to 
+ * @param {String} props.id id of the plan the button belongs to 
+ * @param {Function} props.doubleClick function to be executed when button is double clicked
+ * @param {Date} props.createdOn date and time the plan was created 
+ * @returns 
+ */
 const PlanButton = (props) => {
     const [selected, setSelected] = useState(false);
     const [deleting, setDeleting] = useState(false);

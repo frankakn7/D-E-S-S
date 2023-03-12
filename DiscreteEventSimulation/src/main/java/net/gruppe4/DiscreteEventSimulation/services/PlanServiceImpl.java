@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
- * Service functions for everything to do with plans
+ * Implements the Service functions for everything to do with plans
  */
 @Service
 public class PlanServiceImpl implements PlanService{

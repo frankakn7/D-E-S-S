@@ -13,6 +13,15 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "../../interface/Modal/ConfirmationModal/ConfirmationModal";
 import ErrorModal from "../../interface/Modal/ErrorModal/ErrorModal";
 
+/**
+ * A tab button for switching pages
+ * @param {Object} props all values passed to the element
+ * @param {Function} props.setView a function that changes the current view of the page
+ * @param {String} props.newView string to identify the page this tab belongs to 
+ * @param {String} props.view the current view displayed on the page
+ * @param {JSX.Element} props.children elements to be placed inside the button element
+ * @returns 
+ */
 const Tab = (props) => {
     const onClickHandler = () => {
         props.setView(props.newView);
@@ -33,8 +42,11 @@ const Tab = (props) => {
 };
 
 /**
- * Displays all the Results of a simulation
- * @param {*} props
+ * Page to displays all the Results of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Array<Object>} props.simCases a list of all simcases 
+ * @param {Array<Object>} props.plans a list of all plans
+ * @param {Function} props.simCaseDeleteHandler a function to handle the deletion of a sim case via its id
  * @returns
  */
 const Results = (props) => {

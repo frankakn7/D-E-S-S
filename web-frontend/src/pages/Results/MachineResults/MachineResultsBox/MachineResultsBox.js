@@ -14,6 +14,13 @@ import DetailsTableRow from "../../DetailsTable/DetailsTableRow";
 import { MachinesOperationsLength } from "../../ResultsCharts/ResultsCharts";
 import classes from "./MachineResultsBox.module.css";
 
+/**
+ * A box containing detailed results of a single machine
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.machine object holding all statistical values of the machine
+ * @param {String} props.className css classes passed to the top Box element
+ * @returns 
+ */
 const MachineResultsBox = (props) => {
     const data = [
         {

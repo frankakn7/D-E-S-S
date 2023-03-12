@@ -4,6 +4,12 @@ import { MachineBreakdownIdleChart, MachineCostBarChart, MachineMakespanBarChart
 import classes from "./MachineResults.module.css";
 import MachineResultsBox from "./MachineResultsBox/MachineResultsBox";
 
+/**
+ * Box containing all the machine results of a simulation case
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of a simulation case 
+ * @returns 
+ */
 const MachineResults = (props) => {
     return (
         <div>

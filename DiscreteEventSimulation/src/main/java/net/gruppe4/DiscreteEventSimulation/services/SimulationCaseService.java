@@ -6,6 +6,9 @@ import net.gruppe4.DiscreteEventSimulation.objects.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * defines all the functions needed for the simulation case service
+ */
 public interface SimulationCaseService {
     public abstract SimulationCase createSimCase(Plan plan);
     public abstract SimulationCase getSimCaseById(String uuid);

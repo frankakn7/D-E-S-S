@@ -2,6 +2,9 @@ package net.gruppe4.DiscreteEventSimulation.services;
 
 import net.gruppe4.DiscreteEventSimulation.objects.Plan;
 
+/**
+ * defines all the functions the plan service contains
+ */
 public interface PlanService {
     public abstract void savePlan(Plan plan);
     public abstract Plan createPlanFromJson(String json);

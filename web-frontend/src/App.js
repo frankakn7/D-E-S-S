@@ -14,6 +14,10 @@ import ErrorBoundary from "./ErrorBoundaries/ErrorBoundary";
 import CompareSelection from "./pages/Compare/CompareSelection";
 import Compare from "./pages/Compare/Compare";
 
+/**
+ * The base element for the whole application
+ * @returns 
+ */
 function App() {
     const baseUrl = process.env.REACT_APP_BACKEND_SERVER_URL;
 

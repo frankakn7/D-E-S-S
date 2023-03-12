@@ -5,6 +5,14 @@ import ListButton from "../../interface/ListButton/ListButton";
 import { useNavigate } from "react-router-dom";
 import NotDoneSimElement from "./NotDoneSimElement/NotDoneSimElement";
 
+/**
+ * A page displaying all the simulations running and done
+ * @param {Object} props all values passed to the element
+ * @param {Array<Object>} props.notDoneSims a list of objects representing the not done simulations
+ * @param {Array<Object>} props.simCases a list of all the simcases 
+ * @param {Array<Object>} props.plans a list of all the plans
+ * @returns 
+ */
 const Simulations = (props) => {
 
     const navigate = useNavigate();

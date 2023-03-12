@@ -7,6 +7,13 @@ import PlanButton from "./PlanButton/PlanButton";
 
 import classes from "./Plans.module.css";
 
+/**
+ * A page displaying all saved plans
+ * @param {Object} props all values passed to the element
+ * @param {Array<Object>} props.plans a list of all plans 
+ * @param {Function} props.planDeleteHandler a function deleting plan by its id  
+ * @returns 
+ */
 const Plans = (props) => {
     const navigate = useNavigate();
 

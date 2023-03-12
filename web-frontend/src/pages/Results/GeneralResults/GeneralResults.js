@@ -4,6 +4,12 @@ import DetailsTableRow from "../DetailsTable/DetailsTableRow";
 import { JobCompletionTimeChart, MachineMakespanBarChart, MachineUtilisationBarChart, TotalCostPieChart, TotalResourceUtilisationPieChart } from "../ResultsCharts/ResultsCharts";
 import classes from "./GeneralResults.module.css";
 
+/**
+ * Box displaying the general statistics of a simulation
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.allResults object containing all the results of the simulation case 
+ * @returns 
+ */
 const GeneralResults = (props) => {
 
     return (

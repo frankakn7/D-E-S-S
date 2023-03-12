@@ -21,6 +21,10 @@ public class DiscreteEventSimulationApplication {
 		SpringApplication.run(DiscreteEventSimulationApplication.class, args);
 	}
 
+	/**
+	 * enables threading for the application
+	 * @return
+	 */
 	@Bean
 	public Executor taskExecutor(){
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

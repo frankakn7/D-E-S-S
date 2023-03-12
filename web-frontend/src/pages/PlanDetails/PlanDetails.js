@@ -12,6 +12,15 @@ import MachinesTable from "../FileDetails/tables/MachinesTable";
 import OperationsTable from "../FileDetails/tables/OperationsTable";
 import classes from "./PlanDetails.module.css";
 
+/**
+ * A page for displaying the details of an uploaded plan
+ * @param {Object} props contains all the values passed to this page
+ * @param {Arrray<Object>} props.plans list of all plans
+ * @param {Arrray<Object>} props.simCases list of all simulation cases
+ * @param {Function} props.planSimulateHandler a function handling the api call to start a new simulation case of the plan
+ * @param {Function} props.checkIfDoneHandler a function handling api call to check if simulation case is done simulating
+ * @returns 
+ */
 const PlanDetails = (props) => {
     const { id } = useParams();
     const [plan, setPlan] = useState({ name: "", uuid: "", planJson: "{}" });

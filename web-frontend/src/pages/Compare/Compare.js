@@ -34,7 +34,7 @@ const Tab = (props) => {
 };
 
 /**
- * Main Compare page implementing all other compare pages. Takes the simulaiont id1 and id2 out of the url 
+ * Main Compare page containing all other compare pages. Takes the simulaion id1 and id2 out of the page url 
  * @param {Object} props - all props passed to page
  * @param {Array<Object>} props.simCases - all simulation cases
  * @param {Array<Object>} props.plans - all plan objects

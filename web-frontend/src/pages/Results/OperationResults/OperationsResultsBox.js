@@ -4,6 +4,12 @@ import DetailsTable from "../DetailsTable/DetailsTable";
 import DetailsTableRow from "../DetailsTable/DetailsTableRow";
 import classes from "./OperationResults.module.css"
 
+/**
+ * Box diplaying detailed results of a singular operation
+ * @param {Object} props all values passed to the element
+ * @param {Object} props.operation object containing the results of the opertion
+ * @returns 
+ */
 const OperationsResultsBox = (props) => {
     return (
         <Box

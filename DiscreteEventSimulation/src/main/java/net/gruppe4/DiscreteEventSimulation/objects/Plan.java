@@ -32,6 +32,9 @@ public class Plan {
 		this.planJson = json;
 	}
 
+	/**
+	 * give timestamp to plan when its created
+	 */
 	@PrePersist
 	protected void onCreate(){
 		this.createdOn = new Timestamp(System.currentTimeMillis());
@@ -47,6 +50,10 @@ public class Plan {
 				'}';
 	}
 
+	/**
+	 * transfroms plan into a json object
+	 * @return a {@link JSONObject}
+	 */
 	public JSONObject toJsonObject(){
 		JSONObject planJsonObject = new JSONObject();
 		planJsonObject.put("uuid",this.uuid);

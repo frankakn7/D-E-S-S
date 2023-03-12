@@ -33,7 +33,7 @@ These are displayed in the frontend in the form of graphs, as well as numerical 
 2. Run `./mvnw clean package`
 
 ## 3. Building the Frontend
-1. Open `web-frontend/.env.production`
+1. Open `web-app/web-frontend/.env.production`
 2. Configure the environment variable called `REACT_APP_BACKEND_SERVER_URL` to equal the Server/Backend URL (where the backend jar will be running. On local machine it should be `https://localhost:8080`)
 3. `cd` into `web-app/web-frontend`
 4. Run `npm run build`

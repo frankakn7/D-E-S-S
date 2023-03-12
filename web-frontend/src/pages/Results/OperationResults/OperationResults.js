@@ -6,6 +6,12 @@ import { OperationsLengthChart } from "../ResultsCharts/ResultsCharts";
 import classes from "./OperationResults.module.css";
 import OperationsResultsBox from "./OperationsResultsBox";
 
+/**
+ * Box displaying all the operation results of a simulation case
+ * @param {Object} props all values passed to the element 
+ * @param {Object} props.allResults object containing all the results of a simulation case
+ * @returns 
+ */
 const OperationResults = (props) => {
     return (
         <div>

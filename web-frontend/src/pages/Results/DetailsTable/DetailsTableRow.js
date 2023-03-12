@@ -3,6 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Fragment, useState } from "react";
 import classes from "./DetailsTableRow.module.css";
 
+/**
+ * A table row element displaying detailed statistical values (mean, min, max standard_deviation, variance)
+ * @param {Object} props all values passed to the element 
+ * @param {Boolean} props.percentage if value is a percentage
+ * @param {Object} props.stat object containing the statistical values
+ * @param {String} props.stat.name name of the statistical value being displayed
+ * @param {Double} props.stat.min minimum value
+ * @param {Double} props.stat.max max value
+ * @param {Double} props.stat.mean mean value
+ * @param {Double} props.stat.standard_deviation standard deviation value
+ * @param {Double} props.stat.variance variance value
+ * @returns 
+ */
 const DetailsTableRow = (props) => {
     const [isOpen, setIsOpen] = useState(false);
 
